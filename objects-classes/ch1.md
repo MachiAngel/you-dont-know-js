@@ -1,43 +1,43 @@
-# You Don't Know JS Yet: Objects & Classes - 2nd Edition
-# Chapter 1: Object Foundations
+# 你所不知道的 JS（進階篇）：物件與類別 - 第二版
+# 第一章：物件基礎
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Work in progress |
+| 編寫中 |
 
-> Everything in JS is an object.
+> JS 中的一切都是物件。
 
-This is one of the most pervasive, but most incorrect, "facts" that perpetually circulates about JS. Let the myth busting commence.
+這是關於 JS 最普遍流傳，但也最不正確的「事實」之一。讓我們開始破除這個迷思吧。
 
-JS definitely has objects, but that doesn't mean that all values are objects. Nevertheless, objects are arguably the most important (and varied!) value type in the language, so mastering them is critical to your JS journey.
+JS 確實有物件，但這並不意味著所有的值都是物件。儘管如此，物件可以說是這門語言中最重要（也是最多樣化的！）的值型別，所以掌握它們對你的 JS 學習之旅至關重要。
 
-The object mechanism is certainly the most flexible and powerful container type -- something you put other values into; every JS program you write will use them in one way or another. But that's not why objects deserve top billing for this book. Objects are the foundation for the second of JS's three pillars: the prototype.
+物件機制無疑是最靈活且強大的容器型別——你可以將其他值放入其中；你編寫的每個 JS 程式都會以某種方式使用它們。但這並不是物件在本書中佔據重要地位的原因。物件是 JS 三大支柱中第二個支柱的基礎：原型。
 
-Why are prototypes (along with the `this` keyword, covered later in the book) so core to JS as to be one of its three pillars? Among other things, prototypes are how JS's object system can express the class design pattern, one of the most widely relied on design patterns in all of programming.
+為什麼原型（以及本書後面會介紹的 `this` 關鍵字）對 JS 如此核心，以至於成為其三大支柱之一？除了其他原因之外，原型是 JS 的物件系統用來表達類別設計模式的方式，而類別設計模式是所有程式設計中最廣泛使用的設計模式之一。
 
-So our journey here will start with objects, build up a compelete understanding of prototypes, de-mystify the `this` keyword, and explore the `class` system.
+因此，我們的旅程將從物件開始，建立對原型的完整理解，揭開 `this` 關鍵字的神秘面紗，並探索 `class` 系統。
 
-## About This Book
+## 關於本書
 
-Welcome to book 3 in the *You Don't Know JS Yet* series! If you already finished *Get Started* (the first book) and *Scope & Closures* (the second book), you're in the right spot! If not, before you proceed I encourage you to read those two as foundations before diving into this book.
+歡迎來到《你所不知道的 JS》系列的第三本書！如果你已經讀完了《入門篇》（第一本書）和《作用域與閉包》（第二本書），那你來對地方了！如果還沒有，在你繼續之前，我建議你先閱讀那兩本書作為基礎，然後再深入本書。
 
-The first edition of this book is titled, "this & Object Prototypes". In that book, our focus started with the `this` keyword, as it's arguably one of the most confused topics in all of JS. The book then spent the majority of its time focused on expositing the prototype system and advocating for embrace of the lesser-known "delegation" pattern instead of class designs. At the time of that book's writing (2014), ES6 would still be almost 2 years to its completion, so I felt the early sketches of the `class` keyword only merited a brief addendum of coverage.
+本書第一版的書名是「this 與物件原型」。在那本書中，我們的焦點始於 `this` 關鍵字，因為它可以說是整個 JS 中最令人困惑的主題之一。然後那本書花了大部分時間闡述原型系統，並倡導擁抱較少為人知的「委託」模式，而非類別設計。在那本書撰寫時（2014 年），ES6 距離完成還有將近兩年的時間，所以我覺得 `class` 關鍵字的早期草案只值得在附錄中簡要介紹。
 
-It's quite an understatement to say a lot has changed in the JS landscape in the almost 8 years since that book. ES6 is old news now; at the time of *this* book's writing, JS has seen 7 yearly updates **after ES6** (ES2016 through ES2022).
+說自那本書出版以來，JS 的生態系統發生了巨大變化，這絕對是輕描淡寫的說法。ES6 現在已經是舊聞了；在撰寫*這本*書的時候，JS 在 **ES6 之後**已經經歷了 7 次年度更新（ES2016 到 ES2022）。
 
-Now, we still need to talk about how `this` works, and how that relates to methods invoked against various objects. And `class` actually operates (mostly!) via the prototype chain deep under the covers. But JS developers in 2022 are almost never writing code to explicitly wire up prototypal inheritance anymore. And as much as I personally wish differently, class design patterns -- not "behavior delegation" -- are how the majority of data and behavior organization (data structures) in JS are expressed.
+現在，我們仍然需要討論 `this` 的工作原理，以及它與針對各種物件調用方法之間的關係。而 `class` 實際上（大部分！）是透過底層的原型鏈運作的。但 2022 年的 JS 開發者幾乎不再編寫程式碼來顯式地設定原型繼承了。儘管我個人希望情況有所不同，但類別設計模式——而非「行為委託」——才是 JS 中表達大多數資料和行為組織（資料結構）的方式。
 
-This book reflects JS's current reality: thus the new sub-title, new organization and focus of topics, and complete re-write of the previous edition's text.
+本書反映了 JS 的當前現實：因此有了新的副標題、新的主題組織與焦點，以及對前一版文本的完全重寫。
 
-## Objects As Containers
+## 物件作為容器
 
-One common way of gathering up multiple values in a single container is with an object. Objects are collections of key/value pairs. There are also sub-types of object in JS with specialized behaviors, such as arrays (numerically indexed) and even functions (callable); more on these sub-types later.
+將多個值聚集到一個容器中的常見方式之一就是使用物件。物件是鍵/值對的集合。JS 中還有一些具有特殊行為的物件子型別，例如陣列（以數字索引）甚至函式（可呼叫的）；稍後會介紹更多關於這些子型別的內容。
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Keys are often referred to as "property names", with the pairing of a property name and a value often called a "property". This book will use those terms distinctly in that manner. |
+| 鍵通常被稱為「屬性名稱」，而屬性名稱和值的配對通常被稱為「屬性」。本書將以這種方式明確使用這些術語。 |
 
-Regular JS objects are typically declared with literal syntax, like this:
+常規的 JS 物件通常使用字面量語法來宣告，像這樣：
 
 ```js
 myObj = {
@@ -45,21 +45,21 @@ myObj = {
 };
 ```
 
-**Note:** There's an alternate way to create an object (using `myObj = new Object()`), but this is not common or preferred, and is almost never the appropriate way to go about it. Stick with object literal syntax.
+**注意：** 還有一種替代的方式來建立物件（使用 `myObj = new Object()`），但這並不常見也不推薦，而且幾乎從來不是適當的做法。請堅持使用物件字面量語法。
 
-It's easy to get confused what pairs of `{ .. }` mean, since JS overloads the curly brackets to mean any of the following, depending on the context used:
+很容易搞混 `{ .. }` 大括號的含義，因為 JS 在不同的上下文中賦予了大括號多種含義：
 
-* delimit values, like object literals
-* define object destructuring patterns (more on this later)
-* delimit interpolated string expressions, like `` `some ${ getNumber() } thing` ``
-* define blocks, like on `if` and `for` loops
-* define function bodies
+* 界定值，如物件字面量
+* 定義物件解構模式（稍後會詳細介紹）
+* 界定插值字串表達式，如 `` `some ${ getNumber() } thing` ``
+* 定義區塊，如 `if` 和 `for` 迴圈
+* 定義函式主體
 
-Though it can sometimes be challenging as you read code, look for whether a `{ .. }` curly brace pair is used in the program where a value/expression is valid to appear; if so, it's an object literal, otherwise it's one of the other overloaded uses.
+雖然在閱讀程式碼時有時可能具有挑戰性，但要注意 `{ .. }` 大括號對是否用在程式中值/表達式有效出現的位置；如果是，它就是物件字面量，否則就是其他多載用法之一。
 
-## Defining Properties
+## 定義屬性
 
-Inside the object literal curly braces, you define properties (name and value) with `propertyName: propertyValue` pairs, like this:
+在物件字面量的大括號內，你使用 `propertyName: propertyValue` 對來定義屬性（名稱和值），像這樣：
 
 ```js
 myObj = {
@@ -69,7 +69,7 @@ myObj = {
 };
 ```
 
-The values you assign to the properties can be literals, as shown, or can be computed by expression:
+你賦予屬性的值可以是字面量，如上所示，也可以是通過表達式計算的：
 
 ```js
 function twenty() { return 20; }
@@ -79,24 +79,24 @@ myObj = {
 };
 ```
 
-The expression `(twenty() + 1) * 2` is evaluated immediately, with the result (`42`) assigned as the property value.
+表達式 `(twenty() + 1) * 2` 會立即求值，結果（`42`）被賦值為屬性值。
 
-Developers sometimes wonder if there's a way to define an expression for a property value where the expression is "lazy", meaning it's not computed at the time of assignment, but defined later. JS does not have lazy expressions, so the only way to do so is for the expression to be wrapped in a function:
+開發者有時會想知道是否有辦法為屬性值定義一個「惰性」的表達式，意思是它不在賦值時計算，而是稍後才定義。JS 沒有惰性表達式，所以唯一的方法是將表達式包裝在一個函式中：
 
 ```js
 function twenty() { return 20; }
 function myNumber() { return (twenty() + 1) * 2; }
 
 myObj = {
-    favoriteNumber: myNumber   // notice, NOT `myNumber()` as a function call
+    favoriteNumber: myNumber   // 注意，不是 `myNumber()` 函式呼叫
 };
 ```
 
-In this case, `favoriteNumber` is not holding a numeric value, but rather a function reference. To compute the result, that function reference must be explicitly executed.
+在這種情況下，`favoriteNumber` 不是持有一個數值，而是持有一個函式參照。要計算結果，必須顯式地執行該函式參照。
 
-### Looks Like JSON?
+### 看起來像 JSON？
 
-You may notice that this object-literal syntax we've seen thus far resembles a related syntax, "JSON" (JavaScript Object Notation):
+你可能注意到我們目前看到的物件字面量語法類似於一個相關的語法，「JSON」（JavaScript 物件表示法）：
 
 ```json
 {
@@ -106,13 +106,13 @@ You may notice that this object-literal syntax we've seen thus far resembles a r
 }
 ```
 
-The biggest differences between JS's object literals and JSON are, for objects defined as JSON:
+JS 的物件字面量和 JSON 之間最大的區別是，對於以 JSON 定義的物件：
 
-1. property names must be quoted with `"` double-quote characters
+1. 屬性名稱必須用 `"` 雙引號括起來
 
-2. property values must be literals (either primitives, objects, or arrays), not arbitrary JS expressions
+2. 屬性值必須是字面量（原始值、物件或陣列），不能是任意的 JS 表達式
 
-In JS programs, an object literal does not require quoted property names -- you *can* quote them (`'` or `"` allowed), but it's usually optional. There are however characters that are valid in a property name, but which cannot be included without surrounding quotes; for example, leading numbers or whitespace:
+在 JS 程式中，物件字面量不要求屬性名稱加引號——你*可以*加引號（允許 `'` 或 `"`），但通常是可選的。然而，有些字元在屬性名稱中是有效的，但必須用引號括起來才能包含；例如，前導數字或空白：
 
 ```js
 myObj = {
@@ -123,11 +123,11 @@ myObj = {
 };
 ```
 
-One other minor difference is, JSON syntax -- that is, text that will be *parsed* as JSON, such as from a `.json` file -- is stricter than general JS. For example, JS allows comments (`// ..` and `/* .. */`), and trailing `,` commas in object and array expressions; JSON does not allow any of these. Thankfully, JSON does still allow arbitrary whitespace.
+另一個小差異是，JSON 語法——也就是將被*解析*為 JSON 的文字，例如來自 `.json` 檔案——比一般的 JS 更嚴格。例如，JS 允許註解（`// ..` 和 `/* .. */`），以及在物件和陣列表達式中使用尾隨 `,` 逗號；JSON 不允許這些。不過，JSON 仍然允許任意的空白。
 
-### Property Names
+### 屬性名稱
 
-Property names in object literals are almost always treated/coeced as string values. One exception to this is for integer (or "integer looking") property "names":
+物件字面量中的屬性名稱幾乎總是被視為/強制轉型為字串值。一個例外是整數（或「看起來像整數」的）屬性「名稱」：
 
 ```js
 anotherObj = {
@@ -139,13 +139,13 @@ anotherObj = {
 };
 ```
 
-The `42` property name will be treated as an integer property name (aka, index); the `"41"` string value will also be treated as such since it *looks like* an integer. By contrast, the `true` value will become the string property name `"true"`, and the `myObj` identifier reference, *computed* via the surrounding `[ .. ]`, will coerce the object's value to a string (generally the default `"[object Object]"`).
+`42` 屬性名稱將被視為整數屬性名稱（又稱索引）；`"41"` 字串值也會被如此處理，因為它*看起來像*整數。相比之下，`true` 值將變成字串屬性名稱 `"true"`，而 `myObj` 識別字參照，透過周圍的 `[ .. ]` *計算*，會將物件的值強制轉型為字串（通常是預設的 `"[object Object]"`）。
 
-| WARNING: |
+| 警告： |
 | :--- |
-| If you need to actually use an object as a key/property name, never rely on this computed string coercion; its behavior is surprising and almost certainly not what's expected, so program bugs are likely to occur. Instead, use a more specialized data structure, called a `Map` (added in ES6), where objects used as property "names" are left as-is instead of being coerced to a string value. |
+| 如果你需要實際使用物件作為鍵/屬性名稱，永遠不要依賴這種計算字串強制轉型；其行為令人驚訝，幾乎肯定不是預期的結果，因此很可能會出現程式錯誤。相反，請使用更專門的資料結構，稱為 `Map`（在 ES6 中新增），其中用作屬性「名稱」的物件會保持原樣，而不是被強制轉型為字串值。 |
 
-As with `[myObj]` above, you can *compute* any **property name** (distinct from computing the property value) at the time of object literal definition:
+如同上面的 `[myObj]`，你可以在物件字面量定義時*計算*任何**屬性名稱**（與計算屬性值不同）：
 
 ```js
 anotherObj = {
@@ -153,21 +153,21 @@ anotherObj = {
 };
 ```
 
-The expression `"x" + (21 * 2)`, which must appear inside of `[ .. ]` brackets, is computed immediately, and the result (`"x42"`) is used as the property name.
+表達式 `"x" + (21 * 2)`，必須出現在 `[ .. ]` 括號內，會立即計算，結果（`"x42"`）被用作屬性名稱。
 
-### Symbols As Property Names
+### Symbol 作為屬性名稱
 
-ES6 added a new primitive value type of `Symbol`, which is often used as a special property name for storing and retrieving property values. They're created via the `Symbol(..)` function call (**without** the `new` keyword), which accepts an optional description string used only for friendlier debugging purposes; if specified, the description is inaccessible to the JS program and thus not used for any other purpose than debug output.
+ES6 新增了一個新的原始值型別 `Symbol`，它常被用作儲存和檢索屬性值的特殊屬性名稱。它們透過 `Symbol(..)` 函式呼叫建立（**不**使用 `new` 關鍵字），可以接受一個可選的描述字串，僅用於更友好的除錯目的；如果指定了，該描述對 JS 程式是不可存取的，因此除了除錯輸出外不會用於其他目的。
 
 ```js
 myPropSymbol = Symbol("optional, developer-friendly description");
 ```
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Symbols are sort of like numbers or strings, except that their value is *opaque* to, and globally unique within, the JS program. In other words, you can create and use symbols, but JS doesn't let you know anything about, or do anything with, the underlying value; that's kept as a hidden implementation detail by the JS engine. |
+| Symbol 有點像數字或字串，不同之處在於它們的值對 JS 程式來說是*不透明的*，並且在 JS 程式中是全域唯一的。換句話說，你可以建立和使用 Symbol，但 JS 不會讓你知道或對底層值做任何事情；這是由 JS 引擎保持的隱藏實作細節。 |
 
-Computed property names, as previously described, are how to define a symbol property name on an object literal:
+如前所述，計算屬性名稱是在物件字面量上定義 Symbol 屬性名稱的方式：
 
 ```js
 myPropSymbol = Symbol("optional, developer-friendly description");
@@ -177,15 +177,15 @@ anotherObj = {
 };
 ```
 
-The computed property name used to define the property on `anotherObj` will be the actual primitive symbol value (whatever it is), not the optional description string (`"optional, developer-friendly description"`).
+用於在 `anotherObj` 上定義屬性的計算屬性名稱將是實際的原始 Symbol 值（不管它是什麼），而不是可選的描述字串（`"optional, developer-friendly description"`）。
 
-Because symbols are globally unique in your program, there's **no** chance of accidental collision where one part of the program might accidentally define a property name the same as another part of the program tried defined/assigned.
+因為 Symbol 在你的程式中是全域唯一的，**不會**有意外衝突的機會，即程式的一部分可能意外地定義了與另一部分程式嘗試定義/賦值的相同屬性名稱。
 
-Symbols are also useful to hook into special default behaviors of objects, and we'll cover that in more detail in "Extending the MOP" in the next chapter.
+Symbol 對於掛接到物件的特殊預設行為也很有用，我們將在下一章的「擴展 MOP」中更詳細地介紹。
 
-### Concise Properties
+### 簡寫屬性
 
-When defining an object literal, it's common to use a property name that's the same as an existing in-scope identifier that holds the value you want to assign.
+在定義物件字面量時，常常使用與已在作用域中持有你想要賦值的值的現有識別字相同的屬性名稱。
 
 ```js
 coolFact = "the first person convicted of speeding was going 8 mph";
@@ -195,132 +195,132 @@ anotherObj = {
 };
 ```
 
-| NOTE: |
+| 備註： |
 | :--- |
-| That would have been the same thing as the quoted property name definition `"coolFact": coolFact`, but JS developers rarely quote property names unless strictly necessary. Indeed, it's idiomatic to avoid the quotes unless required, so it's discouraged to include them unnecessarily. |
+| 這與用引號括起的屬性名稱定義 `"coolFact": coolFact` 是一樣的，但 JS 開發者很少在非必要的情況下使用引號括屬性名稱。事實上，慣例是避免不必要地加上引號，所以不建議不必要地包含它們。 |
 
-In this situation, where the property name and value expression identifier are identical, you can omit the property-name portion of the property definition, as a so-called "concise property" definition:
+在這種情況下，當屬性名稱和值表達式的識別字相同時，你可以省略屬性定義中的屬性名稱部分，這就是所謂的「簡寫屬性」定義：
 
 ```js
 coolFact = "the first person convicted of speeding was going 8 mph";
 
 anotherObj = {
-    coolFact   // <-- concise property short-hand
+    coolFact   // <-- 簡寫屬性
 };
 ```
 
-The property name is `"coolFact"` (string), and the value assigned to the property is what's in the `coolFact` variable at that moment: `"the first person convicted of speeding was going 8 mph"`.
+屬性名稱是 `"coolFact"`（字串），賦予屬性的值是此時 `coolFact` 變數中的內容：`"the first person convicted of speeding was going 8 mph"`。
 
-At first, this shorthand convenience may seem confusing. But as you get more familiar with seeing this very common and popular feature being used, you'll likely favor it for typing (and reading!) less.
+起初，這種簡寫便利可能看起來令人困惑。但隨著你越來越熟悉這個非常常見和流行的特性的使用，你可能會偏好它，因為可以少打（和少讀！）一些字。
 
-### Concise Methods
+### 簡寫方法
 
-Another similar shorthand is defining functions/methods in an object literal using a more concise form:
+另一種類似的簡寫是在物件字面量中使用更簡潔的形式定義函式/方法：
 
 ```js
 anotherObj = {
-    // standard function property
+    // 標準函式屬性
     greet: function() { console.log("Hello!"); },
 
-    // concise function/method property
+    // 簡寫函式/方法屬性
     greet2() { console.log("Hello, friend!"); }
 };
 ```
 
-While we're on the topic of concise method properties, we can also define generator functions (another ES6 feature):
+在討論簡寫方法屬性的同時，我們也可以定義產生器函式（另一個 ES6 特性）：
 
 ```js
 anotherObj = {
-    // instead of:
+    // 取代：
     //   greet3: function*() { yield "Hello, everyone!"; }
 
-    // concise generator method
+    // 簡寫產生器方法
     *greet3() { yield "Hello, everyone!"; }
 };
 ```
 
-And though it's not particularly common, concise methods/generators can even have quoted or computed names:
+雖然不是特別常見，簡寫方法/產生器甚至可以有帶引號或計算的名稱：
 
 ```js
 anotherObj = {
     "greet-4"() { console.log("Hello, audience!"); },
 
-    // concise computed name
+    // 簡寫計算名稱
     [ "gr" + "eet 5" ]() { console.log("Hello, audience!"); },
 
-    // concise computed generator name
+    // 簡寫計算產生器名稱
     *[ "ok, greet 6".toUpperCase() ]() { yield "Hello, audience!"; }
 };
 ```
 
-### Object Spread
+### 物件展開
 
-Another way to define properties at object literal creation time is with a form of the `...` syntax -- it's not technically an operator, but it certainly seems like one -- often referred to as "object spread".
+在物件字面量建立時定義屬性的另一種方式是使用 `...` 語法的一種形式——它在技術上不是運算子，但看起來確實像一個——通常被稱為「物件展開」。
 
-The `...` when used inside an object literal will "spread" out the contents (properties, aka key/value pairs) of another object value into the object being defined:
+當 `...` 在物件字面量內使用時，會將另一個物件值的內容（屬性，即鍵/值對）「展開」到正在定義的物件中：
 
 ```js
 anotherObj = {
     favoriteNumber: 12,
 
-    ...myObj,   // object spread, shallow copies `myObj`
+    ...myObj,   // 物件展開，淺複製 `myObj`
 
     greeting: "Hello!"
 }
 ```
 
-The spreading of `myObj`'s properties is shallow, in that it only copies the top-level properties from `myObj`; any values those properties hold are simply assigned over. If any of those values are references to other objects, the references themselves are assigned (by copy), but the underlying object values are *not* duplicated -- so you end up with multiple shared references to the same object(s).
+`myObj` 屬性的展開是淺層的，意味著它只複製 `myObj` 的頂層屬性；這些屬性持有的任何值都只是簡單地賦值過去。如果這些值中有任何是對其他物件的參照，那麼參照本身會被賦值（通過複製），但底層的物件值*不會*被複製——因此你最終會得到多個共享參照指向相同的物件。
 
-You can think of object spreading like a `for` loop that runs through the properties one at a time and does an `=` style assignment from the source object (`myObj`) to the target object (`anotherObj`).
+你可以把物件展開想像成一個 `for` 迴圈，逐一遍歷屬性，並從來源物件（`myObj`）到目標物件（`anotherObj`）進行 `=` 式的賦值。
 
-Also, consider these property definition operations to happen "in order", from top to bottom of the object literal. In the above snippet, since `myObj` has a `favoriteNumber` property, the object spread will end up overwriting the `favoriteNumber: 12` property assignment from the previous line. Moreover, if `myObj` had contained a `greeting` property that was copied over, the next line (`greeting: "Hello!"`) would override that property definition.
+另外，請將這些屬性定義操作視為從物件字面量的頂部到底部「按順序」發生。在上面的程式碼片段中，由於 `myObj` 有一個 `favoriteNumber` 屬性，物件展開最終會覆蓋前一行的 `favoriteNumber: 12` 屬性賦值。此外，如果 `myObj` 包含一個被複製過來的 `greeting` 屬性，下一行（`greeting: "Hello!"`）會覆蓋該屬性定義。
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Object spread also only copies *owned* properties (those directly on the object) that are *enumerable* (allowed to be enumerated/listed). It does not duplicate the property -- as in, actually mimic the property's exact characteristics -- but rather do a simple assignment style copy. We'll cover more such details in the "Property Descriptors" section of the next chapter. |
+| 物件展開也只複製*自有的*屬性（直接在物件上的）且是*可列舉的*（允許被列舉/列出的）。它不會複製屬性——也就是說，不會真正模仿屬性的確切特性——而是進行簡單的賦值式複製。我們將在下一章的「屬性描述器」章節中介紹更多此類細節。 |
 
-A common way `...` object spread is used is for performing *shallow* object duplication:
+`...` 物件展開的一個常見用法是執行*淺*物件複製：
 
 ```js
 myObjShallowCopy = { ...myObj };
 ```
 
-Keep in mind you cannot `...` spread into an existing object value; the `...` object spread syntax can only appear inside the `{ .. }` object literal, which is creating a new object value. To perform a similar shallow object copy but with APIs instead of syntax, see the "Object Entries" section later in this chapter (with coverage of `Object.entries(..)` and `Object.fromEntries(..)`).
+請記住，你不能將 `...` 展開到一個已存在的物件值中；`...` 物件展開語法只能出現在 `{ .. }` 物件字面量內，而物件字面量是在建立一個新物件值。要執行類似的淺物件複製但使用 API 而非語法，請參閱本章後面的「物件條目」章節（涵蓋 `Object.entries(..)` 和 `Object.fromEntries(..)`）。
 
-But if you instead want to copy object properties (shallowly) into an *existing* object, see the "Assigning Properties" section later in this chapter (with coverage of `Object.assign(..)`).
+但如果你想將物件屬性（淺層地）複製到一個*已存在的*物件中，請參閱本章後面的「賦值屬性」章節（涵蓋 `Object.assign(..)`）。
 
-### Deep Object Copy
+### 深層物件複製
 
-Also, since `...` doesn't do full, deep object duplication, the object spread is generally only suitable for duplicating objects that hold simple, primitive values only, not references to other objects.
+另外，由於 `...` 不進行完整的深層物件複製，物件展開通常只適合複製只包含簡單原始值的物件，而不是對其他物件的參照。
 
-Deep object duplication is an incredibly complex and nuanced operation. Duplicating a value like `42` is obvious and straightforward, but what does it mean to copy a function (which is a special kind of object, also held by reference), or to copy an external (not entirely in JS) object reference, such as a DOM element? And what happens if an object has circular references (like where a nested descendant object holds a reference back up to an outer ancestor object)? There's a variety of opinions in the wild about how all these corner cases should be handled, and thus no single standard exists for deep object duplication.
+深層物件複製是一個極其複雜和微妙的操作。複製像 `42` 這樣的值是明顯且直截了當的，但複製一個函式（它是一種特殊的物件，也是通過參照持有的）意味著什麼呢？或者複製一個外部（不完全在 JS 中的）物件參照，例如 DOM 元素？如果物件有循環參照（例如巢狀的後代物件持有一個指回外部祖先物件的參照）會怎樣？關於如何處理所有這些邊界情況，有各種各樣的意見，因此不存在單一的深層物件複製標準。
 
-For deep object duplication, the standard approaches have been:
+對於深層物件複製，標準方法一直是：
 
-1. Use a library utility that declares a specific opinion on how the duplication behaviors/nuances should be handled.
+1. 使用一個程式庫工具，它對複製行為/細微差別應如何處理有明確的主張。
 
-2. Use the `JSON.parse(JSON.stringify(..))` round-trip trick -- this only "works" correctly if there are no circular references, and if there are no values in the object that cannot be properly serialized with JSON (such as functions).
+2. 使用 `JSON.parse(JSON.stringify(..))` 往返技巧——這只在沒有循環參照，且物件中沒有無法用 JSON 正確序列化的值（如函式）時才能「正確」運作。
 
-Recently, though, a third option has landed. This is not a JS feature, but rather a companion API provided to JS by environments like the web platform. Objects can be deep copied now using `structuredClone(..)`[^structuredClone].
+不過最近，第三個選項出現了。這不是一個 JS 特性，而是由 Web 平台等環境提供給 JS 的配套 API。現在可以使用 `structuredClone(..)`[^structuredClone] 來深層複製物件。
 
 ```js
 myObjCopy = structuredClone(myObj);
 ```
 
-The underlying algorithm behind this built-in utility supports duplicating circular references, as well as **many more** types of values than the `JSON` round-trip trick. However, this algorithm still has its limits, including no support for cloning functions or DOM elements.
+這個內建工具背後的底層演算法支援複製循環參照，以及比 `JSON` 往返技巧**多得多**的值型別。然而，這個演算法仍然有其限制，包括不支援複製函式或 DOM 元素。
 
-## Accessing Properties
+## 存取屬性
 
-Property access of an existing object is preferably done with the `.` operator:
+對現有物件的屬性存取最好使用 `.` 運算子：
 
 ```js
 myObj.favoriteNumber;    // 42
 myObj.isDeveloper;       // true
 ```
 
-If it's possible to access a property this way, it's strongly suggested to do so.
+如果可以用這種方式存取屬性，強烈建議這樣做。
 
-If the property name contains characters that cannot appear in identifiers, such as leading numbers or whitespace, `[ .. ]` brackets can be used instead of the `.`:
+如果屬性名稱包含不能出現在識別字中的字元，例如前導數字或空白，可以使用 `[ .. ]` 括號代替 `.`：
 
 ```js
 myObj["2 nicknames"];    // [ "getify", "ydkjs" ]
@@ -331,16 +331,16 @@ anotherObj[42];          // "<-- this property name will..."
 anotherObj["41"];        // "<-- this property name will..."
 ```
 
-Even though numeric property "names" remain as numbers, property access via the `[ .. ]` brackets will coerce a string representation to a number (e.g., `"42"` as the `42` numeric equivalent), and then access the associated numeric property accordingly.
+即使數字屬性「名稱」保持為數字，透過 `[ .. ]` 括號的屬性存取也會將字串表示強制轉型為數字（例如，`"42"` 作為 `42` 的數字等價物），然後相應地存取關聯的數字屬性。
 
-Similar to the object literal, the property name to access can be computed via the `[ .. ]` brackets. The expression can be a simple identifier:
+與物件字面量類似，要存取的屬性名稱可以透過 `[ .. ]` 括號計算。表達式可以是一個簡單的識別字：
 
 ```js
 propName = "41";
 anotherObj[propName];
 ```
 
-Actually, what you put between the `[ .. ]` brackets can be any arbitrary JS expression, not just identifiers or literal values like `42` or `"isDeveloper"`. JS will first evaluate the expression, and the resulting value will then be used as the property name to look up on the object:
+實際上，你放在 `[ .. ]` 括號之間的可以是任何任意的 JS 表達式，不僅僅是識別字或像 `42` 或 `"isDeveloper"` 這樣的字面量值。JS 會先求值表達式，然後將結果值用作在物件上查找的屬性名稱：
 
 ```js
 function howMany(x) {
@@ -350,11 +350,11 @@ function howMany(x) {
 myObj[`${ howMany(1) } nicknames`];   // [ "getify", "ydkjs" ]
 ```
 
-In this snippet, the expression is a back-tick delimited `` `template string literal` `` with an interpolated expression of the function call `howMany(1)`. The overall result of that expression is the string value `"2 nicknames"`, which is then used as the property name to access.
+在這個程式碼片段中，表達式是一個反引號界定的 `` `樣板字串字面量` ``，其中有一個內插表達式為函式呼叫 `howMany(1)`。該表達式的整體結果是字串值 `"2 nicknames"`，然後用作存取的屬性名稱。
 
-### Object Entries
+### 物件條目
 
-You can get a listing of the properties in an object, as an array of tuples (two-element sub-arrays) holding the property name and value:
+你可以獲取物件中屬性的列表，作為元組（兩個元素的子陣列）的陣列，其中包含屬性名稱和值：
 
 ```js
 myObj = {
@@ -367,24 +367,24 @@ Object.entries(myObj);
 // [ ["favoriteNumber",42], ["isDeveloper",true], ["firstName","Kyle"] ]
 ```
 
-Added in ES6, `Object.entries(..)` retrieves this list of entries -- containing only owned an enumerable properties; see the "Property Descriptors" section in the next chapter -- from a source object.
+在 ES6 中新增的 `Object.entries(..)` 從來源物件檢索這個條目列表——僅包含自有且可列舉的屬性；參見下一章的「屬性描述器」章節。
 
-Such a list can be looped/iterated over, potentially assigning properties to another existing object. However, it's also possible to create a new object from a list of entries, using `Object.fromEntries(..)` (added in ES2019):
+這樣的列表可以被迴圈/迭代，潛在地將屬性賦值到另一個已存在的物件。然而，也可以使用 `Object.fromEntries(..)` （在 ES2019 中新增）從條目列表建立一個新物件：
 
 ```js
 myObjShallowCopy = Object.fromEntries( Object.entries(myObj) );
 
-// alternate approach to the earlier discussed:
+// 替代前面討論的方法：
 // myObjShallowCopy = { ...myObj };
 ```
 
-### Destructuring
+### 解構
 
-Another approach to accessing properties is through object destructuring (added in ES6). Think of destructuring as defining a "pattern" that describes what an object value is supposed to "look like" (structurally), and then asking JS to follow that "pattern" to systematically access the contents of an object value.
+存取屬性的另一種方式是透過物件解構（在 ES6 中新增）。將解構想像成定義一個「模式」，描述物件值應該「看起來像」什麼（結構上），然後要求 JS 遵循該「模式」來系統地存取物件值的內容。
 
-The end result of object destructuring is not another object, but rather one or more assignments to other targets (variables, etc) of the values from the source object.
+物件解構的最終結果不是另一個物件，而是將來源物件中的值賦值到其他目標（變數等）的一個或多個賦值操作。
 
-Imagine this sort of pre-ES6 code:
+想像這種 ES6 之前的程式碼：
 
 ```js
 myObj = {
@@ -403,7 +403,7 @@ const lname = (
 );
 ```
 
-Those accesses of the property values, and assignments to other identifiers, is generally called "manual destructuring". To use the declarative object destructuring syntax, it might look like this:
+這些對屬性值的存取和賦值到其他識別字，通常被稱為「手動解構」。要使用宣告式的物件解構語法，它可能看起來像這樣：
 
 ```js
 myObj = {
@@ -425,87 +425,87 @@ firstName;        // "Kyle"
 lname;            // "--missing--"
 ```
 
-As shown, the `{ .. }` object destucturing resembles an object literal value definition, but it appears on the left-hand side of the `=` operator rather than on the right-hand side where an object value expression would appear. That makes the `{ .. }` on the left-hand side a destructuring pattern rather than another object definition.
+如上所示，`{ .. }` 物件解構類似於物件字面量值的定義，但它出現在 `=` 運算子的左側，而不是右側（物件值表達式出現的位置）。這使得左側的 `{ .. }` 成為解構模式而非另一個物件定義。
 
-The `{ favoriteNumber } = myObj` destructuring tells JS to find a property named `favoriteNumber` on the object, and to assign its value to an identifier of the same name. The single instance of the `favoriteNumber` identifier in the pattern is similar to "concise properties" as discussed earlier in this chapter: if the source (property name) and target (identifier) are the same, you can omit one of them and only list it once.
+`{ favoriteNumber } = myObj` 解構告訴 JS 在物件上找到名為 `favoriteNumber` 的屬性，並將其值賦給同名的識別字。模式中 `favoriteNumber` 識別字的單一實例類似於本章前面討論的「簡寫屬性」：如果來源（屬性名稱）和目標（識別字）相同，你可以省略其中一個，只列出一次。
 
-The `= 12` part tells JS to provide `12` as a default value for the assignment to `favoriteNumber`, if the source object either doesn't have a `favoriteNumber` property, or if the property holds an `undefined` value.
+`= 12` 部分告訴 JS，如果來源物件沒有 `favoriteNumber` 屬性，或者該屬性持有 `undefined` 值，則為 `favoriteNumber` 的賦值提供 `12` 作為預設值。
 
-In the second destructuring pattern, the `isDeveloper: isDev` pattern is instructing JS to find a property named `isDeveloper` on the source object, and assign its value to an identifier named `isDev`. It's sort of a "renaming" of the source to the target. By contrast, `firstName: firstName` is providing the source and target for an assignment, but is redundant since they're identical; a single `firstName` would have sufficed here, and is generally more preferred.
+在第二個解構模式中，`isDeveloper: isDev` 模式指示 JS 在來源物件上找到名為 `isDeveloper` 的屬性，並將其值賦給名為 `isDev` 的識別字。這是一種從來源到目標的「重新命名」。相比之下，`firstName: firstName` 提供了賦值的來源和目標，但是多餘的，因為它們是相同的；這裡只用一個 `firstName` 就足夠了，通常更受偏好。
 
-The `lastName: lname = "--missing--"` combines both source-target renaming and a default value (if the `lastName` source property is missing or `undefined`).
+`lastName: lname = "--missing--"` 結合了來源-目標重新命名和預設值（如果 `lastName` 來源屬性不存在或為 `undefined`）。
 
-The above snippet combines object destructuring with variable declarations -- in this example, `const` is used, but `var` and `let` work as well -- but it's not inherently a declaration mechanism. Destructuring is about access and assignment (source to target), so it can operate against existing targets rather than declaring new ones:
+上面的程式碼片段將物件解構與變數宣告結合——在這個例子中使用了 `const`，但 `var` 和 `let` 也可以——但它本質上不是一個宣告機制。解構是關於存取和賦值（從來源到目標），所以它也可以對已存在的目標操作，而不是宣告新的：
 
 ```js
 let fave;
 
-// surrounding ( ) are required syntax here,
-// when a declarator is not used
+// 這裡需要外圍的 ( )，
+// 當不使用宣告子時
 ({ favoriteNumber: fave } = myObj);
 
 fave;  // 42
 ```
 
-Object destructuring syntax is generally preferred for its declarative and more readable style, over the heavily imperative pre-ES6 equivalents. But don't go overboard with destructuring. Sometimes just doing `x = someObj.x` is perfectly fine!
+物件解構語法通常因其宣告式和更可讀的風格而受到偏好，優於 ES6 之前大量命令式的等價寫法。但不要過度使用解構。有時候只寫 `x = someObj.x` 就完全可以了！
 
-### Conditional Property Access
+### 條件屬性存取
 
-Recently (in ES2020), a feature known as "optional chaining" was added to JS, which augments property access capabilities (especially nested property access). The primary form is the two-character compound operator `?.`, like `A?.B`.
+最近（在 ES2020 中），一個名為「可選鏈」的特性被加入到 JS 中，它增強了屬性存取能力（特別是巢狀屬性存取）。主要形式是兩個字元的複合運算子 `?.`，如 `A?.B`。
 
-This operator will check the left-hand side reference (`A`) to see if it's null'ish (`null` or `undefined`). If so, the rest of the property access expression is short-circuited (skipped), and `undefined` is returned as the result (even if it was `null` that was actually encountered!). Otherwise, `?.` will access the property just as a normal `.` operator would.
+這個運算子會檢查左側的參照（`A`）是否為空值（`null` 或 `undefined`）。如果是，則屬性存取表達式的其餘部分會被短路（跳過），並且回傳 `undefined` 作為結果（即使實際遇到的是 `null`！）。否則，`?.` 會像正常的 `.` 運算子一樣存取屬性。
 
-For example:
+例如：
 
 ```js
 myObj?.favoriteNumber
 ```
 
-Here, the null'ish check is performed against the `myObj`, meaning that the `favoriteNumber` property access is only performed if the value in `myObj` is non-null'ish. Note that it doesn't verify that `myObj` is actually holding a real object, only that it's non-nullish. However, all non-nullish values can "safely" (no JS exception) be "accessed" via the `.` operator, even if there's no matching property to retrieve.
+這裡，空值檢查是對 `myObj` 執行的，意味著 `favoriteNumber` 屬性存取只在 `myObj` 中的值為非空值時才會執行。注意它不會驗證 `myObj` 是否真的持有一個真正的物件，只是它是非空值的。然而，所有非空值的值都可以透過 `.` 運算子「安全地」（不會拋出 JS 例外）被「存取」，即使沒有匹配的屬性可以檢索。
 
-It's easy to get confused into thinking that the null'ish check is against the `favoriteNumber` property. But one way to keep it straight is to remember that the `?` is on the side where the safety check is performed, while the `.` is on the side that is only conditionally evaluated if the non-null'ish check passes.
+很容易搞混，以為空值檢查是對 `favoriteNumber` 屬性進行的。但記住這一點的一種方式是：`?` 在進行安全檢查的那一側，而 `.` 在只有當非空值檢查通過時才會條件性求值的那一側。
 
-Typically, the `?.` operator is used in nested property accesses that may be 3 or more levels deep, such as:
+通常，`?.` 運算子用於可能有 3 層或更深的巢狀屬性存取中，例如：
 
 ```js
 myObj?.address?.city
 ```
 
-The equivalent operation with the `?.` operator would look like this:
+使用 `?.` 運算子的等價操作看起來像這樣：
 
 ```js
 (myObj != null && myObj.address != null) ? myObj.address.city : undefined
 ```
 
-Again, remember that no check has been performed against the right-most property (`city`) here.
+再次記住，這裡沒有對最右側的屬性（`city`）進行檢查。
 
-Also, the `?.` should not universally be used in place of every single `.` operator in your programs. You should endeavor to know if a `.` property access will succeed or not before making the access, whenever possible. Use `?.` only when the nature of the values being accessed is subject to conditions that cannot be predicted/controlled.
+另外，`?.` 不應該被普遍地用來取代程式中每一個 `.` 運算子。你應該盡可能在進行存取之前就知道 `.` 屬性存取是否會成功。只在被存取的值的性質受到無法預測/控制的條件影響時才使用 `?.`。
 
-For example, in the previous snippet, the `myObj?.` usage is probably mis-guided, because it really shouldn't be the case that you start a chain of property access against a variable that might not even hold a top-level object (aside from its contents potentially missing certain properties in certain conditions).
+例如，在前面的程式碼片段中，`myObj?.` 的用法可能是不恰當的，因為情況確實不應該是你在一個可能連頂層物件都沒有的變數上開始一連串屬性存取（撇開其內容在某些條件下可能缺少某些屬性不談）。
 
-Instead, I would recommend usage more like this:
+相反，我會建議更像這樣的用法：
 
 ```js
 myObj.address?.city
 ```
 
-And that expression should only be used in part of your program where you're sure that `myObj` is at least holding a valid object (whether or not it has an `address` property with a sub-object in it).
+而且這個表達式只應該在你確定 `myObj` 至少持有一個有效物件（不管它是否有一個帶有子物件的 `address` 屬性）的程式部分中使用。
 
-Another form of the "optional chaining" operator is `?.[`, which is used when the property access you want to make conditional/safe requires a `[ .. ]` bracket.
+「可選鏈」運算子的另一種形式是 `?.[`，當你想要進行條件/安全的屬性存取需要使用 `[ .. ]` 括號時使用。
 
 ```js
 myObj["2 nicknames"]?.[0];   // "getify"
 ```
 
-Everything asserted about how `?.` behaves goes the same for `?.[`.
+關於 `?.` 行為的所有說明同樣適用於 `?.[`。
 
-| WARNING: |
+| 警告： |
 | :--- |
-| There's a third form of this feature, named "optional call", which uses `?.(` as the operator. It's used for performing a non-null'ish check on a property before executing the function value in the property. For example, instead of `myObj.someFunc(42)`, you can do `myObj.someFunc?.(42)`. The `?.(` checks to make sure `myObj.someFunc` is non-null'ish before invoking it (with the `(42)` part). While that may sound like a useful feature, I think this is dangerous enough to warrant complete avoidance of this form/construct.<br><br>My concern is that `?.(` makes it seem as if we're ensuring that the function is "callable" before calling it, when in fact we're only checking if it's non-null'ish. Unlike `?.` which can allow a "safe" `.` access against a non-null'ish value that's also not an object, the `?.(` non-null'ish check isn't similarly "safe". If the property in question has any non-null'ish, non-function value in it, like `true` or `"Hello"`, the `(42)` call part will be invoked and yet throw a JS exception. So in other words, this form is unfortunately masquerading as more "safe" than it actually is, and should thus be avoided in essentially all circumstances. If a property value can ever *not be* a function, do a more fullsome check for its function'ness before trying to invoke it. Don't pretend that `?.(` is doing that for you, or future readers/maintainers of your code (including your future self!) will likely regret it. |
+| 這個特性有第三種形式，稱為「可選呼叫」，使用 `?.(` 作為運算子。它用於在執行屬性中的函式值之前，對屬性進行非空值檢查。例如，不使用 `myObj.someFunc(42)`，你可以使用 `myObj.someFunc?.(42)`。`?.(` 會在呼叫 `myObj.someFunc` 之前（用 `(42)` 部分）檢查它是否為非空值。雖然這聽起來可能是一個有用的特性，但我認為它夠危險，值得完全避免使用這種形式/結構。<br><br>我的擔憂是，`?.(` 讓人覺得我們在確保函式在呼叫之前是「可呼叫的」，但實際上我們只是在檢查它是否為非空值。不像 `?.` 可以允許對一個既不是空值也不是物件的值進行「安全的」`.` 存取，`?.(` 的非空值檢查並不同樣「安全」。如果該屬性中有任何非空值、非函式的值，如 `true` 或 `"Hello"`，`(42)` 呼叫部分將被調用但會拋出 JS 例外。所以換句話說，這種形式不幸地偽裝成比它實際上更「安全」，因此在基本上所有情況下都應該避免使用。如果一個屬性值可能*不是*函式，在嘗試調用之前進行更充分的函式性檢查。不要假裝 `?.(` 在為你做這件事，否則你程式碼的未來讀者/維護者（包括你未來的自己！）可能會後悔。 |
 
-### Accessing Properties On Non-Objects
+### 在非物件上存取屬性
 
-This may sound counter-intuitive, but you can generally access properties/methods from values that aren't themselves objects:
+這聽起來可能違反直覺，但你通常可以從不是物件的值上存取屬性/方法：
 
 ```js
 fave = 42;
@@ -514,39 +514,38 @@ fave;              // 42
 fave.toString();   // "42"
 ```
 
-Here, `fave` holds a primitive `42` number value. So how can we do `.toString` to access a property from it, and then `()` to invoke the function held in that property?
+這裡，`fave` 持有一個原始的 `42` 數值。那麼我們如何能對它進行 `.toString` 來存取屬性，然後用 `()` 來調用持有在該屬性中的函式呢？
 
-This is a tremendously more indepth topic than we'll get into in this book; see book 4, "Types & Grammar", of this series for more. However, as a quick glimpse: if you perform a property access (`.` or `[ .. ]`) against a non-object, non-null'ish value, JS will by default (temporarily!) coerce the value into an object-wrapped representation, allowing the property access against that implicitly instantiated object.
+這是一個比我們在本書中將要深入討論的更加深入的主題；參見本系列的第四本書《型別與文法》以了解更多。然而，作為一個快速瞥見：如果你對一個非物件、非空值的值執行屬性存取（`.` 或 `[ .. ]`），JS 會預設地（暫時地！）將該值強制轉型為一個物件包裝的表示，允許對那個隱式實例化的物件進行屬性存取。
 
-This process is typically called "boxing", as in putting a value inside a "box" (object container).
+這個過程通常被稱為「裝箱」，就像將一個值放進一個「箱子」（物件容器）中一樣。
 
-So in the above snippet, just for the moment that `.toString` is being accessed on the `42` value, JS will box this value into a `Number` object, and then perform the property access.
+所以在上面的程式碼片段中，只在 `.toString` 被存取 `42` 值的那一刻，JS 會將這個值裝箱為一個 `Number` 物件，然後執行屬性存取。
 
-Note that `null` and `undefined` can be object-ified, by calling `Object(null)` / `Object(undefined)`. However, JS does not automatically box these null'ish values, so property access against them will fail (as discussed earlier in the "Conditional Property Access" section).
+注意 `null` 和 `undefined` 可以被物件化，通過呼叫 `Object(null)` / `Object(undefined)`。然而，JS 不會自動裝箱這些空值，所以對它們的屬性存取會失敗（如前面在「條件屬性存取」章節中討論的）。
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Boxing has a counterpart: unboxing. For example, the JS engine will take an object wrapper -- like a `Number` object wrapped around `42` -- created with `Number(42)` or `Object(42)` -- and unwrap it to retrieve the underlying primitive `42`, whenever a mathematical operation (like `*` or `-`) encounters such an object. Unboxing behavior is way out of scope for our discussion, but is covered fully in the aforementioned "Types & Grammar" title. |
+| 裝箱有一個對應物：拆箱。例如，JS 引擎會取一個物件包裝器——像是用 `Number(42)` 或 `Object(42)` 建立的包裝 `42` 的 `Number` 物件——並解開它以取回底層的原始值 `42`，每當遇到數學運算（如 `*` 或 `-`）時會這樣做。拆箱行為超出了我們討論的範圍，但在前述的《型別與文法》書中有完整介紹。 |
 
-## Assigning Properties
+## 賦值屬性
 
-Whether a property is defined at the time of object literal definition, or added later, the assignment of a property value is done with the `=` operator, as any other normal assignment would be:
+無論屬性是在物件字面量定義時定義的，還是稍後新增的，屬性值的賦值都是使用 `=` 運算子完成的，就像任何其他正常的賦值一樣：
 
 ```js
 myObj.favoriteNumber = 123;
 ```
 
-If the `favoriteNumber` property doesn't already exist, that statement will create a new property of that name and assign its value. But if it already exists, that statement will re-assign its value.
+如果 `favoriteNumber` 屬性尚不存在，該語句會建立一個同名的新屬性並賦值。但如果它已經存在，該語句會重新賦值。
 
-| WARNING: |
+| 警告： |
 | :--- |
-| An `=` assignment to a property may fail (silently or throwing an exception), or it may not directly assign the value but instead invoke a *setter* function that performs some operation(s). More details on these behaviors in the next chapter. |
+| 對屬性的 `=` 賦值可能會失敗（靜默地或拋出例外），或者它可能不會直接賦值而是調用一個執行某些操作的 *setter* 函式。更多關於這些行為的細節在下一章。 |
 
-It's also possible to assign one or more properties at once -- assuming the source properties (name and value pairs) are in another object -- using the `Object.assign(..)` (added in ES6) method:
+也可以一次賦值一個或多個屬性——假設來源屬性（名稱和值對）在另一個物件中——使用 `Object.assign(..)` （在 ES6 中新增）方法：
 
 ```js
-// shallow copy all (owned and enumerable) properties
-// from `myObj` into `anotherObj`
+// 從 `myObj` 淺複製所有（自有且可列舉的）屬性到 `anotherObj`
 Object.assign(anotherObj,myObj);
 
 Object.assign(
@@ -561,11 +560,11 @@ Object.assign(
 );
 ```
 
-`Object.assign(..)` takes the first object as target, and the second (and optionally subsequent) object(s) as source(s). Copying is done in the same manner as described earlier in the "Object Spread" section.
+`Object.assign(..)` 將第一個物件作為目標，第二個（以及可選的後續）物件作為來源。複製方式與前面在「物件展開」章節中描述的相同。
 
-## Deleting Properties
+## 刪除屬性
 
-Once a property is defined on an object, the only way to remove it is with the `delete` operator:
+一旦在物件上定義了屬性，移除它的唯一方法是使用 `delete` 運算子：
 
 ```js
 anotherObj = {
@@ -579,15 +578,15 @@ delete anotherObj.counter;
 anotherObj.counter;   // undefined
 ```
 
-Contrary to common misconception, the JS `delete` operator does **not** directly do any deallocation/freeing up of memory, through garbage collection (GC). The only thing it does is remove a property from an object. If the value in the property was a reference (to another object/etc), and there are no other surviving references to that value once the property is removed, that value would likely then be eligible for removal in a future sweep of the GC.
+與常見的誤解相反，JS 的 `delete` 運算子**不會**直接通過垃圾回收（GC）進行任何記憶體的釋放/回收。它唯一做的事情就是從物件中移除屬性。如果屬性中的值是一個參照（指向另一個物件等），並且在屬性被移除後沒有其他存活的參照指向該值，那麼該值在未來的 GC 清掃中可能會有資格被移除。
 
-Calling `delete` on anything other than an object property is a misuse of the `delete` operator, and will either fail silently (in non-strict mode) or throw an exception (in strict mode).
+在物件屬性以外的任何東西上呼叫 `delete` 是對 `delete` 運算子的誤用，會在非嚴格模式下靜默失敗，或在嚴格模式下拋出例外。
 
-Deleting a property from an object is distinct from assigning it a value like `undefined` or `null`. A property assigned `undefined`, either initially or later, is still present on the object, and might still be revealed when enumerating the contents
+從物件中刪除屬性與賦值 `undefined` 或 `null` 是不同的。被賦值為 `undefined` 的屬性，不管是初始的還是稍後的，仍然存在於物件上，並且在列舉內容時可能仍然會被揭示。
 
-## Determining Container Contents
+## 判斷容器內容
 
-You can determine an object's contents in a variety of ways. To ask an object if it has a specific property:
+你可以用多種方式判斷物件的內容。要詢問物件是否有特定的屬性：
 
 ```js
 myObj = {
@@ -609,26 +608,26 @@ delete myObj.nicknames;
 myObj.hasOwnProperty("nicknames");    // false
 ```
 
-There *is* an important difference between how the `in` operator and the `hasOwnProperty(..)` method behave. The `in` operator will check not only the target object specified, but if not found there, it will also consult the object's `[[Prototype]]` chain (covered in the next chapter). By contrast, `hasOwnProperty(..)` only consults the target object.
+`in` 運算子和 `hasOwnProperty(..)` 方法之間*有*一個重要的區別。`in` 運算子不僅會檢查指定的目標物件，如果在那裡找不到，還會查詢物件的 `[[Prototype]]` 鏈（在下一章介紹）。相比之下，`hasOwnProperty(..)` 只查詢目標物件。
 
-If you're paying close attention, you may have noticed that `myObj` appears to have a method property called `hasOwnProperty(..)` on it, even though we didn't define such. That's because `hasOwnProperty(..)` is defined as a built-in on `Object.prototype`, which by default is "inherited by" all normal objects. There is risk inherent to accessing such an "inherited" method, though. Again, more on prototypes in the next chapter.
+如果你仔細觀察，你可能注意到 `myObj` 看起來有一個名為 `hasOwnProperty(..)` 的方法屬性，即使我們沒有定義它。那是因為 `hasOwnProperty(..)` 被定義為 `Object.prototype` 上的內建方法，預設情況下被所有正常物件「繼承」。然而，存取這樣一個「繼承」的方法有固有的風險。再次，更多關於原型的內容在下一章。
 
-### Better Existence Check
+### 更好的存在性檢查
 
-ES2022 (almost official at time of writing) has already settled on a new feature, `Object.hasOwn(..)`. It does essentially the same thing as `hasOwnProperty(..)`, but it's invoked as a static helper external to the object value instead of via the object's `[[Prototype]]`, making it safer and more consistent in usage:
+ES2022（在撰寫時幾乎已正式通過）已經確定了一個新特性，`Object.hasOwn(..)`。它基本上做與 `hasOwnProperty(..)` 相同的事情，但它是作為一個外部於物件值的靜態輔助方法調用的，而不是透過物件的 `[[Prototype]]`，使其更安全且使用更一致：
 
 ```js
-// instead of:
+// 取代：
 myObj.hasOwnProperty("favoriteNumber")
 
-// we should now prefer:
+// 我們現在應該偏好：
 Object.hasOwn(myObj,"favoriteNumber")
 ```
 
-Even though (at time of writing) this feature is just now emerging in JS, there are polyfills that make this API available in your programs even when running in a previous JS environment that doesn't yet have the feature defined. For example, a quick stand-in polyfill sketch:
+即使（在撰寫時）這個特性剛剛在 JS 中出現，也有 polyfill 可以讓你在運行於尚未具有該特性的先前 JS 環境中使用此 API。例如，一個快速的替代 polyfill 草稿：
 
 ```js
-// simple polyfill sketch for `Object.hasOwn(..)`
+// Object.hasOwn(..) 的簡單 polyfill 草稿
 if (!Object.hasOwn) {
     Object.hasOwn = function hasOwn(obj,propName) {
         return Object.prototype.hasOwnProperty.call(obj,propName);
@@ -636,49 +635,47 @@ if (!Object.hasOwn) {
 }
 ```
 
-Including a polyfill patch such as that in your program means you can safely start using `Object.hasOwn(..)` for property existence checks no matter whether a JS environment has `Object.hasOwn(..)` built in yet or not.
+在你的程式中包含這樣的 polyfill 補丁意味著你可以安全地開始使用 `Object.hasOwn(..)` 進行屬性存在性檢查，無論 JS 環境是否已經內建了 `Object.hasOwn(..)`。
 
-### Listing All Container Contents
+### 列出所有容器內容
 
-We already discussed the `Object.entries(..)` API earlier, which tells us what properties an object has (as long as they're enumerable -- more in the next chapter).
+我們已經在前面討論了 `Object.entries(..)` API，它告訴我們物件有哪些屬性（只要它們是可列舉的——更多內容在下一章）。
 
-There's a variety of other mechanisms available, as well. `Object.keys(..)` gives us list of the enumerable property names (aka, keys) in an object -- names only, no values; `Object.values(..)` instead gives us list of all values held in enumerable properties.
+還有各種其他可用的機制。`Object.keys(..)` 給我們物件中可列舉屬性名稱（又稱鍵）的列表——只有名稱，沒有值；`Object.values(..)` 則給我們可列舉屬性中持有的所有值的列表。
 
-But what if we wanted to get *all* the keys in an object (enumerable or not)? `Object.getOwnPropertyNames(..)` seems to do what we want, in that it's like `Object.keys(..)` but also returns non-enumerable property names. However, this list **will not** include any Symbol property names, as those are treated as special locations on the object. `Object.getOwnPropertySymbols(..)` returns all of an object's Symbol properties. So if you concatenate both of those lists together, you'd have all the direct (*owned*) contents of an object.
+但如果我們想獲取物件中*所有*的鍵（不管是否可列舉）呢？`Object.getOwnPropertyNames(..)` 似乎做了我們想要的，它像 `Object.keys(..)` 但也回傳不可列舉的屬性名稱。然而，這個列表**不會**包含任何 Symbol 屬性名稱，因為它們被視為物件上的特殊位置。`Object.getOwnPropertySymbols(..)` 回傳物件的所有 Symbol 屬性。所以如果你把這兩個列表串接在一起，你就會得到物件的所有直接（*自有的*）內容。
 
-Yet as we've implied several times already, and will cover in full detail in the next chapter, an object can also "inherit" contents from its `[[Prototype]]` chain. These are not considered *owned* contents, so they won't show up in any of these lists.
+然而，正如我們已經暗示了好幾次，並將在下一章中完整介紹的，物件也可以從其 `[[Prototype]]` 鏈「繼承」內容。這些不被認為是*自有的*內容，所以它們不會出現在任何這些列表中。
 
-Recall that the `in` operator will potentially traverse the entire chain looking for the existence of a property. Similarly, a `for..in` loop will traverse the chain and list any enumerable (owned or inherited) properties. But there's no built-in API that will traverse the whole chain and return a list of the combined set of both *owned* and *inherited* contents.
+回想一下，`in` 運算子會潛在地遍歷整個鏈來尋找屬性的存在。類似地，`for..in` 迴圈會遍歷鏈並列出任何可列舉的（自有的或繼承的）屬性。但沒有內建的 API 可以遍歷整個鏈並回傳*自有的*和*繼承的*內容的組合集合列表。
 
-## Temporary Containers
+## 暫時性容器
 
-Using a container to hold multiple values is sometimes just a temporary transport mechanism, such as when you want to pass multiple values to a function via a single argument, or when you want a function to return multiple values:
+使用容器來持有多個值有時只是一種暫時的傳輸機制，例如當你想透過單一引數將多個值傳遞給函式時，或者當你想讓函式回傳多個值時：
 
 ```js
 function formatValues({ one, two, three }) {
-    // the actual object passed in as an
-    // argument is not accessible, since
-    // we destructured it into three
-    // separate variables
+    // 作為引數傳入的實際物件是
+    // 不可存取的，因為我們將它
+    // 解構為三個獨立的變數
 
     one = one.toUpperCase();
     two = `--${two}--`;
     three = three.substring(0,5);
 
-    // this object is only to transport
-    // all three values in a single
-    // return statement
+    // 這個物件只是為了在
+    // 單一 return 語句中傳輸
+    // 所有三個值
     return { one, two, three };
 }
 
-// destructuring the return value from
-// the function, because that returned
-// object is just a temporary container
-// to transport us multiple values
+// 解構函式的回傳值，因為
+// 那個回傳的物件只是一個暫時的
+// 容器，用來傳輸多個值給我們
 const { one, two, three } =
 
-    // this object argument is a temporary
-    // transport for multiple input values
+    // 這個物件引數是一個暫時的
+    // 多個輸入值的傳輸工具
     formatValues({
        one: "Kyle",
        two: "Simpson",
@@ -690,20 +687,20 @@ two;     // "--Simpson--"
 three;   // "getif"
 ```
 
-The object literal passed into `formatValues(..)` is immediately parameter destructured, so inside the function we only deal with three separate variables (`one`, `two`, and `three`). The object literal `return`ed from the function is also immediately destructured, so again we only deal with three separate variables (`one`, `two`, `three`).
+傳入 `formatValues(..)` 的物件字面量立即被參數解構，所以在函式內部我們只處理三個獨立的變數（`one`、`two` 和 `three`）。從函式 `return` 的物件字面量也立即被解構，所以我們同樣只處理三個獨立的變數（`one`、`two`、`three`）。
 
-This snippet illustrates the idiom/pattern that an object is sometimes just a temporary transport container rather than a meaningful value in and of itself.
+這個程式碼片段說明了一個慣用法/模式：物件有時只是一個暫時的傳輸容器，而不是一個有意義的值本身。
 
-## Containers Are Collections Of Properties
+## 容器是屬性的集合
 
-The most common usage of objects is as containers for multiple values. We create and manage property container objects by:
+物件最常見的用法是作為多個值的容器。我們通過以下方式建立和管理屬性容器物件：
 
-* defining properties (named locations), either at object creation time or later
-* assigning values, either at object creation time or later
-* accessing values later, using the location names (property names)
-* deleting properties via `delete`
-* determining container contents with `in`, `hasOwnProperty(..)` / `hasOwn(..)`, `Object.entries(..)` / `Object.keys(..)`, etc
+* 定義屬性（命名位置），可以在物件建立時或稍後
+* 賦值，可以在物件建立時或稍後
+* 稍後存取值，使用位置名稱（屬性名稱）
+* 通過 `delete` 刪除屬性
+* 使用 `in`、`hasOwnProperty(..)` / `hasOwn(..)`、`Object.entries(..)` / `Object.keys(..)` 等來判斷容器內容
 
-But there's a lot more to objects than just static collections of property names and values. In the next chapter, we'll dive under the hood to look at how they actually work.
+但物件遠不只是靜態的屬性名稱和值的集合。在下一章中，我們將深入了解它們實際上是如何運作的。
 
 [^structuredClone]: "Structured Clone Algorithm", HTML Specification; https://html.spec.whatwg.org/multipage/structured-data.html#structured-cloning ; Accessed July 2022

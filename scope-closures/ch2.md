@@ -1,23 +1,23 @@
-# You Don't Know JS Yet: Scope & Closures - 2nd Edition
-# Chapter 2: Illustrating Lexical Scope
+# 你所不知道的 JS（進階篇）：作用域與閉包 - 第二版
+# 第二章：圖解詞法作用域
 
-In Chapter 1, we explored how scope is determined during code compilation, a model called "lexical scope." The term "lexical" refers to the first stage of compilation (lexing/parsing).
+在第一章中，我們探討了作用域如何在程式碼編譯期間被確定，這種模型被稱為「詞法作用域」。「詞法」一詞指的是編譯的第一個階段（語法分析／解析）。
 
-To properly *reason* about our programs, it's important to have a solid conceptual foundation of how scope works. If we rely on guesses and intuition, we may accidentally get the right answers some of the time, but many other times we're far off. This isn't a recipe for success.
+要正確地*推理*我們的程式，擁有作用域如何運作的堅實概念基礎是很重要的。如果我們依賴猜測和直覺，我們可能有時候碰巧得到正確答案，但很多其他時候我們會差很多。這不是成功的秘訣。
 
-Like way back in grade school math class, getting the right answer isn't enough if we don't show the correct steps to get there! We need to build accurate and helpful mental models as foundation moving forward.
+就像很久以前在小學數學課上一樣，得到正確答案是不夠的，如果我們不能展示正確的步驟！我們需要建立準確且有幫助的心智模型，作為繼續前進的基礎。
 
-This chapter will illustrate *scope* with several metaphors. The goal here is to *think* about how your program is handled by the JS engine in ways that more closely align with how the JS engine actually works.
+本章將用幾個隱喻來說明*作用域*。這裡的目標是以更接近 JS 引擎實際運作方式的思維來*思考*你的程式是如何被 JS 引擎處理的。
 
-## Marbles, and Buckets, and Bubbles... Oh My!
+## 彈珠、桶子與泡泡⋯⋯天啊！
 
-One metaphor I've found effective in understanding scope is sorting colored marbles into buckets of their matching color.
+我發現一個有效理解作用域的隱喻是將有顏色的彈珠分類放入相應顏色的桶子中。
 
-Imagine you come across a pile of marbles, and notice that all the marbles are colored red, blue, or green. Let's sort all the marbles, dropping the red ones into a red bucket, green into a green bucket, and blue into a blue bucket. After sorting, when you later need a green marble, you already know the green bucket is where to go to get it.
+想像你遇到一堆彈珠，注意到所有的彈珠都是紅色、藍色或綠色的。讓我們把所有的彈珠分類，紅色的放入紅色桶子，綠色的放入綠色桶子，藍色的放入藍色桶子。分類完之後，當你之後需要一顆綠色彈珠時，你已經知道要去綠色桶子找。
 
-In this metaphor, the marbles are the variables in our program. The buckets are scopes (functions and blocks), which we just conceptually assign individual colors for our discussion purposes. The color of each marble is thus determined by which *color* scope we find the marble originally created in.
+在這個隱喻中，彈珠是我們程式中的變數。桶子是作用域（函式和區塊），我們只是在概念上為討論目的給每個桶子分配了各自的顏色。因此，每顆彈珠的顏色取決於我們發現這顆彈珠原始建立在哪個*顏色*的作用域中。
 
-Let's annotate the running program example from Chapter 1 with scope color labels:
+讓我們用作用域顏色標籤來註解第一章的程式範例：
 
 ```js
 // outer/global scope: RED
@@ -45,72 +45,72 @@ var nextStudent = getStudentName(73);
 console.log(nextStudent);   // Suzy
 ```
 
-We've designated three scope colors with code comments: RED (outermost global scope), BLUE (scope of function `getStudentName(..)`), and GREEN (scope of/inside the `for` loop). But it still may be difficult to recognize the boundaries of these scope buckets when looking at a code listing.
+我們用程式碼註解指定了三個作用域顏色：RED（最外層全域作用域）、BLUE（函式 `getStudentName(..)` 的作用域）和 GREEN（`for` 迴圈的作用域）。但在查看程式碼清單時，可能仍然很難辨認這些作用域桶子的邊界。
 
-Figure 2 helps visualize the boundaries of the scopes by drawing colored bubbles (aka, buckets) around each:
+圖 2 透過在每個作用域周圍繪製有顏色的泡泡（也就是桶子）來幫助視覺化作用域的邊界：
 
 <figure>
     <img src="images/fig2.png" width="500" alt="Colored Scope Bubbles" align="center">
-    <figcaption><em>Fig. 2: Colored Scope Bubbles</em></figcaption>
+    <figcaption><em>圖 2：有顏色的作用域泡泡</em></figcaption>
 </figure>
 
-1. **Bubble 1** (RED) encompasses the global scope, which holds three identifiers/variables: `students` (line 1), `getStudentName` (line 8), and `nextStudent` (line 16).
+1. **泡泡 1**（RED）包含全域作用域，持有三個識別字／變數：`students`（第 1 行）、`getStudentName`（第 8 行）和 `nextStudent`（第 16 行）。
 
-2. **Bubble 2** (BLUE) encompasses the scope of the function `getStudentName(..)` (line 8), which holds just one identifier/variable: the parameter `studentID` (line 8).
+2. **泡泡 2**（BLUE）包含函式 `getStudentName(..)` 的作用域（第 8 行），只持有一個識別字／變數：參數 `studentID`（第 8 行）。
 
-3. **Bubble 3** (GREEN) encompasses the scope of the `for`-loop (line 9), which holds just one identifier/variable: `student` (line 9).
+3. **泡泡 3**（GREEN）包含 `for` 迴圈的作用域（第 9 行），只持有一個識別字／變數：`student`（第 9 行）。
 
-| NOTE: |
+| 注意： |
 | :--- |
-| Technically, the parameter `studentID` is not exactly in the BLUE(2) scope. We'll unwind that confusion in "Implied Scopes" in Appendix A. For now, it's close enough to label `studentID` a BLUE(2) marble. |
+| 技術上來說，參數 `studentID` 並不完全在 BLUE(2) 作用域中。我們將在附錄 A 的「隱含的作用域」中解開這個困惑。目前，將 `studentID` 標記為 BLUE(2) 彈珠已經足夠接近了。 |
 
-Scope bubbles are determined during compilation based on where the functions/blocks of scope are written, the nesting inside each other, and so on. Each scope bubble is entirely contained within its parent scope bubble—a scope is never partially in two different outer scopes.
+作用域泡泡是在編譯期間根據函式／區塊作用域的書寫位置、彼此之間的巢狀關係等來確定的。每個作用域泡泡完全被包含在其父作用域泡泡中——一個作用域永遠不會部分存在於兩個不同的外部作用域中。
 
-Each marble (variable/identifier) is colored based on which bubble (bucket) it's declared in, not the color of the scope it may be accessed from (e.g., `students` on line 9 and `studentID` on line 10).
+每顆彈珠（變數／識別字）的顏色取決於它被宣告在哪個泡泡（桶子）中，而不是它可能被存取時的作用域顏色（例如，第 9 行的 `students` 和第 10 行的 `studentID`）。
 
-| NOTE: |
+| 注意： |
 | :--- |
-| Remember we asserted in Chapter 1 that `id`, `name`, and `log` are all properties, not variables; in other words, they're not marbles in buckets, so they don't get colored based on any the rules we're discussing in this book. To understand how such property accesses are handled, see the third book in the series, *Objects & Classes*. |
+| 記住我們在第一章中斷言 `id`、`name` 和 `log` 都是屬性，不是變數；換句話說，它們不是桶子中的彈珠，所以它們不會根據我們在本書中討論的任何規則被著色。要了解這類屬性存取是如何處理的，請參閱本系列的第三本書《Objects & Classes》。 |
 
-As the JS engine processes a program (during compilation), and finds a declaration for a variable, it essentially asks, "Which *color* scope (bubble or bucket) am I currently in?" The variable is designated as that same *color*, meaning it belongs to that bucket/bubble.
+當 JS 引擎處理程式（在編譯期間）並找到一個變數的宣告時，它本質上會問：「我目前在哪個*顏色*的作用域（泡泡或桶子）中？」這個變數就被指定為相同的*顏色*，意味著它屬於那個桶子／泡泡。
 
-The GREEN(3) bucket is wholly nested inside of the BLUE(2) bucket, and similarly the BLUE(2) bucket is wholly nested inside the RED(1) bucket. Scopes can nest inside each other as shown, to any depth of nesting as your program needs.
+GREEN(3) 桶子完全巢狀在 BLUE(2) 桶子內部，同樣地 BLUE(2) 桶子完全巢狀在 RED(1) 桶子內部。作用域可以如圖所示彼此巢狀，巢狀深度可以根據你的程式需要而任意深。
 
-References (non-declarations) to variables/identifiers are allowed if there's a matching declaration either in the current scope, or any scope above/outside the current scope, but not with declarations from lower/nested scopes.
+變數／識別字的參考（非宣告）只有在當前作用域或當前作用域之上／之外的任何作用域中有匹配的宣告時才被允許，而不能來自較低／巢狀作用域的宣告。
 
-An expression in the RED(1) bucket only has access to RED(1) marbles, **not** BLUE(2) or GREEN(3). An expression in the BLUE(2) bucket can reference either BLUE(2) or RED(1) marbles, **not** GREEN(3). And an expression in the GREEN(3) bucket has access to RED(1), BLUE(2), and GREEN(3) marbles.
+RED(1) 桶子中的表達式只能存取 RED(1) 彈珠，**不能**存取 BLUE(2) 或 GREEN(3)。BLUE(2) 桶子中的表達式可以參考 BLUE(2) 或 RED(1) 彈珠，**不能**參考 GREEN(3)。GREEN(3) 桶子中的表達式可以存取 RED(1)、BLUE(2) 和 GREEN(3) 彈珠。
 
-We can conceptualize the process of determining these non-declaration marble colors during runtime as a lookup. Since the `students` variable reference in the `for`-loop statement on line 9 is not a declaration, it has no color. So we ask the current BLUE(2) scope bucket if it has a marble matching that name. Since it doesn't, the lookup continues with the next outer/containing scope: RED(1). The RED(1) bucket has a marble of the name `students`, so the loop-statement's `students` variable reference is determined to be a RED(1) marble.
+我們可以將在執行時期確定這些非宣告彈珠顏色的過程概念化為一個查找。由於第 9 行 `for` 迴圈陳述式中的 `students` 變數參考不是宣告，它沒有顏色。所以我們問當前的 BLUE(2) 作用域桶子是否有一個與該名稱匹配的彈珠。由於沒有，查找繼續到下一個外部／包含的作用域：RED(1)。RED(1) 桶子有一個名為 `students` 的彈珠，所以迴圈陳述式的 `students` 變數參考被確定為 RED(1) 彈珠。
 
-The `if (student.id == studentID)` statement on line 10 is similarly determined to reference a GREEN(3) marble named `student` and a BLUE(2) marble `studentID`.
+第 10 行的 `if (student.id == studentID)` 陳述式同樣被確定為參考一個名為 `student` 的 GREEN(3) 彈珠和一個名為 `studentID` 的 BLUE(2) 彈珠。
 
-| NOTE: |
+| 注意： |
 | :--- |
-| The JS engine doesn't generally determine these marble colors during runtime; the "lookup" here is a rhetorical device to help you understand the concepts. During compilation, most or all variable references will match already-known scope buckets, so their color is already determined, and stored with each marble reference to avoid unnecessary lookups as the program runs. More on this nuance in Chapter 3. |
+| JS 引擎通常不會在執行時期確定這些彈珠的顏色；這裡的「查找」是一種修辭手段，幫助你理解這些概念。在編譯期間，大多數或所有的變數參考都會與已知的作用域桶子匹配，所以它們的顏色已經確定了，並與每個彈珠參考一起存儲，以避免程式執行時不必要的查找。更多關於這個細微差別的內容在第三章。 |
 
-The key take-aways from marbles & buckets (and bubbles!):
+彈珠與桶子（以及泡泡！）的關鍵要點：
 
-* Variables are declared in specific scopes, which can be thought of as colored marbles from matching-color buckets.
+* 變數在特定的作用域中被宣告，可以被想像為來自匹配顏色桶子的有色彈珠。
 
-* Any variable reference that appears in the scope where it was declared, or appears in any deeper nested scopes, will be labeled a marble of that same color—unless an intervening scope "shadows" the variable declaration; see "Shadowing" in Chapter 3.
+* 任何出現在其宣告所在作用域中的變數參考，或出現在任何更深巢狀作用域中的變數參考，都會被標記為相同顏色的彈珠——除非一個中間作用域「遮蔽」了變數宣告；參見第三章的「遮蔽」。
 
-* The determination of colored buckets, and the marbles they contain, happens during compilation. This information is used for variable (marble color) "lookups" during code execution.
+* 有色桶子的確定及其包含的彈珠發生在編譯期間。這些資訊用於程式碼執行期間的變數（彈珠顏色）「查找」。
 
-## A Conversation Among Friends
+## 朋友之間的對話
 
-Another useful metaphor for the process of analyzing variables and the scopes they come from is to imagine various conversations that occur inside the engine as code is processed and then executed. We can "listen in" on these conversations to get a better conceptual foundation for how scopes work.
+另一個對分析變數及其所屬作用域有用的隱喻是想像引擎內部在處理和執行程式碼時發生的各種對話。我們可以「偷聽」這些對話，以獲得作用域如何運作的更好概念基礎。
 
-Let's now meet the members of the JS engine that will have conversations as they process our program:
+現在讓我們認識一下 JS 引擎的成員，他們將在處理我們的程式時進行對話：
 
-* *Engine*: responsible for start-to-finish compilation and execution of our JavaScript program.
+* *引擎（Engine）*：負責從頭到尾編譯和執行我們的 JavaScript 程式。
 
-* *Compiler*: one of *Engine*'s friends; handles all the dirty work of parsing and code-generation (see previous section).
+* *編譯器（Compiler）*：*引擎*的朋友之一；處理所有解析和程式碼產生的髒活（參見前面的章節）。
 
-* *Scope Manager*: another friend of *Engine*; collects and maintains a lookup list of all the declared variables/identifiers, and enforces a set of rules as to how these are accessible to currently executing code.
+* *作用域管理器（Scope Manager）*：*引擎*的另一個朋友；收集並維護所有已宣告變數／識別字的查找列表，並對當前正在執行的程式碼強制執行一組關於這些變數如何被存取的規則。
 
-For you to *fully understand* how JavaScript works, you need to begin to *think* like *Engine* (and friends) think, ask the questions they ask, and answer their questions likewise.
+要*完全理解* JavaScript 是如何運作的，你需要開始*像引擎*（和朋友們）那樣思考，問他們會問的問題，並同樣回答他們的問題。
 
-To explore these conversations, recall again our running program example:
+要探索這些對話，再次回想我們一直在用的程式範例：
 
 ```js
 var students = [
@@ -134,121 +134,121 @@ console.log(nextStudent);
 // Suzy
 ```
 
-Let's examine how JS is going to process that program, specifically starting with the first statement. The array and its contents are just basic JS value literals (and thus unaffected by any scoping concerns), so our focus here will be on the `var students = [ .. ]` declaration and initialization-assignment parts.
+讓我們來看看 JS 將如何處理這個程式，具體從第一個陳述式開始。陣列及其內容只是基本的 JS 值字面量（因此不受任何作用域問題的影響），所以我們在這裡的重點將放在 `var students = [ .. ]` 宣告和初始化賦值部分。
 
-We typically think of that as a single statement, but that's not how our friend *Engine* sees it. In fact, JS treats these as two distinct operations, one which *Compiler* will handle during compilation, and the other which *Engine* will handle during execution.
+我們通常認為那是一個單一的陳述式，但我們的朋友*引擎*不是這麼看的。事實上，JS 將它們視為兩個不同的操作，一個由*編譯器*在編譯期間處理，另一個由*引擎*在執行期間處理。
 
-The first thing *Compiler* will do with this program is perform lexing to break it down into tokens, which it will then parse into a tree (AST).
+*編譯器*對這個程式做的第一件事是執行語法分析，將其拆解為標記，然後將其解析為語法樹（AST）。
 
-Once *Compiler* gets to code generation, there's more detail to consider than may be obvious. A reasonable assumption would be that *Compiler* will produce code for the first statement such as: "Allocate memory for a variable, label it `students`, then stick a reference to the array into that variable." But that's not the whole story.
+一旦*編譯器*進入程式碼產生階段，需要考慮的細節比表面上看到的要多。一個合理的假設是*編譯器*會為第一個陳述式產生這樣的程式碼：「為一個變數分配記憶體，標記為 `students`，然後把對陣列的參考放入那個變數。」但這並不是完整的故事。
 
-Here's the steps *Compiler* will follow to handle that statement:
+以下是*編譯器*處理該陳述式的步驟：
 
-1. Encountering `var students`, *Compiler* will ask *Scope Manager* to see if a variable named `students` already exists for that particular scope bucket. If so, *Compiler* would ignore this declaration and move on. Otherwise, *Compiler* will produce code that (at execution time) asks *Scope Manager* to create a new variable called `students` in that scope bucket.
+1. 遇到 `var students`，*編譯器*會要求*作用域管理器*查看在該特定作用域桶子中是否已經存在一個名為 `students` 的變數。如果存在，*編譯器*會忽略這個宣告並繼續。否則，*編譯器*會產生程式碼，（在執行時）要求*作用域管理器*在該作用域桶子中建立一個名為 `students` 的新變數。
 
-2. *Compiler* then produces code for *Engine* to later execute, to handle the `students = []` assignment. The code *Engine* runs will first ask *Scope Manager* if there is a variable called `students` accessible in the current scope bucket. If not, *Engine* keeps looking elsewhere (see "Nested Scope" below). Once *Engine* finds a variable, it assigns the reference of the `[ .. ]` array to it.
+2. 然後*編譯器*為*引擎*產生稍後執行的程式碼，以處理 `students = []` 賦值。*引擎*執行的程式碼會首先詢問*作用域管理器*在當前作用域桶子中是否有一個可存取的名為 `students` 的變數。如果沒有，*引擎*會繼續在別處查找（參見下面的「巢狀作用域」）。一旦*引擎*找到一個變數，它就將 `[ .. ]` 陣列的參考賦值給它。
 
-In conversational form, the first phase of compilation for the program might play out between *Compiler* and *Scope Manager* like this:
+以對話形式來表達，程式的第一階段編譯可能在*編譯器*和*作用域管理器*之間這樣展開：
 
-> ***Compiler***: Hey, *Scope Manager* (of the global scope), I found a formal declaration for an identifier called `students`, ever heard of it?
+> ***編譯器***：嘿，*作用域管理器*（全域作用域的），我找到了一個識別字 `students` 的正式宣告，聽過嗎？
 
-> ***(Global) Scope Manager***: Nope, never heard of it, so I just created it for you.
+> ***（全域）作用域管理器***：沒有，從沒聽過，不過我剛為你建立了。
 
-> ***Compiler***: Hey, *Scope Manager*, I found a formal declaration for an identifier called `getStudentName`, ever heard of it?
+> ***編譯器***：嘿，*作用域管理器*，我找到了一個識別字 `getStudentName` 的正式宣告，聽過嗎？
 
-> ***(Global) Scope Manager***: Nope, but I just created it for you.
+> ***（全域）作用域管理器***：沒有，但我剛為你建立了。
 
-> ***Compiler***: Hey, *Scope Manager*, `getStudentName` points to a function, so we need a new scope bucket.
+> ***編譯器***：嘿，*作用域管理器*，`getStudentName` 指向一個函式，所以我們需要一個新的作用域桶子。
 
-> ***(Function) Scope Manager***: Got it, here's the scope bucket.
+> ***（函式）作用域管理器***：了解，這是作用域桶子。
 
-> ***Compiler***: Hey, *Scope Manager* (of the function), I found a formal parameter declaration for `studentID`, ever heard of it?
+> ***編譯器***：嘿，*作用域管理器*（函式的），我找到了一個參數 `studentID` 的正式宣告，聽過嗎？
 
-> ***(Function) Scope Manager***: Nope, but now it's created in this scope.
+> ***（函式）作用域管理器***：沒有，但它現在已經在這個作用域中建立了。
 
-> ***Compiler***: Hey, *Scope Manager* (of the function), I found a `for`-loop that will need its own scope bucket.
-
-> ...
-
-The conversation is a question-and-answer exchange, where **Compiler** asks the current *Scope Manager* if an encountered identifier declaration has already been encountered. If "no," *Scope Manager* creates that variable in that scope. If the answer is "yes," then it's effectively skipped over since there's nothing more for that *Scope Manager* to do.
-
-*Compiler* also signals when it runs across functions or block scopes, so that a new scope bucket and *Scope Manager* can be instantiated.
-
-Later, when it comes to execution of the program, the conversation will shift to *Engine* and *Scope Manager*, and might play out like this:
-
-> ***Engine***: Hey, *Scope Manager* (of the global scope), before we begin, can you look up the identifier `getStudentName` so I can assign this function to it?
-
-> ***(Global) Scope Manager***: Yep, here's the variable.
-
-> ***Engine***: Hey, *Scope Manager*, I found a *target* reference for `students`, ever heard of it?
-
-> ***(Global) Scope Manager***: Yes, it was formally declared for this scope, so here it is.
-
-> ***Engine***: Thanks, I'm initializing `students` to `undefined`, so it's ready to use.
-
-> Hey, *Scope Manager* (of the global scope), I found a *target* reference for `nextStudent`, ever heard of it?
-
-> ***(Global) Scope Manager***: Yes, it was formally declared for this scope, so here it is.
-
-> ***Engine***: Thanks, I'm initializing `nextStudent` to `undefined`, so it's ready to use.
-
-> Hey, *Scope Manager* (of the global scope), I found a *source* reference for `getStudentName`, ever heard of it?
-
-> ***(Global) Scope Manager***: Yes, it was formally declared for this scope. Here it is.
-
-> ***Engine***: Great, the value in `getStudentName` is a function, so I'm going to execute it.
-
-> ***Engine***: Hey, *Scope Manager*, now we need to instantiate the function's scope.
+> ***編譯器***：嘿，*作用域管理器*（函式的），我找到了一個 `for` 迴圈，它需要自己的作用域桶子。
 
 > ...
 
-This conversation is another question-and-answer exchange, where *Engine* first asks the current *Scope Manager* to look up the hoisted `getStudentName` identifier, so as to associate the function with it. *Engine* then proceeds to ask *Scope Manager* about the *target* reference for `students`, and so on.
+這個對話是一個問答交流，其中**編譯器**問當前的*作用域管理器*所遇到的識別字宣告是否已經存在。如果回答是「否」，*作用域管理器*就在該作用域中建立那個變數。如果回答是「是」，那麼它實際上被跳過，因為該*作用域管理器*沒有更多事情要做了。
 
-To review and summarize how a statement like `var students = [ .. ]` is processed, in two distinct steps:
+*編譯器*也會在遇到函式或區塊作用域時發出信號，以便可以實例化一個新的作用域桶子和*作用域管理器*。
 
-1. *Compiler* sets up the declaration of the scope variable (since it wasn't previously declared in the current scope).
+稍後，當程式開始執行時，對話將轉移到*引擎*和*作用域管理器*之間，可能像這樣展開：
 
-2. While *Engine* is executing, to process the assignment part of the statement, *Engine* asks *Scope Manager* to look up the variable, initializes it to `undefined` so it's ready to use, and then assigns the array value to it.
+> ***引擎***：嘿，*作用域管理器*（全域作用域的），在我們開始之前，你能查找識別字 `getStudentName` 嗎？這樣我可以把這個函式賦值給它。
 
-## Nested Scope
+> ***（全域）作用域管理器***：可以，這是這個變數。
 
-When it comes time to execute the `getStudentName()` function, *Engine* asks for a *Scope Manager* instance for that function's scope, and it will then proceed to look up the parameter (`studentID`) to assign the `73` argument value to, and so on.
+> ***引擎***：嘿，*作用域管理器*，我找到了一個 `students` 的*目標*參考，聽過嗎？
 
-The function scope for `getStudentName(..)` is nested inside the global scope. The block scope of the `for`-loop is similarly nested inside that function scope. Scopes can be lexically nested to any arbitrary depth as the program defines.
+> ***（全域）作用域管理器***：是的，它是為這個作用域正式宣告的，給你。
 
-Each scope gets its own *Scope Manager* instance each time that scope is executed (one or more times). Each scope automatically has all its identifiers registered at the start of the scope being executed (this is called "variable hoisting"; see Chapter 5).
+> ***引擎***：謝謝，我正在將 `students` 初始化為 `undefined`，這樣它就可以使用了。
 
-At the beginning of a scope, if any identifier came from a `function` declaration, that variable is automatically initialized to its associated function reference. And if any identifier came from a `var` declaration (as opposed to `let`/`const`), that variable is automatically initialized to `undefined` so that it can be used; otherwise, the variable remains uninitialized (aka, in its "TDZ," see Chapter 5) and cannot be used until its full declaration-and-initialization are executed.
+> 嘿，*作用域管理器*（全域作用域的），我找到了一個 `nextStudent` 的*目標*參考，聽過嗎？
 
-In the `for (let student of students) {` statement, `students` is a *source* reference that must be looked up. But how will that lookup be handled, since the scope of the function will not find such an identifier?
+> ***（全域）作用域管理器***：是的，它是為這個作用域正式宣告的，給你。
 
-To explain, let's imagine that bit of conversation playing out like this:
+> ***引擎***：謝謝，我正在將 `nextStudent` 初始化為 `undefined`，這樣它就可以使用了。
 
-> ***Engine***: Hey, *Scope Manager* (for the function), I have a *source* reference for `students`, ever heard of it?
+> 嘿，*作用域管理器*（全域作用域的），我找到了一個 `getStudentName` 的*來源*參考，聽過嗎？
 
-> ***(Function) Scope Manager***: Nope, never heard of it. Try the next outer scope.
+> ***（全域）作用域管理器***：是的，它是為這個作用域正式宣告的。給你。
 
-> ***Engine***: Hey, *Scope Manager* (for the global scope), I have a *source* reference for `students`, ever heard of it?
+> ***引擎***：很好，`getStudentName` 中的值是一個函式，所以我要執行它。
 
-> ***(Global) Scope Manager***: Yep, it was formally declared, here it is.
+> ***引擎***：嘿，*作用域管理器*，現在我們需要實例化函式的作用域。
 
 > ...
 
-One of the key aspects of lexical scope is that any time an identifier reference cannot be found in the current scope, the next outer scope in the nesting is consulted; that process is repeated until an answer is found or there are no more scopes to consult.
+這個對話是另一個問答交流，其中*引擎*首先詢問當前的*作用域管理器*查找被提升的 `getStudentName` 識別字，以便將函式與之關聯。然後*引擎*繼續詢問*作用域管理器*關於 `students` 的*目標*參考，依此類推。
 
-### Lookup Failures
+回顧並總結像 `var students = [ .. ]` 這樣的陳述式如何被處理，分為兩個不同的步驟：
 
-When *Engine* exhausts all *lexically available* scopes (moving outward) and still cannot resolve the lookup of an identifier, an error condition then exists. However, depending on the mode of the program (strict-mode or not) and the role of the variable (i.e., *target* vs. *source*; see Chapter 1), this error condition will be handled differently.
+1. *編譯器*設定作用域變數的宣告（因為它之前沒有在當前作用域中被宣告過）。
 
-#### Undefined Mess
+2. 當*引擎*執行時，為了處理陳述式的賦值部分，*引擎*要求*作用域管理器*查找該變數，將其初始化為 `undefined` 使其準備就緒，然後將陣列值賦給它。
 
-If the variable is a *source*, an unresolved identifier lookup is considered an undeclared (unknown, missing) variable, which always results in a `ReferenceError` being thrown. Also, if the variable is a *target*, and the code at that moment is running in strict-mode, the variable is considered undeclared and similarly throws a `ReferenceError`.
+## 巢狀作用域
 
-The error message for an undeclared variable condition, in most JS environments, will look like, "Reference Error: XYZ is not defined." The phrase "not defined" seems almost identical to the word "undefined," as far as the English language goes. But these two are very different in JS, and this error message unfortunately creates a persistent confusion.
+當該執行 `getStudentName()` 函式時，*引擎*為該函式的作用域請求一個*作用域管理器*實例，然後它會繼續查找參數（`studentID`）以將 `73` 引數值賦給它，依此類推。
 
-"Not defined" really means "not declared"—or, rather, "undeclared," as in a variable that has no matching formal declaration in any *lexically available* scope. By contrast, "undefined" really means a variable was found (declared), but the variable otherwise has no other value in it at the moment, so it defaults to the `undefined` value.
+`getStudentName(..)` 的函式作用域巢狀在全域作用域內。`for` 迴圈的區塊作用域同樣巢狀在該函式作用域內。作用域可以按照程式定義的方式巢狀到任意深度。
 
-To perpetuate the confusion even further, JS's `typeof` operator returns the string `"undefined"` for variable references in either state:
+每個作用域在每次被執行時（一次或多次）都會獲得自己的*作用域管理器*實例。每個作用域在作用域開始執行時自動將其所有識別字註冊（這被稱為「變數提升」；參見第五章）。
+
+在作用域的開始，如果任何識別字來自 `function` 宣告，該變數會自動初始化為其關聯的函式參考。如果任何識別字來自 `var` 宣告（相對於 `let`/`const`），該變數會自動初始化為 `undefined` 以便可以使用；否則，變數保持未初始化狀態（即處於其「TDZ」中，參見第五章），在其完整的宣告和初始化被執行之前無法使用。
+
+在 `for (let student of students) {` 陳述式中，`students` 是一個必須被查找的*來源*參考。但這個查找將如何處理，因為函式的作用域找不到這樣的識別字？
+
+為了解釋，讓我們想像那段對話是這樣展開的：
+
+> ***引擎***：嘿，*作用域管理器*（函式的），我有一個 `students` 的*來源*參考，聽過嗎？
+
+> ***（函式）作用域管理器***：沒有，從沒聽過。試試下一個外部作用域。
+
+> ***引擎***：嘿，*作用域管理器*（全域作用域的），我有一個 `students` 的*來源*參考，聽過嗎？
+
+> ***（全域）作用域管理器***：是的，它是正式宣告過的，給你。
+
+> ...
+
+詞法作用域的一個關鍵面向是，每當一個識別字參考無法在當前作用域中找到時，就會查詢巢狀結構中的下一個外部作用域；這個過程會重複，直到找到答案或沒有更多的作用域可查詢。
+
+### 查找失敗
+
+當*引擎*用盡所有*詞法上可用*的作用域（向外移動）仍無法解析識別字的查找時，就會出現錯誤狀況。然而，根據程式的模式（嚴格模式與否）和變數的角色（即*目標* vs. *來源*；參見第一章），這種錯誤狀況的處理方式會有所不同。
+
+#### undefined 的混亂
+
+如果變數是*來源*，未解析的識別字查找被視為未宣告的（未知的、缺少的）變數，這總是會導致拋出 `ReferenceError`。同樣地，如果變數是*目標*，且程式碼當時正在嚴格模式下執行，該變數也被視為未宣告的，同樣會拋出 `ReferenceError`。
+
+在大多數 JS 環境中，未宣告變數條件的錯誤訊息看起來像：「Reference Error: XYZ is not defined.」「not defined」這個短語看起來幾乎和「undefined」這個詞一樣，就英語而言。但在 JS 中這兩者非常不同，而這個錯誤訊息不幸地造成了持續的混淆。
+
+「Not defined」真正的意思是「未宣告」——或者更確切地說，「undeclared」，即一個變數在任何*詞法上可用*的作用域中都沒有匹配的正式宣告。相比之下，「undefined」真正的意思是找到了一個變數（已宣告），但該變數目前沒有其他值，所以它預設為 `undefined` 值。
+
+更加深這個混亂的是，JS 的 `typeof` 運算子在兩種狀態下都回傳字串 `"undefined"`：
 
 ```js
 var studentName;
@@ -257,13 +257,13 @@ typeof studentName;     // "undefined"
 typeof doesntExist;     // "undefined"
 ```
 
-These two variable references are in very different conditions, but JS sure does muddy the waters. The terminology mess is confusing and terribly unfortunate. Unfortunately, JS developers just have to pay close attention to not mix up *which kind* of "undefined" they're dealing with!
+這兩個變數參考處於非常不同的狀態，但 JS 確實把水攪渾了。這個術語混亂令人困惑且非常不幸。不幸的是，JS 開發者只能密切注意，不要搞混他們正在處理的是*哪一種*「undefined」！
 
-#### Global... What!?
+#### 全域⋯⋯什麼！？
 
-If the variable is a *target* and strict-mode is not in effect, a confusing and surprising legacy behavior kicks in. The troublesome outcome is that the global scope's *Scope Manager* will just create an **accidental global variable** to fulfill that target assignment!
+如果變數是*目標*且嚴格模式不生效，一個令人困惑且出人意料的遺留行為就會啟動。問題的結果是全域作用域的*作用域管理器*會直接建立一個**意外的全域變數**來滿足那個目標賦值！
 
-Consider:
+考慮：
 
 ```js
 function getStudentName() {
@@ -277,44 +277,44 @@ console.log(nextStudent);
 // "Suzy" -- oops, an accidental-global variable!
 ```
 
-Here's how that *conversation* will proceed:
+以下是那個*對話*將如何進行的：
 
-> ***Engine***: Hey, *Scope Manager* (for the function), I have a *target* reference for `nextStudent`, ever heard of it?
+> ***引擎***：嘿，*作用域管理器*（函式的），我有一個 `nextStudent` 的*目標*參考，聽過嗎？
 
-> ***(Function) Scope Manager***: Nope, never heard of it. Try the next outer scope.
+> ***（函式）作用域管理器***：沒有，從沒聽過。試試下一個外部作用域。
 
-> ***Engine***: Hey, *Scope Manager* (for the global scope), I have a *target* reference for `nextStudent`, ever heard of it?
+> ***引擎***：嘿，*作用域管理器*（全域作用域的），我有一個 `nextStudent` 的*目標*參考，聽過嗎？
 
-> ***(Global) Scope Manager***: Nope, but since we're in non-strict-mode, I helped you out and just created a global variable for you, here it is!
+> ***（全域）作用域管理器***：沒有，但既然我們在非嚴格模式下，我幫了你一下，剛幫你建立了一個全域變數，給你！
 
-Yuck.
+真糟糕。
 
-This sort of accident (almost certain to lead to bugs eventually) is a great example of the beneficial protections offered by strict-mode, and why it's such a bad idea *not* to be using strict-mode. In strict-mode, the ***Global Scope Manager*** would instead have responded:
+這種意外（幾乎肯定最終會導致錯誤）是嚴格模式提供的有益保護的一個好例子，也是*不*使用嚴格模式的壞主意所在。在嚴格模式下，***全域作用域管理器***會這樣回應：
 
-> ***(Global) Scope Manager***: Nope, never heard of it. Sorry, I've got to throw a `ReferenceError`.
+> ***（全域）作用域管理器***：沒有，從沒聽過。抱歉，我必須拋出一個 `ReferenceError`。
 
-Assigning to a never-declared variable *is* an error, so it's right that we would receive a `ReferenceError` here.
+對一個從未宣告的變數進行賦值*是*一個錯誤，所以在這裡收到 `ReferenceError` 是正確的。
 
-Never rely on accidental global variables. Always use strict-mode, and always formally declare your variables. You'll then get a helpful `ReferenceError` if you ever mistakenly try to assign to a not-declared variable.
+永遠不要依賴意外的全域變數。始終使用嚴格模式，並且始終正式宣告你的變數。這樣，如果你誤嘗試對一個未宣告的變數進行賦值，你就會得到一個有幫助的 `ReferenceError`。
 
-### Building On Metaphors
+### 建立在隱喻之上
 
-To visualize nested scope resolution, I prefer yet another metaphor, an office building, as in Figure 3:
+為了視覺化巢狀作用域的解析，我更喜歡另一個隱喻，一棟辦公大樓，如圖 3 所示：
 
 <figure>
     <img src="images/fig3.png" width="250" alt="Scope &quot;Building&quot;" align="center">
-    <figcaption><em>Fig. 3: Scope "Building"</em></figcaption>
+    <figcaption><em>圖 3：作用域「大樓」</em></figcaption>
     <br><br>
 </figure>
 
-The building represents our program's nested scope collection. The first floor of the building represents the currently executing scope. The top level of the building is the global scope.
+這棟大樓代表我們程式的巢狀作用域集合。大樓的一樓代表當前正在執行的作用域。大樓的最頂層是全域作用域。
 
-You resolve a *target* or *source* variable reference by first looking on the current floor, and if you don't find it, taking the elevator to the next floor (i.e., an outer scope), looking there, then the next, and so on. Once you get to the top floor (the global scope), you either find what you're looking for, or you don't. But you have to stop regardless.
+你透過先在當前樓層查找來解析*目標*或*來源*變數參考，如果找不到，就搭電梯到下一個樓層（即外部作用域），在那裡查找，然後到下一個，依此類推。一旦你到達頂層（全域作用域），你要麼找到你要找的東西，要麼沒有。但無論如何你必須停下來。
 
-## Continue the Conversation
+## 繼續對話
 
-By this point, you should be developing richer mental models for what scope is and how the JS engine determines and uses it from your code.
+到目前為止，你應該對作用域是什麼以及 JS 引擎如何從你的程式碼中確定和使用它正在發展更豐富的心智模型。
 
-Before *continuing*, go find some code in one of your projects and run through these conversations. Seriously, actually speak out loud. Find a friend and practice each role with them. If either of you find yourself confused or tripped up, spend more time reviewing this material.
+在*繼續*之前，去找你的某個專案中的一些程式碼，並運行這些對話。認真地，真的大聲說出來。找一個朋友，和他們一起練習每個角色。如果你們中的任何一個人感到困惑或被絆住了，花更多時間複習這份材料。
 
-As we move (up) to the next (outer) chapter, we'll explore how the lexical scopes of a program are connected in a chain.
+當我們移動（向上）到下一個（外部）章節時，我們將探索程式的詞法作用域是如何以鏈的形式連接在一起的。

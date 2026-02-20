@@ -1,34 +1,34 @@
 # You Don't Know JS Yet: Types & Grammar - 2nd Edition
-# Chapter 3: Object Values
+# 第三章：物件值
 
-| NOTE: |
+| 注意： |
 | :--- |
-| Work in progress |
+| 撰寫中 |
 
-Now that we're comfortable with the built-in primitive types, we turn our attention to the `object` types in JS.
+現在我們已經熟悉了內建的原始型別，接下來讓我們把注意力轉向 JS 中的 `object` 型別。
 
-I could write a whole book talking about objects in-depth; in fact, I already did! The "Objects & Classes" title of this series covers objects in-depth already, so make sure you've read that before continuing with this chapter.
+我可以寫一整本書來深入探討物件；事實上，我已經寫了！本系列的「Objects & Classes」篇已經深入涵蓋了物件，所以在繼續本章之前，請確保你已經讀過那本書。
 
-Rather than repeat that book's content, here we'll focus our attention on how the `object` value-type behaves and interacts with other values in JS.
+我們不會重複那本書的內容，而是將注意力集中在 `object` 值型別如何運作，以及它如何與 JS 中其他值互動。
 
-## Types of Objects
+## 物件的型別
 
-The `object` value-type comprises several sub-types, each with specialized behaviors, including:
+`object` 值型別包含了幾種子型別，每種都有其特殊的行為，包括：
 
-* plain objects
-* fundamental objects (boxed primitives)
-* built-in objects
-* arrays
-* regular expressions
-* functions (aka, "callable objects")
+* 普通物件（plain objects）
+* 基本物件（boxed primitives）
+* 內建物件（built-in objects）
+* 陣列（arrays）
+* 正規表達式（regular expressions）
+* 函式（又稱「可呼叫物件」）
 
-Beyond the specialized behaviors, one shared characteristic is that all objects can act as collections (of properties) holding values (including functions/methods).
+除了這些特殊行為之外，所有物件共有的一個特徵是它們都可以作為集合（屬性的集合），持有值（包括函式/方法）。
 
-## Plain Objects
+## 普通物件
 
-The general object value-type is sometimes referred to as *plain ol' javascript objects* (POJOs).
+一般的物件值型別有時被稱為*普通的 JavaScript 物件*（POJOs）。
 
-Plain objects have a literal form:
+普通物件有字面量形式：
 
 ```js
 address = {
@@ -39,9 +39,9 @@ address = {
 };
 ```
 
-This plain object (POJO), as defined with the `{ .. }` curly braces, is a collection of named properties (`street`, `city`, `state`, and `zip`). Properties can hold any values, primitives or other objects (including arrays, functions, etc).
+這個普通物件（POJO），以 `{ .. }` 大括號定義，是一個具名屬性的集合（`street`、`city`、`state` 和 `zip`）。屬性可以持有任何值，原始值或其他物件（包括陣列、函式等）。
 
-The same object could also have been defined imperatively using the `new Object()` constructor:
+同樣的物件也可以使用 `new Object()` 建構式以命令式方式定義：
 
 ```js
 address = new Object();
@@ -51,31 +51,31 @@ address.state = "CA";
 address.zip = "94114";
 ```
 
-Plain objects are by default `[[Prototype]]` linked to `Object.prototype`, giving them delegated access to several general object methods, such as:
+普通物件預設透過 `[[Prototype]]` 連結到 `Object.prototype`，使它們可以委派存取數個通用的物件方法，例如：
 
 * `toString()` / `toLocaleString()`
 * `valueOf()`
 * `isPrototypeOf(..)`
-* `hasOwnProperty(..)` (recently deprecated -- alternative: static `Object.hasOwn(..)` utility)
+* `hasOwnProperty(..)` （最近已被棄用——替代方案：靜態方法 `Object.hasOwn(..)` 工具函式）
 * `propertyIsEnumerable(..)`
-* `__proto__` (getter function)
+* `__proto__`（getter 函式）
 
 ```js
 address.isPrototypeOf(Object.prototype);    // true
 address.isPrototypeOf({});                  // false
 ```
 
-## Fundamental Objects
+## 基本物件
 
-JS defines several *fundamental* object types, which are instances of various built-in constructors, including:
+JS 定義了數個*基本*物件型別，它們是各種內建建構式的實例，包括：
 
 * `new String()`
 * `new Number()`
 * `new Boolean()`
 
-Note that these constructors must be used with the `new` keyword to construct instances of the fundamental objects. Otherwise, these functions actually perform type coercion (see Chapter 4).
+請注意，這些建構式必須搭配 `new` 關鍵字來建構基本物件的實例。否則，這些函式實際上會執行型別強制轉型（見第四章）。
 
-These fundamental object constructors create object value-types instead of a primitives:
+這些基本物件建構式建立的是物件值型別，而不是原始值：
 
 ```js
 myName = "Kyle";
@@ -85,41 +85,41 @@ myNickname = new String("getify");
 typeof myNickname;                  // "object"
 ```
 
-In other words, an instance of a fundamental object constructor can actually be seen as a wrapper around the corresponding underlying primitive value.
+換句話說，基本物件建構式的實例實際上可以被視為對應底層原始值的包裝器。
 
-| WARNING: |
+| 警告： |
 | :--- |
-| It's nearly universally regarded as *bad practice* to ever directly instantiate these fundamental objects. The primitive counterparts are generally more predictable, more performant, and offer *auto-boxing* (see "Automatic Objects" section below) whenever the underlying object-wrapper form is needed for property/method access. |
+| 幾乎被普遍認為是*不好的做法*——直接實例化這些基本物件。原始值的對應形式通常更可預測、效能更好，而且在需要底層物件包裝形式來存取屬性/方法時，提供了*自動裝箱*（見下方「自動物件」章節）。 |
 
-The `Symbol(..)` and `BigInt(..)` functions are referred to in the specification as "constructors", though they're not used with the `new` keyword, and the values they produce in a JS program are indeed primitives.
+`Symbol(..)` 和 `BigInt(..)` 函式在規範中被稱為「建構式」，儘管它們不搭配 `new` 關鍵字使用，而且它們在 JS 程式中產生的值確實是原始值。
 
-How, there are internal *fundamental objects* for these two types, used for prototype delegation and *auto-boxing*.
+然而，這兩種型別存在內部的*基本物件*，用於原型委派和*自動裝箱*。
 
-By contrast, for `null` and `undefined` primitive values, there aren't `Null()` or `Undefined()` "constructors", nor corresponding fundamental objects or prototypes.
+相比之下，對於 `null` 和 `undefined` 原始值，不存在 `Null()` 或 `Undefined()` 「建構式」，也沒有對應的基本物件或原型。
 
-### Prototypes
+### 原型
 
-Instances of the fundamental object constructors are `[[Prototype]]` linked to their constructors' `prototype` objects:
+基本物件建構式的實例透過 `[[Prototype]]` 連結到其建構式的 `prototype` 物件：
 
-* `String.prototype`: defines `length` property, as well as string-specific methods, like `toUpperCase()`, etc.
+* `String.prototype`：定義了 `length` 屬性，以及字串特有的方法，如 `toUpperCase()` 等。
 
-* `Number.prototype`: defines number-specific methods, like `toPrecision(..)`, `toFixed(..)`, etc.
+* `Number.prototype`：定義了數字特有的方法，如 `toPrecision(..)`、`toFixed(..)` 等。
 
-* `Boolean.prototype`: defines default `toString()` and `valueOf()` methods.
+* `Boolean.prototype`：定義了預設的 `toString()` 和 `valueOf()` 方法。
 
-* `Symbol.prototype`: defines `description` (getter), as well as default `toString()` and `valueOf()` methods.
+* `Symbol.prototype`：定義了 `description`（getter），以及預設的 `toString()` 和 `valueOf()` 方法。
 
-* `BigInt.prototype`: defines default `toString()`, `toLocaleString()`, and `valueOf()` methods.
+* `BigInt.prototype`：定義了預設的 `toString()`、`toLocaleString()` 和 `valueOf()` 方法。
 
-Any direct instance of the built-in constructors have `[[Prototype]]` delegated access to its respective `prototype` properties/methods. Moreover, corresponding primitive values also have such delegated access, by way of *auto-boxing*.
+任何內建建構式的直接實例都可以透過 `[[Prototype]]` 委派存取其各自的 `prototype` 屬性/方法。此外，對應的原始值也可以透過*自動裝箱*來取得這樣的委派存取。
 
-### Automatic Objects
+### 自動物件
 
-I've mentioned *auto-boxing* several times (including Chapters 1 and 2, and a few times so far in this chapter). It's finally time for us to explain that concept.
+我已經提過*自動裝箱*好幾次了（包括第一章和第二章，以及本章到目前為止也提過幾次）。現在終於是我們解釋這個概念的時候了。
 
-Accessing a property or method on a value requires that the value be an object. As we've already seen in Chapter 1, primitives *are not* objects, so JS needs to then temporarily convert/wrap such a primitive to its fundamental object counterpart[^AutoBoxing] to perform that access.
+存取值的屬性或方法需要該值是一個物件。正如我們在第一章中已經看到的，原始值*不是*物件，所以 JS 需要暫時將這樣的原始值轉換/包裝為其對應的基本物件[^AutoBoxing]來執行該存取。
 
-For example:
+例如：
 
 ```js
 myName = "Kyle";
@@ -129,37 +129,37 @@ myName.length;              // 4
 myName.toUpperCase();       // "KYLE"
 ```
 
-Accessing the `length` property or the `toUpperCase()` method, is only allowed on a primitive string value because JS *auto-boxes* the primitive `string` into a wrapper fundamental object, an instance of `new String(..)`. Otherwise, all such accesses would have to fail, since primitives do not have any properties.
+存取 `length` 屬性或 `toUpperCase()` 方法，之所以能在原始字串值上進行，是因為 JS 將原始 `string` *自動裝箱*為一個包裝用的基本物件，也就是 `new String(..)` 的實例。否則，所有此類存取都會失敗，因為原始值沒有任何屬性。
 
-More importantly, when the primitive value is *auto-boxed* to its fundamental object counterpart, those internally created objects have access to predefined properties/methods (like `length` and `toUpperCase()`) via a `[[Prototype]]` link to their respective fundamental object's prototype.
+更重要的是，當原始值被*自動裝箱*為其對應的基本物件時，這些內部建立的物件可以透過 `[[Prototype]]` 連結來存取預定義的屬性/方法（如 `length` 和 `toUpperCase()`），連結到它們各自基本物件的原型。
 
-So an *auto-boxed* `string` is an instance of `new String()`, and is thus linked to `String.prototype`. Further, the same is true of `number` (wrapped as an instance of `new Number()`) and `boolean` (wrapped as an instance of `new Boolean()`).
+因此，一個*自動裝箱*的 `string` 是 `new String()` 的實例，從而連結到 `String.prototype`。同樣地，`number`（包裝為 `new Number()` 的實例）和 `boolean`（包裝為 `new Boolean()` 的實例）也是如此。
 
-Even though the `Symbol(..)` and `BigInt(..)` "constructors" (used without `new`produce primitive values, these primitive values can also be *auto-boxed* to their internal fundamental object wrapper forms, for the purposes of delegated access to properties/methods.
+即使 `Symbol(..)` 和 `BigInt(..)` 「建構式」（不搭配 `new` 使用）產生原始值，這些原始值也可以被*自動裝箱*為其內部的基本物件包裝形式，以便委派存取屬性/方法。
 
-| NOTE: |
+| 注意： |
 | :--- |
-| See the "Objects & Classes" book of this series for more on `[[Prototype]]` linkages and delegated/inherited access to the fundamental object constructors' prototype objects. |
+| 關於 `[[Prototype]]` 連結和對基本物件建構式原型物件的委派/繼承存取，請參閱本系列的「Objects & Classes」書。 |
 
-Since `null` and `undefined` have no corresponding fundamental objects, there is no *auto-boxing* of these values.
+由於 `null` 和 `undefined` 沒有對應的基本物件，這些值不會進行*自動裝箱*。
 
-A subjective question to consider: is *auto-boxing* a form of coercion? I say it is, though some disagree. Internally, a primitive is converted to an object, meaning a change in value-type has occurred. Yes, it's temporary, but plenty of coercions are temporary. Moreover, the conversion is rather *implicit* (implied by the property/method access, but only happens internally). We'll revisit the nature of coercion in Chapter 4.
+一個值得考慮的主觀問題：*自動裝箱*是一種強制轉型嗎？我認為是的，儘管有些人不同意。在內部，原始值被轉換為一個物件，意味著值型別發生了變化。是的，這是暫時的，但許多強制轉型也是暫時的。此外，這種轉換相當*隱式*的（由屬性/方法存取所暗示，但僅在內部發生）。我們將在第四章中重新討論強制轉型的本質。
 
-## Other Built-in Objects
+## 其他內建物件
 
-In addition to fundamental object constructors, JS defines a number of other built-in constructors that create further specialized object sub-types:
+除了基本物件建構式之外，JS 還定義了許多其他內建建構式，用以建立更多特殊的物件子型別：
 
 * `new Date(..)`
 * `new Error(..)`
-* `new Map(..)`, `new Set(..)`, `new WeakMap(..)`, `new WeakSet(..)` -- keyed collections
-* `new Int8Array(..)`, `new Uint32Array(..)`, etc -- indexed, typed-array collections
-* `new ArrayBuffer(..)`, `new SharedArrayBuffer(..)`, etc -- structured data collections
+* `new Map(..)`、`new Set(..)`、`new WeakMap(..)`、`new WeakSet(..)` —— 鍵值集合
+* `new Int8Array(..)`、`new Uint32Array(..)` 等 —— 索引式、型別化陣列集合
+* `new ArrayBuffer(..)`、`new SharedArrayBuffer(..)` 等 —— 結構化資料集合
 
-## Arrays
+## 陣列
 
-Arrays are objects that are specialized to behave as numerically indexed collections of values, as opposed to holding values at named properties like plain objects do.
+陣列是特殊化的物件，其行為是數值索引的值集合，而不是像普通物件那樣在具名屬性中持有值。
 
-Arrays have a literal form:
+陣列有字面量形式：
 
 ```js
 favoriteNumbers = [ 3, 12, 42 ];
@@ -167,7 +167,7 @@ favoriteNumbers = [ 3, 12, 42 ];
 favoriteNumbers[2];                 // 42
 ```
 
-The same array could also have been defined imperatively using the `new Array()` constructor:
+同樣的陣列也可以使用 `new Array()` 建構式以命令式方式定義：
 
 ```js
 favoriteNumbers = new Array();
@@ -176,7 +176,7 @@ favoriteNumbers[1] = 12;
 favoriteNumbers[2] = 42;
 ```
 
-Arrays are `[[Prototype]]` linked to `Array.prototype`, giving them delegated access to a variety of array-oriented methods, such as `map(..)`, `includes(..)`, etc:
+陣列透過 `[[Prototype]]` 連結到 `Array.prototype`，使它們可以委派存取各種面向陣列的方法，例如 `map(..)`、`includes(..)` 等：
 
 ```js
 favoriteNumbers.map(v => v * 2);
@@ -185,25 +185,25 @@ favoriteNumbers.map(v => v * 2);
 favoriteNumbers.includes(42);       // true
 ```
 
-Some of the methods defined on `Array.prototype` -- for example, `push(..)`, `pop(..)`, `sort(..)`, etc -- behave by modifying the array value in place. Other methods -- for example, `concat(..)`, `map(..)`, `slice(..)` -- behave by creating a new array to return, leaving the original array intact. A third category of array functions -- for example, `indexOf(..)`, `includes(..)`, etc -- merely computes and returns a (non-array) result.
+定義在 `Array.prototype` 上的某些方法——例如 `push(..)`、`pop(..)`、`sort(..)` 等——會就地修改陣列值。其他方法——例如 `concat(..)`、`map(..)`、`slice(..)` ——則會建立一個新陣列來回傳，保持原始陣列不變。第三類陣列函式——例如 `indexOf(..)`、`includes(..)` 等——僅計算並回傳一個（非陣列的）結果。
 
-## Regular Expressions
-
-// TODO
-
-## Functions
+## 正規表達式
 
 // TODO
 
-## Proposed: Records/Tuples
+## 函式
 
-At the time of this writing, a (stage-2) proposal[^RecordsTuplesProposal] exists to add a new set of features to JS, which correspond closely to plain objects and arrays, but with some notable differences.
+// TODO
 
-Records are similar to plain objects, but are immutable (sealed, read-only), and (unlike objects) are treated as primitive values, for the purposes of value assignment and equality comparison. The syntax difference is a `#` before the `{ }` delimiter. Records can only contain primitive values (including records and tuples).
+## 提案中：Records/Tuples
 
-Tuples have exactly the same relationship, but to arrays, including the `#` before the `[ ]` delimiters.
+在撰寫本文時，一個（第二階段）提案[^RecordsTuplesProposal]已經存在，計畫為 JS 新增一組功能，這些功能與普通物件和陣列密切對應，但有一些值得注意的差異。
 
-It's important to note that while these look and seem like objects/arrays, they are indeed primitive (non-object) values.
+Records 類似於普通物件，但它們是不可變的（密封的、唯讀的），而且（不像物件）在值賦值和相等比較的目的上被視為原始值。語法上的差異是在 `{ }` 分隔符前加上 `#`。Records 只能包含原始值（包括 records 和 tuples）。
+
+Tuples 與陣列有完全相同的關係，包括在 `[ ]` 分隔符前加上 `#`。
+
+重要的是要注意，雖然它們看起來像物件/陣列，但它們確實是原始（非物件）值。
 
 [^FundamentalObjects]: "20 Fundamental Objects", EcamScript 2022 Language Specification; https://262.ecma-international.org/13.0/#sec-fundamental-objects ; Accessed August 2022
 
