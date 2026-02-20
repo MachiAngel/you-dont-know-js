@@ -1,47 +1,47 @@
 # You Don't Know JS Yet: Scope & Closures - 2nd Edition
-# Appendix B: Practice
+# 附錄 B：練習
 
-This appendix aims to give you some challenging and interesting exercises to test and solidify your understanding of the main topics from this book. It's a good idea to try out the exercises yourself—in an actual code editor!—instead of skipping straight to the solutions at the end. No cheating!
+本附錄旨在提供一些具有挑戰性且有趣的練習，以測試並鞏固你對本書主要主題的理解。建議你自己動手嘗試這些練習——在實際的程式碼編輯器中！——而不是直接跳到最後的解答。不要作弊！
 
-These exercises don't have a specific right answer that you have to get exactly. Your approach may differ some (or a lot!) from the solutions presented, and that's OK.
+這些練習沒有你必須完全符合的特定正確答案。你的方法可能與所呈現的解答有些（或很大的！）不同，這沒有關係。
 
-There's no judging you on how you write your code. My hope is that you come away from this book feeling confident that you can tackle these sorts of coding tasks built on a strong foundation of knowledge. That's the only objective, here. If you're happy with your code, I am, too!
+沒有人會評判你的程式碼寫得如何。我的希望是，你讀完這本書後，能夠自信地處理這類建立在堅實知識基礎上的編碼任務。這是這裡唯一的目標。如果你對自己的程式碼感到滿意，我也會感到滿意！
 
-## Buckets of Marbles
+## 彈珠桶
 
-Remember Figure 2 from back in Chapter 2?
+還記得第二章的圖 2 嗎？
 
 <figure>
     <img src="images/fig2.png" width="300" alt="Colored Scope Bubbles" align="center">
-    <figcaption><em>Fig. 2 (Ch. 2): Colored Scope Bubbles</em></figcaption>
+    <figcaption><em>圖 2（第二章）：彩色作用域氣泡</em></figcaption>
     <br><br>
 </figure>
 
-This exercise asks you to write a program—any program!—that contains nested functions and block scopes, which satisfies these constraints:
+本練習要求你撰寫一個程式——任何程式！——其中包含巢狀函式和區塊作用域，並滿足以下約束條件：
 
-* If you color all the scopes (including the global scope!) different colors, you need at least six colors. Make sure to add a code comment labeling each scope with its color.
+* 如果你用不同的顏色為所有作用域（包括全域作用域！）著色，你至少需要六種顏色。確保添加程式碼註釋，標記每個作用域的顏色。
 
-    BONUS: identify any implied scopes your code may have.
+    額外挑戰：識別你的程式碼可能具有的任何隱含作用域。
 
-* Each scope has at least one identifier.
+* 每個作用域至少有一個識別符。
 
-* Contains at least two function scopes and at least two block scopes.
+* 至少包含兩個函式作用域和至少兩個區塊作用域。
 
-* At least one variable from an outer scope must be shadowed by a nested scope variable (see Chapter 3).
+* 至少有一個來自外部作用域的變數必須被巢狀作用域的變數遮蔽（參見第三章）。
 
-* At least one variable reference must resolve to a variable declaration at least two levels higher in the scope chain.
+* 至少有一個變數參考必須解析到作用域鏈中至少高兩層的變數宣告。
 
-| TIP: |
+| 提示： |
 | :--- |
-| You *can* just write junk foo/bar/baz-type code for this exercise, but I suggest you try to come up with some sort of non-trivial real'ish code that at least does something kind of reasonable. |
+| 你*可以*只為這個練習撰寫一些無意義的 foo/bar/baz 類型的程式碼，但我建議你嘗試想出一些非瑣碎的、接近真實的程式碼，至少能做一些合理的事情。 |
 
-Try the exercise for yourself, then check out the suggested solution at the end of this appendix.
+自己嘗試這個練習，然後查看本附錄末尾的建議解答。
 
-## Closure (PART 1)
+## 閉包（第一部分）
 
-Let's first practice closure with some common computer-math operations: determining if a value is prime (has no divisors other than 1 and itself), and generating a list of prime factors (divisors) for a given number.
+讓我們先用一些常見的計算數學運算來練習閉包：判斷一個值是否為質數（除了 1 和自身之外沒有其他因數），以及生成給定數字的質因數（因數）列表。
 
-For example:
+例如：
 
 ```js
 isPrime(11);        // true
@@ -51,7 +51,7 @@ factorize(11);      // [ 11 ]
 factorize(12);      // [ 3, 2, 2 ] --> 3*2*2=12
 ```
 
-Here's an implementation of `isPrime(..)`, adapted from the Math.js library: [^MathJSisPrime]
+以下是 `isPrime(..)` 的實作，改編自 Math.js 函式庫：[^MathJSisPrime]
 
 ```js
 function isPrime(v) {
@@ -71,7 +71,7 @@ function isPrime(v) {
 }
 ```
 
-And here's a somewhat basic implementation of `factorize(..)` (not to be confused with `factorial(..)` from Chapter 6):
+以下是 `factorize(..)` 的一個較為基礎的實作（不要與第六章的 `factorial(..)` 混淆）：
 
 ```js
 function factorize(v) {
@@ -89,39 +89,39 @@ function factorize(v) {
 }
 ```
 
-| NOTE: |
+| 注意： |
 | :--- |
-| I call this basic because it's not optimized for performance. It's binary-recursive (which isn't tail-call optimizable), and it creates a lot of intermediate array copies. It also doesn't order the discovered factors in any way. There are many, many other algorithms for this task, but I wanted to use something short and roughly understandable for our exercise. |
+| 我稱之為基礎的，是因為它沒有針對效能進行最佳化。它使用二元遞迴（無法進行尾呼叫最佳化），並且會建立大量的中間陣列副本。它也不會以任何方式排序已發現的因數。這個任務有許多許多其他演算法，但我想使用一些簡短且大致可以理解的東西來進行我們的練習。 |
 
-If you were to call `isPrime(4327)` multiple times in a program, you can see that it would go through all its dozens of comparison/computation steps every time. If you consider `factorize(..)`, it's calling `isPrime(..)` many times as it computes the list of factors. And there's a good chance most of those calls are repeats. That's a lot of wasted work!
+如果你在程式中多次呼叫 `isPrime(4327)`，你可以看到它每次都會經歷所有數十個比較/計算步驟。如果你考慮 `factorize(..)`，它在計算因數列表時會多次呼叫 `isPrime(..)`。而且這些呼叫中很可能大部分都是重複的。這是大量的浪費工作！
 
-The first part of this exercise is to use closure to implement a cache to remember the results of `isPrime(..)`, so that the primality (`true` or `false`) of a given number is only ever computed once. Hint: we already showed this sort of caching in Chapter 6 with `factorial(..)`.
+這個練習的第一部分是使用閉包來實作一個快取，以記住 `isPrime(..)` 的結果，這樣給定數字的質數性（`true` 或 `false`）只會被計算一次。提示：我們已經在第六章中用 `factorial(..)` 展示了這種快取方式。
 
-If you look at `factorize(..)`, it's implemented with recursion, meaning it calls itself repeatedly. That again means we may likely see a lot of wasted calls to compute prime factors for the same number. So the second part of the exercise is to use the same closure cache technique for `factorize(..)`.
+如果你看看 `factorize(..)`，它是用遞迴實作的，意味著它會重複呼叫自身。這再次意味著我們很可能會看到大量浪費的呼叫來計算相同數字的質因數。所以練習的第二部分是對 `factorize(..)` 使用相同的閉包快取技術。
 
-Use separate closures for caching of `isPrime(..)` and `factorize(..)`, rather than putting them inside a single scope.
+對 `isPrime(..)` 和 `factorize(..)` 的快取使用各自獨立的閉包，而不是將它們放在同一個作用域中。
 
-Try the exercise for yourself, then check out the suggested solution at the end of this appendix.
+自己嘗試這個練習，然後查看本附錄末尾的建議解答。
 
-### A Word About Memory
+### 關於記憶體的一點說明
 
-I want to share a little quick note about this closure cache technique and the impacts it has on your application's performance.
+我想分享一個關於這種閉包快取技術及其對應用程式效能影響的簡短說明。
 
-We can see that in saving the repeated calls, we improve computation speed (in some cases, by a dramatic amount). But this usage of closure is making an explicit trade-off that you should be very aware of.
+我們可以看到，透過節省重複呼叫，我們提高了計算速度（在某些情況下，提高幅度相當大）。但這種閉包的用法做出了一個你應該非常清楚的明確取捨。
 
-The trade-off is memory. We're essentially growing our cache (in memory) unboundedly. If the functions in question were called many millions of times with mostly unique inputs, we'd be chewing up a lot of memory. This can definitely be worth the expense, but only if we think it's likely we see repetition of common inputs so that we're taking advantage of the cache.
+取捨的是記憶體。我們本質上是在無限制地增長我們的快取（在記憶體中）。如果相關的函式被呼叫了數百萬次且大多數輸入都是唯一的，我們會消耗大量記憶體。這絕對可能值得付出這個代價，但前提是我們認為很可能會看到常見輸入的重複，從而利用到快取的優勢。
 
-If most every call will have a unique input, and the cache is essentially never *used* to any benefit, this is an inappropriate technique to employ.
+如果幾乎每次呼叫都有唯一的輸入，而快取基本上從未被有效*使用*，那麼這就不是一種適合採用的技術。
 
-It also might be a good idea to have a more sophisticated caching approach, such as an LRU (least recently used) cache, that limits its size; as it runs up to the limit, an LRU evicts the values that are... well, least recently used!
+另外，使用更複雜的快取方法可能是個好主意，例如 LRU（最近最少使用）快取，它限制了其大小；當它達到上限時，LRU 會驅逐那些……嗯，最近最少使用的值！
 
-The downside here is that LRU is quite non-trivial in its own right. You'll want to use a highly optimized implementation of LRU, and be keenly aware of all the trade-offs at play.
+這裡的缺點是 LRU 本身就相當不簡單。你會想要使用一個高度最佳化的 LRU 實作，並敏銳地意識到所有在起作用的取捨。
 
-## Closure (PART 2)
+## 閉包（第二部分）
 
-In this exercise, we're going to again practice closure by defining a `toggle(..)` utility that gives us a value toggler.
+在這個練習中，我們將再次透過定義一個 `toggle(..)` 工具函式來練習閉包，它為我們提供一個值的切換器。
 
-You will pass one or more values (as arguments) into `toggle(..)`, and get back a function. That returned function will alternate/rotate between all the passed-in values in order, one at a time, as it's called repeatedly.
+你將一個或多個值（作為引數）傳入 `toggle(..)`，並獲得一個函式作為回傳值。該回傳的函式在被重複呼叫時，將按順序在所有傳入的值之間交替/輪換，每次一個。
 
 ```js
 function toggle(/* .. */) {
@@ -145,13 +145,13 @@ speed();      // "fast"
 speed();      // "slow"
 ```
 
-The corner case of passing in no values to `toggle(..)` is not very important; such a toggler instance could just always return `undefined`.
+不傳入任何值給 `toggle(..)` 的邊界情況並不太重要；這樣的切換器實例可以總是回傳 `undefined`。
 
-Try the exercise for yourself, then check out the suggested solution at the end of this appendix.
+自己嘗試這個練習，然後查看本附錄末尾的建議解答。
 
-## Closure (PART 3)
+## 閉包（第三部分）
 
-In this third and final exercise on closure, we're going to implement a basic calculator. The `calculator()` function will produce an instance of a calculator that maintains its own state, in the form of a function (`calc(..)`, below):
+在這第三個也是最後一個關於閉包的練習中，我們將實作一個基本的計算機。`calculator()` 函式將產生一個計算機的實例，它以一個函式的形式（如下方的 `calc(..)`）維護自己的狀態：
 
 ```js
 function calculator() {
@@ -161,13 +161,13 @@ function calculator() {
 var calc = calculator();
 ```
 
-Each time `calc(..)` is called, you'll pass in a single character that represents a keypress of a calculator button. To keep things more straightforward, we'll restrict our calculator to supporting entering only digits (0-9), arithmetic operations (+, -, \*, /), and "=" to compute the operation. Operations are processed strictly in the order entered; there's no "( )" grouping or operator precedence.
+每次呼叫 `calc(..)` 時，你會傳入一個代表計算機按鍵的單一字元。為了讓事情更直接，我們將計算機限制為只支援輸入數字（0-9）、算術運算（+、-、\*、/），以及 "=" 來計算運算結果。運算嚴格按照輸入的順序處理；沒有 "( )" 分組或運算子優先順序。
 
-We don't support entering decimals, but the divide operation can result in them. We don't support entering negative numbers, but the "-" operation can result in them. So, you should be able to produce any negative or decimal number by first entering an operation to compute it. You can then keep computing with that value.
+我們不支援輸入小數，但除法運算可以產生小數。我們不支援輸入負數，但 "-" 運算可以產生負數。因此，你應該能夠透過先輸入一個運算來計算任何負數或小數。然後你可以繼續用那個值進行計算。
 
-The return of `calc(..)` calls should mimic what would be shown on a real calculator, like reflecting what was just pressed, or computing the total when pressing "=".
+`calc(..)` 呼叫的回傳值應該模擬真實計算機上顯示的內容，例如反映剛剛按下的鍵，或在按下 "=" 時計算總數。
 
-For example:
+例如：
 
 ```js
 calc("4");     // 4
@@ -186,7 +186,7 @@ calc("5");     // 5
 calc("=");     // 0
 ```
 
-Since this usage is a bit clumsy, here's a `useCalc(..)` helper, that runs the calculator with characters one at a time from a string, and computes the display each time:
+由於這種用法有點笨拙，這裡有一個 `useCalc(..)` 輔助函式，它從一個字串中逐一取出字元來執行計算機，並每次計算顯示結果：
 
 ```js
 function useCalc(calc,keys) {
@@ -216,9 +216,9 @@ useCalc(calc,"+3=");            // +3=ERR
 useCalc(calc,"51=");            // 51
 ```
 
-The most sensible usage of this `useCalc(..)` helper is to always have "=" be the last character entered.
+這個 `useCalc(..)` 輔助函式最合理的用法是始終讓 "=" 成為最後一個輸入的字元。
 
-Some of the formatting of the totals displayed by the calculator require special handling. I'm providing this `formatTotal(..)` function, which your calculator should use whenever it's going to return a current computed total (after an `"="` is entered):
+計算機顯示的某些總數格式需要特殊處理。我提供了這個 `formatTotal(..)` 函式，每當你的計算機要回傳當前計算的總數時（在輸入 `"="` 之後），都應該使用它：
 
 ```js
 function formatTotal(display) {
@@ -263,30 +263,30 @@ function formatTotal(display) {
 }
 ```
 
-Don't worry too much about how `formatTotal(..)` works. Most of its logic is a bunch of handling to limit the calculator display to 11 characters max, even if negatives, repeating decimals, or even "e+" exponential notation is required.
+不用太擔心 `formatTotal(..)` 的工作原理。它的大部分邏輯是一堆處理，用於將計算機顯示限制在最多 11 個字元，即使需要負號、循環小數，甚至 "e+" 指數表示法。
 
-Again, don't get too mired in the mud around calculator-specific behavior. Focus on the *memory* of closure.
+再次強調，不要太陷入計算機特定行為的泥沼中。專注於閉包的*記憶*能力。
 
-Try the exercise for yourself, then check out the suggested solution at the end of this appendix.
+自己嘗試這個練習，然後查看本附錄末尾的建議解答。
 
-## Modules
+## 模組
 
-This exercise is to convert the calculator from Closure (PART 3) into a module.
+這個練習是將閉包（第三部分）中的計算機轉換為模組。
 
-We're not adding any additional functionality to the calculator, only changing its interface. Instead of calling a single function `calc(..)`, we'll be calling specific methods on the public API for each "keypress" of our calculator. The outputs stay the same.
+我們不會為計算機添加任何額外的功能，只是改變它的介面。我們不再呼叫單一的 `calc(..)` 函式，而是為計算機的每次「按鍵」呼叫公開 API 上的特定方法。輸出保持不變。
 
-This module should be expressed as a classic module factory function called `calculator()`, instead of a singleton IIFE, so that multiple calculators can be created if desired.
+這個模組應該表達為一個稱為 `calculator()` 的經典模組工廠函式，而不是一個單例 IIFE，這樣如果需要的話可以建立多個計算機。
 
-The public API should include the following methods:
+公開 API 應該包含以下方法：
 
-* `number(..)` (input: the character/number "pressed")
+* `number(..)`（輸入：「按下」的字元/數字）
 * `plus()`
 * `minus()`
 * `mult()`
 * `div()`
 * `eq()`
 
-Usage would look like:
+用法如下：
 
 ```js
 var calc = calculator();
@@ -300,7 +300,7 @@ calc.number("2");     // 2
 calc.eq();            // 75
 ```
 
-`formatTotal(..)` remains the same from that previous exercise. But the `useCalc(..)` helper needs to be adjusted to work with the module API:
+`formatTotal(..)` 與前一個練習保持相同。但 `useCalc(..)` 輔助函式需要調整以配合模組 API：
 
 ```js
 function useCalc(calc,keys) {
@@ -339,25 +339,25 @@ useCalc(calc,"+3=");            // +3=ERR
 useCalc(calc,"51=");            // 51
 ```
 
-Try the exercise for yourself, then check out the suggested solution at the end of this appendix.
+自己嘗試這個練習，然後查看本附錄末尾的建議解答。
 
-As you work on this exercise, also spend some time considering the pros/cons of representing the calculator as a module as opposed to the closure-function approach from the previous exercise.
+在你完成這個練習的同時，也花一些時間思考將計算機表示為模組相較於前一個練習的閉包函式方法的優缺點。
 
-BONUS: write out a few sentences explaining your thoughts.
+額外挑戰：寫幾句話來解釋你的想法。
 
-BONUS #2: try converting your module to other module formats, including: UMD, CommonJS, and ESM (ES Modules).
+額外挑戰 #2：嘗試將你的模組轉換為其他模組格式，包括：UMD、CommonJS 和 ESM（ES Modules）。
 
-## Suggested Solutions
+## 建議解答
 
-Hopefully you've tried out the exercises before you're reading this far. No cheating!
+希望你在讀到這裡之前已經嘗試過這些練習了。不要作弊！
 
-Remember, each suggested solution is just one of a bunch of different ways to approach the problems. They're not "the right answer," but they do illustrate a reasonable way to approach each exercise.
+記住，每個建議解答只是眾多不同方法中的一種。它們不是「正確答案」，但它們確實展示了處理每個練習的合理方式。
 
-The most important benefit you can get from reading these suggested solutions is to compare them to your code and analyze why we each made similar or different choices. Don't get into too much bikeshedding; try to stay focused on the main topic rather than the small details.
+你從閱讀這些建議解答中能獲得的最重要的好處是，將它們與你的程式碼進行比較，並分析我們各自做出相似或不同選擇的原因。不要太糾結於細枝末節；試著專注於主要主題而不是小細節。
 
-### Suggested: Buckets of Marbles
+### 建議解答：彈珠桶
 
-The *Buckets of Marbles Exercise* can be solved like this:
+*彈珠桶練習*可以這樣解決：
 
 ```js
 // RED(1)
@@ -403,9 +403,9 @@ findPrimes(howMany);
 // ]
 ```
 
-### Suggested: Closure (PART 1)
+### 建議解答：閉包（第一部分）
 
-The *Closure Exercise (PART 1)* for `isPrime(..)` and `factorize(..)`, can be solved like this:
+*閉包練習（第一部分）*中的 `isPrime(..)` 和 `factorize(..)`，可以這樣解決：
 
 ```js
 var isPrime = (function isPrime(v){
@@ -453,19 +453,19 @@ var factorize = (function factorize(v){
 })();
 ```
 
-The general steps I used for each utility:
+我對每個工具函式使用的一般步驟：
 
-1. Wrap an IIFE to define the scope for the cache variable to reside.
+1. 包裝一個 IIFE 來定義快取變數所在的作用域。
 
-2. In the underlying call, first check the cache, and if a result is already known, return.
+2. 在底層呼叫中，首先檢查快取，如果結果已經知道，就直接回傳。
 
-3. At each place where a `return` was happening originally, assign to the cache and just return the results of that assignment operation—this is a space savings trick mostly just for brevity in the book.
+3. 在每個原本會 `return` 的地方，賦值給快取並直接回傳該賦值運算的結果——這主要是一個節省空間的技巧，僅為了在書中簡潔起見。
 
-I also renamed the inner function from `factorize(..)` to `findFactors(..)`. That's not technically necessary, but it helps it make clearer which function the recursive calls invoke.
+我也將內部函式從 `factorize(..)` 重新命名為 `findFactors(..)`。這在技術上不是必要的，但它有助於更清楚地說明遞迴呼叫調用的是哪個函式。
 
-### Suggested: Closure (PART 2)
+### 建議解答：閉包（第二部分）
 
-The *Closure Exercise (PART 2)* `toggle(..)` can be solved like this:
+*閉包練習（第二部分）*的 `toggle(..)` 可以這樣解決：
 
 ```js
 function toggle(...vals) {
@@ -500,9 +500,9 @@ speed();      // "fast"
 speed();      // "slow"
 ```
 
-### Suggested: Closure (PART 3)
+### 建議解答：閉包（第三部分）
 
-The *Closure Exercise (PART 3)* `calculator()` can be solved like this:
+*閉包練習（第三部分）*的 `calculator()` 可以這樣解決：
 
 ```js
 // from earlier:
@@ -583,13 +583,13 @@ useCalc(calc,"+3=");            // +3=ERR
 useCalc(calc,"51=");            // 51
 ```
 
-| NOTE: |
+| 注意： |
 | :--- |
-| Remember: this exercise is about closure. Don't focus too much on the actual mechanics of a calculator, but rather on whether you are properly *remembering* the calculator state across function calls. |
+| 記住：這個練習是關於閉包的。不要太關注計算機的實際機制，而是關注你是否正確地在函式呼叫之間*記住*了計算機的狀態。 |
 
-### Suggested: Modules
+### 建議解答：模組
 
-The *Modules Exercise* `calculator()` can be solved like this:
+*模組練習*的 `calculator()` 可以這樣解決：
 
 ```js
 // from earlier:
@@ -679,6 +679,6 @@ useCalc(calc,"+3=");            // +3=ERR
 useCalc(calc,"51=");            // 51
 ```
 
-That's it for this book, congratulations on your achievement! When you're ready, move on to Book 3, *Objects & Classes*.
+這本書就到這裡了，恭喜你的成就！當你準備好時，繼續前往第三本書，*Objects & Classes*。
 
 [^MathJSisPrime]: *Math.js: isPrime(..)*, https://github.com/josdejong/mathjs/blob/develop/src/function/utils/isPrime.js, 3 March 2020.
