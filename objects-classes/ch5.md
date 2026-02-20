@@ -1,39 +1,39 @@
-# You Don't Know JS Yet: Objects & Classes - 2nd Edition
-# Chapter 5: Delegation
+# 你所不知道的 JS：物件與類別 - 第二版
+# 第五章：委託
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Work in progress |
+| 撰寫中 |
 
-We've thoroughly explored objects, prototypes, classes, and now the `this` keyword. But we're now going to revisit what we've learned so far from a bit of a different perspective.
+我們已經徹底探索了物件、原型、類別，以及現在的 `this` 關鍵字。但我們現在要從一個稍微不同的角度，重新審視到目前為止所學的內容。
 
-What if you could leverage all the power of the objects, prototypes, and dynamic `this` mechanisms together, without ever using `class` or any of its descendants?
+如果你能同時運用物件、原型和動態 `this` 機制的所有威力，卻完全不使用 `class` 或其任何衍生物呢？
 
-In fact, I would argue JS is inherently less class-oriented than the `class` keyword might appear. Because JS is a dynamic, prototypal language, its strong suit is actually... *delegation*.
+事實上，我認為 JS 本質上並不像 `class` 關鍵字所表現的那樣以類別為導向。因為 JS 是一門動態的、基於原型的語言，它真正的強項其實是……*委託*。
 
-## Preamble
+## 前言
 
-Before we begin looking at delegation, I want to offer a word of caution. This perspective on JS's object `[[Prototype]]` and `this` function context mechanisms is *not* mainstream. It's *not* how framework authors and libraries utilize JS. You won't, to my knowledge, find any big apps out there using this pattern.
+在我們開始探討委託之前，我想先提出一個警告。這種關於 JS 物件 `[[Prototype]]` 和 `this` 函式上下文機制的觀點並*非*主流。它*不是*框架作者和函式庫使用 JS 的方式。據我所知，你不會找到任何大型應用程式使用這種模式。
 
-So why on earth would I devote a chapter to such a pattern, if it's so unpopular?
+那麼，如果這種模式如此不受歡迎，我為什麼要用一整章來介紹它呢？
 
-Good question. The cheeky answer is: because it's my book and I can do what I feel like!
+好問題。俏皮的回答是：因為這是我的書，我想做什麼就做什麼！
 
-But the deeper answer is, because I think developing *this* understanding of one of the language's core pillars helps you *even if* all you ever do is use `class`-style JS patterns.
+但更深層的回答是，因為我認為培養對語言核心支柱之一的*這種*理解，即使你只會使用 `class` 風格的 JS 模式，也能幫助你。
 
-To be clear, delegation is not my invention. It's been around as a design pattern for decades. And for a long time, developers argued that prototypal delegation was *just* the dynamic form of inheritance.[^TreatyOfOrlando] But I think that was a mistake to conflate the two.[^ClassVsPrototype]
+需要澄清的是，委託不是我發明的。它作為一種設計模式已經存在了幾十年。長久以來，開發者們爭論原型委託*只是*繼承的動態形式。[^TreatyOfOrlando] 但我認為將兩者混為一談是個錯誤。[^ClassVsPrototype]
 
-For the purposes of this chapter, I'm going to present delegation, as implemented via JS mechanics, as an alternative design pattern, positioned somewhere between class-orientation and object-closure/module patterns.
+在本章中，我將透過 JS 機制來實現委託，將其作為一種替代設計模式來呈現，定位在類別導向和物件閉包/模組模式之間。
 
-The first step is to *de-construct* the `class` mechanism down to its individual parts. Then we'll cherry-pick and mix the parts a bit differently.
+第一步是將 `class` 機制*解構*為其各個組成部分。然後我們會挑選這些部分，並以稍微不同的方式重新組合。
 
-## What's A Constructor, Anyway?
+## 建構子到底是什麼？
 
-In Chapter 3, we saw `constructor(..)` as the main entry point for construction of a `class` instance. But the `constructor(..)` doesn't actually do any *creation* work, it's only *initialization* work. In other words, the instance is already created by the time the `constructor(..)` runs and initializes it -- e.g., `this.whatever` types of assignments.
+在第三章中，我們看到 `constructor(..)` 是建構 `class` 實例的主要入口點。但 `constructor(..)` 實際上並不做任何*建立*工作，它只是做*初始化*工作。換句話說，實例在 `constructor(..)` 執行並初始化它之前就已經被建立了——例如，`this.whatever` 類型的賦值。
 
-So where does the *creation* work actually happen? In the `new` operator. As the section "New Context Invocation" in Chapter 4 explains, there are four steps the `new` keyword performs; the first of those is the creation of a new empty object (the instance). The `constructor(..)` isn't even invoked until step 3 of `new`'s efforts.
+那麼*建立*工作實際上發生在哪裡？在 `new` 運算子中。正如第四章「新上下文調用」一節所解釋的，`new` 關鍵字執行四個步驟；其中第一步就是建立一個新的空物件（實例）。`constructor(..)` 直到 `new` 工作的第 3 步才被調用。
 
-But `new` is not the only -- or perhaps even, best -- way to *create* an object "instance". Consider:
+但 `new` 不是*建立*物件「實例」的唯一方式——甚至可能不是最好的方式。考慮以下程式碼：
 
 ```js
 // a non-class "constructor"
@@ -55,15 +55,15 @@ point.x;                    // 3
 point.y;                    // 4
 ```
 
-There's no `class`, just a regular function definition (`Point2d(..)`). There's no `new` invocation, just a regular function call (`Point2d(3,4)`). And there's no `this` references, just regular object property assignments (`instance.x = ..`).
+這裡沒有 `class`，只有一個普通的函式定義（`Point2d(..)`）。沒有 `new` 調用，只有一個普通的函式呼叫（`Point2d(3,4)`）。也沒有 `this` 參照，只有普通的物件屬性賦值（`instance.x = ..`）。
 
-The term that's most often used to refer to this pattern of code is that `Point2d(..)` here is a *factory function*. Invoking it causes the construction (creation and initialization) of an object, and returns that back to us. That's an extremely common pattern, at least as common as class-oriented code.
+最常用來指稱這種程式碼模式的術語是，這裡的 `Point2d(..)` 是一個*工廠函式*。調用它會導致物件的建構（建立和初始化），並將其回傳給我們。這是一種極其常見的模式，至少和類別導向的程式碼一樣常見。
 
-I comment-annotated `(1)`, `(3)`, and `(4)` in that snippet, which roughly correspond to steps 1, 3, and 4 of the `new` operation. But where's step 2?
+我在上面的程式碼片段中用註解標註了 `(1)`、`(3)` 和 `(4)`，大致對應 `new` 操作的步驟 1、3 和 4。但步驟 2 在哪裡？
 
-If you recall, step 2 of `new` is about linking the object (created in step 1) to another object, via its `[[Prototype]]` slot (see Chapter 2). So what object might we want to link our `instance` object to? We could link it to an object that holds functions we'd like to associate/use with our instance.
+如果你還記得，`new` 的步驟 2 是透過 `[[Prototype]]` 槽將物件（在步驟 1 中建立的）連結到另一個物件（見第二章）。那麼我們可能想要將 `instance` 物件連結到什麼物件呢？我們可以將它連結到一個持有函式的物件，這些函式是我們想要與實例關聯/使用的。
 
-Let's amend the previous snippet:
+讓我們修改之前的程式碼片段：
 
 ```js
 var prototypeObj = {
@@ -93,11 +93,11 @@ var point = Point2d(3,4);
 point.toString();           // (3,4)
 ```
 
-Now you see the `__proto__` assignment that's setting up the internal `[[Prototype]]` linkage, which was the missing step 2. I used the `__proto__` here merely for illustration purposes; using `setPrototypeOf(..)` as shown in Chapter 4 would have accomplished the same task.
+現在你可以看到 `__proto__` 賦值正在設定內部 `[[Prototype]]` 連結，這就是之前缺少的步驟 2。我在這裡使用 `__proto__` 只是為了說明目的；使用第四章中展示的 `setPrototypeOf(..)` 也可以完成同樣的任務。
 
-### *New* Factory Instance
+### *新的*工廠實例
 
-What do you think would happen if we used `new` to invoke the `Point2d(..)` function as shown here?
+如果我們使用 `new` 來調用這裡展示的 `Point2d(..)` 函式，你認為會發生什麼？
 
 ```js
 var anotherPoint = new Point2d(5,6);
@@ -105,15 +105,15 @@ var anotherPoint = new Point2d(5,6);
 anotherPoint.toString(5,6);         // (5,6)
 ```
 
-Wait! What's going on here? A regular, non-`class` factory function in invoked with the `new` keyword, as if it was a `class`. Does that change anything about the outcome of the code?
+等等！這是怎麼回事？一個普通的、非 `class` 工廠函式被用 `new` 關鍵字調用，就好像它是一個 `class` 一樣。這會改變程式碼的結果嗎？
 
-No... and yes. `anotherPoint` here is exactly the same object as it would have been had I not used `new`. But! The object that `new` creates, links, and assigns as `this` context? *That* object was completely ignored and thrown away, ultimately to be garbage collected by JS. Unfortunately, the JS engine cannot predict that you're not going to use the object that you asked `new` to create, so it always still gets cteated even if it goes unused.
+不會……但也會。這裡的 `anotherPoint` 和不使用 `new` 時的物件完全一樣。但是！`new` 建立、連結並指定為 `this` 上下文的那個物件呢？*那個*物件被完全忽略並丟棄了，最終會被 JS 的垃圾回收機制回收。不幸的是，JS 引擎無法預測你不會使用 `new` 建立的物件，所以即使它不會被使用，它仍然會被建立。
 
-That's right! Using a `new` keyword against a factory function might *feel* more ergonomic or familiar, but it's quite wasteful, in that it creates **two** objects, and wastefully throws one of them away.
+沒錯！對工廠函式使用 `new` 關鍵字可能*感覺*更符合人體工學或更熟悉，但它相當浪費，因為它建立了**兩個**物件，並且浪費地丟棄了其中一個。
 
-### Factory Initialization
+### 工廠初始化
 
-In the current code example, the `Point2d(..)` function still looks an awful lot like a normal `constructor(..)` of a `class` definition. But what if we moved the initialization code to a separate function, say named `init(..)`:
+在目前的程式碼範例中，`Point2d(..)` 函式看起來仍然很像 `class` 定義的普通 `constructor(..)`。但如果我們把初始化程式碼移到一個單獨的函式中，比如命名為 `init(..)` 呢：
 
 ```js
 var prototypeObj = {
@@ -147,9 +147,9 @@ var point = Point2d(3,4);
 point.toString();           // (3,4)
 ```
 
-The `instance.init(..)` call makes use of the `[[Prototype]]` linkage set up via `__proto__` assignment. Thus, it *delegates* up the prototype chain to `prototypeObj.init(..)`, and invokes it with a `this` context of `instance` -- via *implicit context* assignment (see Chapter 4).
+`instance.init(..)` 呼叫利用了透過 `__proto__` 賦值建立的 `[[Prototype]]` 連結。因此，它沿著原型鏈向上*委託*到 `prototypeObj.init(..)`，並以 `instance` 的 `this` 上下文調用它——透過*隱式上下文*指定（見第四章）。
 
-Let's continue the deconstruction. Get ready for a switcheroo!
+讓我們繼續解構。準備好迎接一個大轉換！
 
 ```js
 var Point2d = {
@@ -164,9 +164,9 @@ var Point2d = {
 };
 ```
 
-Whoa, what!? I discarded the `Point2d(..)` function, and instead renamed the `prototypeObj` as `Point2d`. Weird.
+什麼！？我丟棄了 `Point2d(..)` 函式，轉而將 `prototypeObj` 重新命名為 `Point2d`。很奇怪。
 
-But let's look at the rest of the code now:
+但讓我們來看看其餘的程式碼：
 
 ```js
 // steps 1, 2, and 4
@@ -178,7 +178,7 @@ point.init(3,4);
 point.toString();           // (3,4)
 ```
 
-And one last refinement: let's use a built-in utility JS provides us, called `Object.create(..)`:
+最後一個改進：讓我們使用 JS 提供給我們的內建工具，叫做 `Object.create(..)`：
 
 ```js
 // steps 1, 2, and 4
@@ -190,15 +190,15 @@ point.init(3,4);
 point.toString();           // (3,4)
 ```
 
-What operations does `Object.create(..)` perform?
+`Object.create(..)` 執行了什麼操作？
 
-1. create a brand new empty object, out of thin air.
+1. 憑空建立一個全新的空物件。
 
-2. link the `[[Prototype]]` of that new empty object to the function's `.prototype` object.
+2. 將該新空物件的 `[[Prototype]]` 連結到函式的 `.prototype` 物件。
 
-If those look familiar, it's because those are exactly the same first two steps of the `new` keyword (see Chapter 4).
+如果這些看起來很熟悉，那是因為它們與 `new` 關鍵字的前兩個步驟完全相同（見第四章）。
 
-Let's put this back together now:
+讓我們現在把這些重新組合起來：
 
 ```js
 var Point2d = {
@@ -218,13 +218,13 @@ point.init(3,4);
 point.toString();           // (3,4)
 ```
 
-Hmmm. Take a few moments to ponder what's been derived here. How does it compare to the `class` approach?
+嗯。花幾分鐘時間思考一下這裡推導出了什麼。它與 `class` 方法相比如何？
 
-This pattern ditches the `class` and `new` keywords, but accomplishes the exact same outcome. The *cost*? The single `new` operation was broken up into two statements: `Object.create(Point2d)` and `point.init(3,4)`.
+這種模式拋棄了 `class` 和 `new` 關鍵字，但達成了完全相同的結果。*代價*是什麼？單一的 `new` 操作被分解為兩個語句：`Object.create(Point2d)` 和 `point.init(3,4)`。
 
-#### Help Me Reconstruct!
+#### 幫我重新建構！
 
-If having those two operations separate bothers you -- is it *too deconstructed*!? -- they can always be recombined in a little factory helper:
+如果將這兩個操作分開讓你感到困擾——這是不是*解構得太過頭*了！？——它們總是可以在一個小型工廠輔助函式中重新組合：
 
 ```js
 function make(objType,...args) {
@@ -238,11 +238,11 @@ var point = make(Point2d,3,4);
 point.toString();           // (3,4)
 ```
 
-| TIP: |
+| 提示： |
 | :--- |
-| Such a `make(..)` factory function helper works generally for any object-type, as long as you follow the implied convention that each `objType` you link to has a function named `init(..)` on it. |
+| 這樣的 `make(..)` 工廠函式輔助器可以通用於任何物件類型，只要你遵循隱含的慣例，即你連結到的每個 `objType` 上都有一個名為 `init(..)` 的函式。 |
 
-And of course, you can still create as many instances as you'd like:
+當然，你仍然可以建立任意數量的實例：
 
 ```js
 var point = make(Point2d,3,4);
@@ -250,27 +250,27 @@ var point = make(Point2d,3,4);
 var anotherPoint = make(Point2d,5,6);
 ```
 
-## Ditching Class Thinking
+## 拋棄類別思維
 
-Quite frankly, the *deconstruction* we just went through only ends up in slightly different, and maybe slightly better or slightly worse, code as compared to the `class` style. If that's all delegation was about, it probably wouldn't even be useful enough for more than a footnote, much less a whole chapter.
+坦白說，我們剛才進行的*解構*，與 `class` 風格相比，最終只是得到了略有不同、也許稍好或稍差的程式碼。如果委託僅僅是這樣，它可能連一個註腳都不值得，更不用說一整章了。
 
-But here's where we're going to really start pushing the class-oriented thinking itself, not just the syntax, aside.
+但這正是我們要真正開始推開類別導向思維本身的地方，不只是語法。
 
-Class-oriented design inherently creates a hierarchy of *classification*, meaning how we divide up and group characteristics, and then stack them vertically in an inheritance chain. Moreover, defining a subclass is a specialization of the generalized base class. Instantiating is a specialization of the generalized class.
+類別導向設計本質上建立了一個*分類*層次結構，意即我們如何劃分和分組特徵，然後將它們垂直堆疊在繼承鏈中。此外，定義子類別是對通用基礎類別的特化。實例化是對通用類別的特化。
 
-Behavior in a traditional class hierarchy is a vertical composition through the layers of the inheritance chain. Attempts have been made over the decades, and even become rather popular at times, to flatten out deep hierarchies of inheritance, and favor a more horizontal composition through *mixins* and related ideas.
+在傳統的類別層次結構中，行為是透過繼承鏈各層的垂直組合。幾十年來，人們一直嘗試——有時甚至變得相當流行——扁平化深層的繼承層次結構，並偏好透過 *mixin* 和相關概念進行更水平的組合。
 
-I'm not asserting there's anything wrong with those ways of approaching code. But I am saying that they aren't *naturally* how JS works, so adopting them in JS has been a long, winding, complicated road, and has variously accreted lots of nuanced syntax to retrofit on top of JS's core `[[Prototype]]` and `this` pillar.
+我並不是在斷言這些方法有什麼問題。但我想說的是，它們並*不是* JS 天生運作的方式，所以在 JS 中採用它們一直是一條漫長、曲折、複雜的道路，並且逐漸累積了大量細微的語法來改裝在 JS 的核心 `[[Prototype]]` 和 `this` 支柱之上。
 
-For the rest of this chapter, I intend to discard both the syntax of `class` *and* the thinking of *class*.
+在本章的剩餘部分，我打算同時拋棄 `class` 的語法*和*類別的*思維*。
 
-## Delegation Illustrated
+## 委託圖解
 
-So what is delegation about? At its core, it's about two or more *things* sharing the effort of completing a task.
+那麼委託到底是什麼？在其核心，它是關於兩個或更多*事物*共同分擔完成一項任務的努力。
 
-Instead of defining a `Point2d` general parent *thing* that represents shared behavior that a set of one or more child `point` / `anotherPoint` *things* inherit from, delegation moves us to building our program with discrete peer *things* that cooperate with each other.
+委託不是定義一個代表共享行為的 `Point2d` 通用父*物件*，讓一組一個或多個子 `point` / `anotherPoint` *物件*從中繼承，而是引導我們使用離散的對等*物件*來建構程式，這些物件彼此合作。
 
-I'll sketch that out in some code:
+我將用一些程式碼來描繪：
 
 ```js
 var Coordinates = {
@@ -303,33 +303,33 @@ anotherPoint.setXY(5,6);
 Inspect.toString.call(anotherPoint);  // (5,6)
 ```
 
-Let's break down what's happening here.
+讓我們分解一下這裡發生了什麼。
 
-I've defined `Coordinates` as a concrete object that holds some behaviors I associate with setting point coordinates (`x` and `y`). I've also defined `Inspect` as a concrete object that holds some debug inspection logic, such as `toString()`.
+我定義了 `Coordinates` 作為一個具體物件，持有一些我與設定點座標（`x` 和 `y`）相關聯的行為。我還定義了 `Inspect` 作為一個具體物件，持有一些除錯檢查邏輯，例如 `toString()`。
 
-I then create two more concrete objects, `point` and `anotherPoint`.
+然後我建立了兩個更多的具體物件，`point` 和 `anotherPoint`。
 
-`point` has no specific `[[Prototype]]` (default: `Object.prototype`). Using *explicit context* assignment (see Chapter 4), I invoke the `Coordinates.setXY(..)` and `Inspect.toString()` utilities in the context of `point`. That is what I call *explicit delegation*.
+`point` 沒有特定的 `[[Prototype]]`（預設值：`Object.prototype`）。使用*顯式上下文*指定（見第四章），我在 `point` 的上下文中調用了 `Coordinates.setXY(..)` 和 `Inspect.toString()` 工具函式。這就是我所說的*顯式委託*。
 
-`anotherPoint` is `[[Prototype]]` linked to `Coordinates`, mostly for a bit of convenience. That lets me use *implicit context* assignment with `anotherPoint.setXY(..)`. But I can still *explicitly* share `anotherPoint` as context for the `Inspect.toString()` call. That's what I call *implicit delegation*.
+`anotherPoint` 透過 `[[Prototype]]` 連結到 `Coordinates`，主要是為了方便。這讓我可以使用*隱式上下文*指定來呼叫 `anotherPoint.setXY(..)`。但我仍然可以*顯式地*將 `anotherPoint` 作為 `Inspect.toString()` 呼叫的上下文共享。這就是我所說的*隱式委託*。
 
-**Don't miss *this*:** We still accomplished composition: we composed the behaviors from `Coordinates` and `Inspect`, during runtime function invocations with `this` context sharing. We didn't have to author-combine those behaviors into a single `class` (or base-subclass `class` hierarchy) for `point` / `anotherPoint` to inherit from. I like to call this runtime composition, **virtual composition**.
+**不要錯過*這*點：** 我們仍然完成了組合：我們在執行時的函式調用中透過 `this` 上下文共享，組合了來自 `Coordinates` 和 `Inspect` 的行為。我們不必將這些行為在撰寫時組合到單一的 `class`（或基礎-子類別 `class` 層次結構）中供 `point` / `anotherPoint` 繼承。我喜歡稱這種執行時組合為**虛擬組合**。
 
-The *point* here is: none of these four objects is a parent or child. They're all peers of each other, and they all have different purposes. We can organize our behavior in logical chunks (on each respective object), and share the context via `this` (and, optionally `[[Prototype]]` linkage), which ends up with the same composition outcomes as the other patterns we've examined thus far in the book.
+這裡的*重點*是：這四個物件中沒有一個是父或子。它們都是彼此的對等體，而且它們都有不同的用途。我們可以將行為組織在邏輯區塊中（在各自的物件上），並透過 `this`（以及可選的 `[[Prototype]]` 連結）共享上下文，這最終與我們在本書中至今檢視的其他模式產生相同的組合結果。
 
-*That* is the heart of the **delegation** pattern, as JS embodies it.
+*這*就是**委託**模式的核心，正如 JS 所體現的。
 
-| TIP: |
+| 提示： |
 | :--- |
-| In the first edition of this book series, this book ("this & Object Prototypes") coined a term, "OLOO", which stands for "Objects Linked to Other Objects" -- to stand in contrast to "OO" ("Object Oriented"). In this preceding example, you can see the essence of OLOO: all we have are objects, linked to and cooperating with, other objects. I find this beautiful in its simplicity. |
+| 在本書系列的第一版中，這本書（「this 與物件原型」）創造了一個術語「OLOO」，代表「Objects Linked to Other Objects」（物件連結到其他物件）——以對比「OO」（「Object Oriented」，物件導向）。在前面的範例中，你可以看到 OLOO 的精髓：我們擁有的只是物件，連結到其他物件並與之合作。我覺得這種簡潔性很美。 |
 
-## Composing Peer Objects
+## 組合對等物件
 
-Let's take *this delegation* even further.
+讓我們將*這種委託*更進一步。
 
-In the preceding snippet, `point` and `anotherPoint` merely held data, and the behaviors they delegated to were on other objects (`Coordinates` and `Inspect`). But we can add behaviors directly to any of the objects in a delegation chain, and those behaviors can even interact with each other, all through the magic of *virtual composition* (`this` context sharing).
+在前面的程式碼片段中，`point` 和 `anotherPoint` 只是持有資料，它們委託的行為在其他物件上（`Coordinates` 和 `Inspect`）。但我們可以直接在委託鏈中的任何物件上添加行為，而且這些行為甚至可以透過*虛擬組合*（`this` 上下文共享）的魔力相互作用。
 
-To illustrate, we'll evolve our current *point* example a fair bit. And as a bonus we'll actually draw our points on a `<canvas>` element in the DOM. Let's take a look:
+為了說明，我們將把目前的*點*範例進行相當多的演進。作為額外好處，我們實際上會將點繪製在 DOM 中的 `<canvas>` 元素上。讓我們來看看：
 
 ```js
 var Canvas = {
@@ -416,29 +416,29 @@ ControlPoint.rotate(Math.PI / 2);
 // [renders point (-40,30) on the canvas]
 ```
 
-OK, that's a lot of code to digest. Take your time and re-read the snippet several times. I added a couple of new concrete objects (`Canvas` and `ControlPoint`) alongside the previous `Coordinates` object.
+好的，這是大量需要消化的程式碼。慢慢來，多讀幾遍這段程式碼。我在之前的 `Coordinates` 物件旁邊添加了幾個新的具體物件（`Canvas` 和 `ControlPoint`）。
 
-Make sure you see and understand the interactions between these three concrete objects.
+確保你看到並理解這三個具體物件之間的互動。
 
-`ControlPoint` is linked (via `__proto__`) to *implicitly delegate* (`[[Prototype]]` chain) to `Coordinates`.
+`ControlPoint` 透過 `__proto__` 連結，以*隱式委託*（`[[Prototype]]` 鏈）到 `Coordinates`。
 
-Here's an *explicit delegation*: `Canvas.setOrigin.call(ControlPoint,100,100);`; I'm invoking the `Canvas.setOrigin(..)` call in the context of `ControlPoint`. That has the effect of sharing `ctx` with `setOrigin(..)`, via `this`.
+這是一個*顯式委託*：`Canvas.setOrigin.call(ControlPoint,100,100);`；我在 `ControlPoint` 的上下文中調用 `Canvas.setOrigin(..)` 呼叫。這具有透過 `this` 將 `ctx` 與 `setOrigin(..)` 共享的效果。
 
-`ControlPoint.setXY(..)` delegates *implicitly* to `Coordinates.setXY(..)`, but still in the context of `ControlPoint`. Here's a key detail that's easy to miss: see the `this.render()` inside of `Coordinates.setXY(..)`? Where does that come from? Since the `this` context is `ControlPoint` (not `Coordinates`), it's invoking `ControlPoint.render()`.
+`ControlPoint.setXY(..)` *隱式*委託到 `Coordinates.setXY(..)`，但仍然在 `ControlPoint` 的上下文中。這裡有一個容易忽略的關鍵細節：看到 `Coordinates.setXY(..)` 裡面的 `this.render()` 了嗎？它從哪裡來？由於 `this` 上下文是 `ControlPoint`（不是 `Coordinates`），它調用的是 `ControlPoint.render()`。
 
-`ControlPoint.render()` *explicitly delegates* to `Canvas.renderScene()`, again still in the `ControlPoint` context. `renderScene()` calls `this.draw()`, but where does that come from? Yep, still from `ControlPoint` (via `this` context).
+`ControlPoint.render()` *顯式委託*到 `Canvas.renderScene()`，同樣仍然在 `ControlPoint` 的上下文中。`renderScene()` 呼叫 `this.draw()`，但它從哪裡來？沒錯，仍然來自 `ControlPoint`（透過 `this` 上下文）。
 
-And `ControlPoint.draw()`? It *explicitly delegates* to `Canvas.pixel(..)`, yet again still in the `ControlPoint` context.
+而 `ControlPoint.draw()` 呢？它*顯式委託*到 `Canvas.pixel(..)`，再次仍然在 `ControlPoint` 的上下文中。
 
-All three objects have methods that end up invoking each other. But these calls aren't particularly hard-wired. `Canvas.renderScene()` doesn't call `ControlPoint.draw()`, it calls `this.draw()`. That's important, because it means that `Canvas.renderScene()` is more flexible to use in a different `this` context -- e.g., against another kind of *point* object besides `ControlPoint`.
+所有三個物件都有最終會相互調用的方法。但這些呼叫並不是特別硬編碼的。`Canvas.renderScene()` 不是呼叫 `ControlPoint.draw()`，它呼叫的是 `this.draw()`。這很重要，因為它意味著 `Canvas.renderScene()` 在不同的 `this` 上下文中使用時更加靈活——例如，對著 `ControlPoint` 以外的另一種*點*物件使用。
 
-It's through the `this` context, and the `[[Prototype]]` chain, that these three objects basically are mixed (composed) virtually together, as needed at each step, so that they work together **as if they're one object rather than three seperate objects**.
+正是透過 `this` 上下文和 `[[Prototype]]` 鏈，這三個物件基本上在每一步按需被虛擬地混合（組合）在一起，使它們**就像是一個物件而非三個獨立的物件**一樣協同工作。
 
-That's the *beauty* of virtual composition as realized by the delegation pattern in JS.
+這就是 JS 中委託模式實現的虛擬組合之*美*。
 
-### Flexible Context
+### 靈活的上下文
 
-I mentioned above that we can pretty easily add other concrete objects into the mix. Here's an example:
+我在上面提到，我們可以很容易地將其他具體物件加入其中。這裡有一個範例：
 
 ```js
 var Coordinates = { /* .. */ };
@@ -493,21 +493,21 @@ GuideLine.setAnchors(-30,65,45,-17);
 //   on the canvas]
 ```
 
-That's pretty nice, I think!
+我覺得這相當不錯！
 
-But I think another less-obvious benefit is that having objects linked dynamically via `this` context tends to make testing different parts of the program independently, somewhat easier.
+但我認為另一個不太明顯的好處是，透過 `this` 上下文動態連結物件，往往使得獨立測試程式的不同部分變得更加容易。
 
-For example, `Object.setPrototypeOf(..)` can be used to dynamically change the `[[Prototype]]` linkage of an object, delegating it to a different object such as a mock object. Or you could dynamically redefine `GuideLine.draw()` and `GuideLine.render()` to *explicitly delegate* to a `MockCanvas` instead of `Canvas`.
+例如，`Object.setPrototypeOf(..)` 可以用來動態改變物件的 `[[Prototype]]` 連結，將其委託到一個不同的物件，例如一個模擬物件。或者你可以動態重新定義 `GuideLine.draw()` 和 `GuideLine.render()`，使其*顯式委託*到 `MockCanvas` 而不是 `Canvas`。
 
-The `this` keyword, and the `[[Prototype]]` link, are a tremendously flexible mechanism when you understand and leverage them fully.
+當你充分理解並運用 `this` 關鍵字和 `[[Prototype]]` 連結時，它們是一個極其靈活的機制。
 
-## Why *This*?
+## 為什麼用 *This*？
 
-OK, so it's hopefully clear that the delegation pattern leans heavily on implicit input, sharing context via `this` rather than through an explicit parameter.
+好的，希望已經清楚，委託模式嚴重依賴隱式輸入，透過 `this` 共享上下文，而不是透過顯式參數。
 
-You might rightly ask, why not just always pass around that context explicitly? We can certainly do so, but... to manually pass along the necessary context, we'll have to change pretty much every single function signature, and any corresponding call-sites.
+你可能有道理地問，為什麼不總是顯式地傳遞上下文？我們當然可以這樣做，但是……要手動傳遞必要的上下文，我們將不得不改變幾乎每一個函式簽名，以及任何相應的呼叫處。
 
-Let's revisit the earlier `ControlPoint` delegation example, and implement it without any delegation-oriented `this` context sharing. Pay careful attention to the differences:
+讓我們重新審視之前的 `ControlPoint` 委託範例，並在沒有任何委託導向的 `this` 上下文共享的情況下實現它。請仔細注意差異：
 
 ```js
 var Canvas = {
@@ -581,13 +581,13 @@ Canvas.setOrigin(ControlPoint.ctx,100,100);
 // ..
 ```
 
-To be honest, some of you may prefer that style of code. And that's OK if you're in that camp. This snippet avoids `[[Prototype]]` entirely, and only relies on far fewer basic `this.`-style references to properties and methods.
+說實話，你們中有些人可能更喜歡這種風格的程式碼。如果你屬於那個陣營，那也沒關係。這個程式碼片段完全避免了 `[[Prototype]]`，只依賴遠少於此的基本 `this.` 風格的屬性和方法參照。
 
-By contrast, the delegation style I'm advocating for in this chapter is unfamiliar and uses `[[Prototype]]` and `this` sharing in ways you're not likely familiar with. To use such a style effectively, you'll have to invest the time and practice to build a deeper familiarity.
+相比之下，我在本章中倡導的委託風格是不熟悉的，並且以你可能不熟悉的方式使用 `[[Prototype]]` 和 `this` 共享。要有效地使用這種風格，你必須投入時間和練習來建立更深的熟悉度。
 
-But in my opinion, the "cost" of avoiding virtual composition through delegation can be felt across all the function signatures and call-sites; I find them way more cluttered. That explicit context passing is quite a tax.
+但在我看來，避免透過委託進行虛擬組合的「成本」可以在所有函式簽名和呼叫處感受到；我覺得它們更加雜亂。那種顯式上下文傳遞是相當大的負擔。
 
-In fact, I'd never advocate that style of code at all. If you want to avoid delegation, it's probably best to just stick to `class` style code, as seen in Chapter 3. As an exercise left to the reader, try to convert the earlier `ControlPoint` / `GuideLine` code snippets to use `class`.
+事實上，我根本不會提倡那種風格的程式碼。如果你想避免委託，最好還是堅持使用 `class` 風格的程式碼，如第三章所示。作為留給讀者的練習，試著將之前的 `ControlPoint` / `GuideLine` 程式碼片段轉換為使用 `class`。
 
 [^TreatyOfOrlando]: "Treaty of Orlando"; Henry Lieberman, Lynn Andrea Stein, David Ungar; Oct 6, 1987; https://web.media.mit.edu/~lieber/Publications/Treaty-of-Orlando-Treaty-Text.pdf ; PDF; Accessed July 2022
 
