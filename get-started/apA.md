@@ -1,15 +1,15 @@
 # You Don't Know JS Yet: Get Started - 2nd Edition
-# Appendix A: Exploring Further
+# 附錄 A：深入探索
 
-In this appendix, we're going to explore some topics from the main chapter text in a bit more detail. Think of this content as an optional preview of some of the more nuanced details covered throughout the rest of the book series.
+在本附錄中，我們將更詳細地探索主要章節文本中的一些主題。請將此內容視為對本書系列其餘部分中涵蓋的更多細微細節的可選預覽。
 
-## Values vs. References
+## 值 vs. 參考
 
-In Chapter 2, we introduced the two main types of values: primitives and objects. But we didn't discuss yet one key difference between the two: how these values are assigned and passed around.
+在第 2 章中，我們介紹了兩種主要的值型別：原始型別（primitives）和物件。但我們尚未討論兩者之間的一個關鍵差異：這些值如何被賦值和傳遞。
 
-In many languages, the developer can choose between assigning/passing a value as the value itself, or as a reference to the value. In JS, however, this decision is entirely determined by the kind of value. That surprises a lot of developers from other languages when they start using JS.
+在許多語言中，開發者可以選擇以值本身或以值的參考（reference）來賦值/傳遞。然而在 JS 中，這個決定完全取決於值的種類。這讓許多來自其他語言的開發者在開始使用 JS 時感到驚訝。
 
-If you assign/pass a value itself, the value is copied. For example:
+如果你賦值/傳遞的是值本身，該值會被複製。例如：
 
 ```js
 var myName = "Kyle";
@@ -17,9 +17,9 @@ var myName = "Kyle";
 var yourName = myName;
 ```
 
-Here, the `yourName` variable has a separate copy of the `"Kyle"` string from the value that's stored in `myName`. That's because the value is a primitive, and primitive values are always assigned/passed as **value copies**.
+在這裡，`yourName` 變數有一份從 `myName` 中儲存的值複製過來的獨立 `"Kyle"` 字串副本。這是因為該值是原始型別，而原始型別的值總是以**值複製**的方式被賦值/傳遞。
 
-Here's how you can prove there's two separate values involved:
+以下是你可以證明涉及兩個獨立值的方式：
 
 ```js
 var myName = "Kyle";
@@ -35,11 +35,11 @@ console.log(yourName);
 // Kyle
 ```
 
-See how `yourName` wasn't affected by the re-assignment of `myName` to `"Frank"`? That's because each variable holds its own copy of the value.
+看到 `yourName` 沒有受到 `myName` 被重新賦值為 `"Frank"` 的影響了嗎？這是因為每個變數都持有自己的值副本。
 
-By contrast, references are the idea that two or more variables are pointing at the same value, such that modifying this shared value would be reflected by access via any of those references. In JS, only object values (arrays, objects, functions, etc.) are treated as references.
+相比之下，參考是指兩個或多個變數指向同一個值的概念，因此修改這個共享的值會透過任何一個參考的存取而反映出來。在 JS 中，只有物件值（陣列、物件、函式等）會被當作參考來處理。
 
-Consider:
+考慮以下範例：
 
 ```js
 var myAddress = {
@@ -57,13 +57,13 @@ console.log(yourAddress.street);
 // 456 TS Ave
 ```
 
-Because the value assigned to `myAddress` is an object, it's held/assigned by reference, and thus the assignment to the `yourAddress` variable is a copy of the reference, not the object value itself. That's why the updated value assigned to the `myAddress.street` is reflected when we access `yourAddress.street`. `myAddress` and `yourAddress` have copies of the reference to the single shared object, so an update to one is an update to both.
+因為賦值給 `myAddress` 的值是一個物件，它是以參考的方式持有/賦值的，因此賦值給 `yourAddress` 變數的是參考的副本，而不是物件值本身。這就是為什麼更新賦值給 `myAddress.street` 的值會在我們存取 `yourAddress.street` 時反映出來。`myAddress` 和 `yourAddress` 持有的是指向同一個共享物件的參考副本，所以對其中一個的更新就是對兩者的更新。
 
-Again, JS chooses the value-copy vs. reference-copy behavior based on the value type. Primitives are held by value, objects are held by reference. There's no way to override this in JS, in either direction.
+再次強調，JS 根據值的型別來選擇值複製或參考複製的行為。原始型別以值持有，物件以參考持有。在 JS 中無法覆寫這個行為，無論哪個方向都不行。
 
-## So Many Function Forms
+## 如此多的函式形式
 
-Recall this snippet from the "Functions" section in Chapter 2:
+回想一下第 2 章「函式」一節中的這段程式碼：
 
 ```js
 var awesomeFunction = function(coolThings) {
@@ -72,20 +72,20 @@ var awesomeFunction = function(coolThings) {
 };
 ```
 
-The function expression here is referred to as an *anonymous function expression*, since it has no name identifier between the `function` keyword and the `(..)` parameter list. This point confuses many JS developers because as of ES6, JS performs a "name inference" on an anonymous function:
+這裡的函式表達式被稱為*匿名函式表達式*，因為在 `function` 關鍵字和 `(..)` 參數列表之間沒有名稱識別符。這一點讓許多 JS 開發者感到困惑，因為從 ES6 開始，JS 會對匿名函式執行「名稱推斷」：
 
 ```js
 awesomeFunction.name;
 // "awesomeFunction"
 ```
 
-The `name` property of a function will reveal either its directly given name (in the case of a declaration) or its inferred name in the case of an anonymous function expression. That value is generally used by developer tools when inspecting a function value or when reporting an error stack trace.
+函式的 `name` 屬性會顯示其直接給定的名稱（在宣告的情況下）或其在匿名函式表達式情況下的推斷名稱。該值通常被開發者工具在檢查函式值或報告錯誤堆疊追蹤時使用。
 
-So even an anonymous function expression *might* get a name. However, name inference only happens in limited cases such as when the function expression is assigned (with `=`). If you pass a function expression as an argument to a function call, for example, no name inference occurs; the `name` property will be an empty string, and the developer console will usually report "(anonymous function)".
+所以即使是匿名函式表達式也*可能*獲得一個名稱。然而，名稱推斷只在有限的情況下發生，例如當函式表達式被賦值（使用 `=`）時。如果你將函式表達式作為引數傳遞給函式呼叫，例如，就不會發生名稱推斷；`name` 屬性將是空字串，開發者控制台通常會報告「(anonymous function)」。
 
-Even if a name is inferred, **it's still an anonymous function.** Why? Because the inferred name is a metadata string value, not an available identifier to refer to the function. An anonymous function doesn't have an identifier to use to refer to itself from inside itself—for recursion, event unbinding, etc.
+即使名稱被推斷了，**它仍然是一個匿名函式。**為什麼？因為推斷的名稱是一個中繼資料字串值，而不是可用來參考該函式的識別符。匿名函式沒有識別符可以從自身內部參考自己——用於遞迴、事件解除綁定等。
 
-Compare the anonymous function expression form to:
+將匿名函式表達式形式與以下進行比較：
 
 ```js
 // let awesomeFunction = ..
@@ -99,19 +99,19 @@ awesomeFunction.name;
 // "someName"
 ```
 
-This function expression is a *named function expression*, since the identifier `someName` is directly associated with the function expression at compile time; the association with the identifier `awesomeFunction` still doesn't happen until runtime at the time of that statement. Those two identifiers don't have to match; sometimes it makes sense to have them be different, other times it's better to have them be the same.
+這個函式表達式是一個*具名函式表達式*，因為識別符 `someName` 在編譯時就直接與函式表達式關聯；而與識別符 `awesomeFunction` 的關聯要到執行時該陳述式執行時才會發生。這兩個識別符不必相同；有時候讓它們不同是有意義的，有時候讓它們相同則更好。
 
-Notice also that the explicit function name, the identifier `someName`, takes precedence when assigning a *name* for the `name` property.
+還要注意，顯式的函式名稱，即識別符 `someName`，在為 `name` 屬性賦值*名稱*時具有優先權。
 
-Should function expressions be named or anonymous? Opinions vary widely on this. Most developers tend to be unconcerned with using anonymous functions. They're shorter, and unquestionably more common in the broad sphere of JS code out there.
+函式表達式應該是具名的還是匿名的？對此意見分歧很大。大多數開發者傾向於不在意使用匿名函式。它們更短，而且在廣泛的 JS 程式碼領域中無疑更為常見。
 
-In my opinion, if a function exists in your program, it has a purpose; otherwise, take it out! And if it has a purpose, it has a natural name that describes that purpose.
+在我看來，如果一個函式存在於你的程式中，它就有其目的；否則，就把它移除！如果它有目的，它就有一個描述該目的的自然名稱。
 
-If a function has a name, you the code author should include that name in the code, so that the reader does not have to infer that name from reading and mentally executing that function's source code. Even a trivial function body like `x * 2` has to be read to infer a name like "double" or "multBy2"; that brief extra mental work is unnecessary when you could just take a second to name the function "double" or "multBy2" *once*, saving the reader that repeated mental work every time it's read in the future.
+如果一個函式有名稱，身為程式碼作者的你應該在程式碼中包含該名稱，這樣讀者就不必透過閱讀和在心中執行該函式的原始碼來推斷名稱。即使是像 `x * 2` 這樣瑣碎的函式體，也必須被閱讀才能推斷出像「double」或「multBy2」這樣的名稱；當你只需花一秒鐘將函式命名為「double」或「multBy2」*一次*，就能在未來每次閱讀時省去讀者反覆的心智負擔，這份簡短的額外心智工作是不必要的。
 
-There are, regrettably in some respects, many other function definition forms in JS as of early 2020 (maybe more in the future!).
+遺憾的是在某些方面，截至 2020 年初，JS 中有許多其他的函式定義形式（未來可能更多！）。
 
-Here are some more declaration forms:
+以下是更多的宣告形式：
 
 ```js
 // generator function declaration
@@ -127,7 +127,7 @@ async function *four() { .. }
 export function five() { .. }
 ```
 
-And here are some more of the (many!) function expression forms:
+以下是更多的（很多！）函式表達式形式：
 
 ```js
 // IIFE
@@ -154,11 +154,11 @@ someOperation( x => x * 2 );
 // ..
 ```
 
-Keep in mind that arrow function expressions are **syntactically anonymous**, meaning the syntax doesn't provide a way to provide a direct name identifier for the function. The function expression may get an inferred name, but only if it's one of the assignment forms, not in the (more common!) form of being passed as a function call argument (as in the last line of the snippet).
+請記住，箭頭函式表達式在**語法上是匿名的**，這意味著語法不提供直接為函式提供名稱識別符的方式。函式表達式可能會獲得一個推斷的名稱，但只有在它是賦值形式時，而不是在（更常見的！）作為函式呼叫引數傳遞的形式中（如程式碼片段的最後一行）。
 
-Since I don't think anonymous functions are a good idea to use frequently in your programs, I'm not a fan of using the `=>` arrow function form. This kind of function actually has a specific purpose (i.e., handling the `this` keyword lexically), but that doesn't mean we should use it for every function we write. Use the most appropriate tool for each job.
+由於我認為在程式中頻繁使用匿名函式不是好主意，我不太喜歡使用 `=>` 箭頭函式形式。這種函式實際上有其特定用途（即以詞法方式處理 `this` 關鍵字），但這並不意味著我們應該將它用於我們編寫的每個函式。為每項工作使用最合適的工具。
 
-Functions can also be specified in class definitions and object literal definitions. They're typically referred to as "methods" when in these forms, though in JS this term doesn't have much observable difference over "function":
+函式也可以在類別定義和物件字面值定義中指定。當以這些形式出現時，它們通常被稱為「方法」，儘管在 JS 中這個術語與「函式」之間沒有太多可觀察的差異：
 
 ```js
 class SomethingKindaGreat {
@@ -177,17 +177,17 @@ var EntirelyDifferent = {
 };
 ```
 
-Phew! That's a lot of different ways to define functions.
+呼！定義函式的方式真是太多了。
 
-There's no simple shortcut path here; you just have to build familiarity with all the function forms so you can recognize them in existing code and use them appropriately in the code you write. Study them closely and practice!
+這裡沒有簡單的捷徑；你只需要熟悉所有的函式形式，這樣你才能在現有的程式碼中識別它們，並在你編寫的程式碼中適當地使用它們。仔細研究它們並加以練習！
 
-## Coercive Conditional Comparison
+## 強制轉型條件比較
 
-Yes, that section name is quite a mouthful. But what are we talking about? We're talking about conditional expressions needing to perform coercion-oriented comparisons to make their decisions.
+是的，這個小節名稱確實很拗口。但我們在討論什麼？我們在討論條件表達式需要執行強制轉型導向的比較來做出決策。
 
-`if` and `? :`-ternary statements, as well as the test clauses in `while` and `for` loops, all perform an implicit value comparison. But what sort? Is it "strict" or "coercive"? Both, actually.
+`if` 和 `? :`三元陳述式，以及 `while` 和 `for` 迴圈中的測試子句，都會執行隱式的值比較。但是哪種比較？是「嚴格的」還是「強制轉型的」？其實兩者都有。
 
-Consider:
+考慮以下範例：
 
 ```js
 var x = 1;
@@ -202,7 +202,7 @@ while (x) {
 }
 ```
 
-You might think of these `(x)` conditional expressions like this:
+你可能會這樣思考這些 `(x)` 條件表達式：
 
 ```js
 var x = 1;
@@ -217,7 +217,7 @@ while (x == true) {
 }
 ```
 
-In this specific case -- the value of `x` being `1` -- that mental model works, but it's not accurate more broadly. Consider:
+在這個特定的情況下——`x` 的值為 `1`——這個心智模型是有效的，但它在更廣泛的範圍內並不準確。考慮：
 
 ```js
 var x = "hello";
@@ -231,7 +231,7 @@ if (x == true) {
 }
 ```
 
-Oops. So what is the `if` statement actually doing? This is the more accurate mental model:
+糟糕。那麼 `if` 陳述式實際上在做什麼？這是更準確的心智模型：
 
 ```js
 var x = "hello";
@@ -247,21 +247,21 @@ if (Boolean(x) === true) {
 }
 ```
 
-Since the `Boolean(..)` function always returns a value of type boolean, the `==` vs `===` in this snippet is irrelevant; they'll both do the same thing. But the important part is to see that before the comparison, a coercion occurs, from whatever type `x` currently is, to boolean.
+由於 `Boolean(..)` 函式總是回傳一個布林型別的值，在這段程式碼中 `==` 與 `===` 是無關緊要的；它們都會做同樣的事情。但重要的部分是看到在比較之前，會發生一次強制轉型，將 `x` 當前的型別轉換為布林值。
 
-You just can't get away from coercions in JS comparisons. Buckle down and learn them.
+你在 JS 的比較中就是無法避免強制轉型。下定決心好好學習它們吧。
 
-## Prototypal "Classes"
+## 原型「類別」
 
-In Chapter 3, we introduced prototypes and showed how we can link objects through a prototype chain.
+在第 3 章中，我們介紹了原型，並展示了如何透過原型鏈來連結物件。
 
-Another way of wiring up such prototype linkages served as the (honestly, ugly) predecessor to the elegance of the ES6 `class` system (see Chapter 2, "Classes"), and is referred to as prototypal classes.
+另一種建立這種原型連結的方式，是 ES6 `class` 系統（見第 2 章「類別」）的優雅設計的前身（說實話，相當醜陋），被稱為原型類別。
 
-| TIP: |
+| 提示： |
 | :--- |
-| While this style of code is quite uncommon in JS these days, it's still perplexingly rather common to be asked about it in job interviews! |
+| 雖然這種風格的程式碼在如今的 JS 中相當少見，但在求職面試中被問到卻仍然出奇地常見！ |
 
-Let's first recall the `Object.create(..)` style of coding:
+讓我們先回顧 `Object.create(..)` 風格的寫法：
 
 ```js
 var Classroom = {
@@ -276,9 +276,9 @@ mathClass.welcome();
 // Welcome, students!
 ```
 
-Here, a `mathClass` object is linked via its prototype to a `Classroom` object. Through this linkage, the function call `mathClass.welcome()` is delegated to the method defined on `Classroom`.
+在這裡，`mathClass` 物件透過其原型連結到 `Classroom` 物件。透過這個連結，函式呼叫 `mathClass.welcome()` 被委派到定義在 `Classroom` 上的方法。
 
-The prototypal class pattern would have labeled this delegation behavior "inheritance," and alternatively have defined it (with the same behavior) as:
+原型類別模式會將這種委派行為稱為「繼承」，並以替代方式（具有相同行為）定義如下：
 
 ```js
 function Classroom() {
@@ -295,15 +295,15 @@ mathClass.welcome();
 // Welcome, students!
 ```
 
-All functions by default reference an empty object at a property named `prototype`. Despite the confusing naming, this is **not** the function's *prototype* (where the function is prototype linked to), but rather the prototype object to *link to* when other objects are created by calling the function with `new`.
+所有函式預設都在名為 `prototype` 的屬性上參考一個空物件。儘管命名令人困惑，這**不是**函式的*原型*（函式的原型連結所指向的），而是當其他物件透過使用 `new` 呼叫該函式而建立時要*連結到*的原型物件。
 
-We add a `welcome` property on that empty object (called `Classroom.prototype`), pointing at the `hello()` function.
+我們在那個空物件（稱為 `Classroom.prototype`）上新增一個 `welcome` 屬性，指向 `hello()` 函式。
 
-Then `new Classroom()` creates a new object (assigned to `mathClass`), and prototype links it to the existing `Classroom.prototype` object.
+然後 `new Classroom()` 建立一個新物件（賦值給 `mathClass`），並將其原型連結到現有的 `Classroom.prototype` 物件。
 
-Though `mathClass` does not have a `welcome()` property/function, it successfully delegates to the function `Classroom.prototype.welcome()`.
+雖然 `mathClass` 沒有 `welcome()` 屬性/函式，它成功地委派到了 `Classroom.prototype.welcome()` 函式。
 
-This "prototypal class" pattern is now strongly discouraged, in favor of using ES6's `class` mechanism:
+這種「原型類別」模式現在已經被強烈不建議使用，取而代之的是使用 ES6 的 `class` 機制：
 
 ```js
 class Classroom {
@@ -322,4 +322,4 @@ mathClass.welcome();
 // Welcome, students!
 ```
 
-Under the covers, the same prototype linkage is wired up, but this `class` syntax fits the class-oriented design pattern much more cleanly than "prototypal classes".
+在底層，同樣的原型連結被建立起來，但這個 `class` 語法比「原型類別」更加優雅地符合類別導向的設計模式。
