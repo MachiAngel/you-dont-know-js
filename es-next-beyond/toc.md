@@ -1,12 +1,12 @@
-# You Don't Know JS Yet: ES.Next & Beyond - 2nd Edition
+# 你所不知道的 JS（進階篇）：ES.Next 與未來展望 - 第二版
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Work in progress |
+| 編寫中 |
 
-## Table of Contents
+## 目錄
 
-* Foreword
-* Preface
-* Chapter 1: TODO
-    * TODO
+* 前言
+* 序言
+* 第一章：待定
+    * 待定

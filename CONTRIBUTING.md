@@ -1,56 +1,56 @@
-# Contributing
+# 貢獻指南
 
-This book series is now complete, **so we are no longer open to contributions.**
+本書系現已完結，**因此我們不再接受貢獻。**
 
-## Translations
+## 翻譯
 
-If you're wanting to translate these books, please keep in mind that any such translations **must be posted to this github repository, free and open, and not monetized.**
+如果你想翻譯這些書，請注意任何此類翻譯**必須發佈在此 GitHub 儲存庫中，免費且公開，不得營利。**
 
-Foreign translations are appreciated, but only for the 3 second edition books.
+我們歡迎外語翻譯，但僅限第二版的 3 本書。
 
-**We will not be accepting any new foreign translations for previous editions.**
+**我們將不再接受任何先前版本的外語翻譯。**
 
 ----
 
-Please check these issues first:
+請先查看以下議題：
 
 * https://github.com/getify/You-Dont-Know-JS/issues?utf8=%E2%9C%93&q=label%3A%22foreign+language+translations%22+
 * https://github.com/getify/You-Dont-Know-JS/issues/9
 * https://github.com/getify/You-Dont-Know-JS/issues/900
 * https://github.com/getify/You-Dont-Know-JS/issues/1378
 
-To summarize, the steps for a foreign language translation are:
+總結來說，外語翻譯的步驟如下：
 
-1. Fork this repo
-2. Make your own translation entirely in your fork, preferably of all six books, but at a minimum of one whole book
-3. File an issue asking for a branch to be made on our main repo, named for that [language's ISO code](http://www.lingoes.net/en/translator/langcode.htm)
-4. Once the branch is created, you can PR to merge your translated work in
-5. Once the merge is complete, I will promote you to a repository maintainer so you can manage any further translation maintenance work on your own branch of this repo
+1. Fork 此儲存庫
+2. 在你的 fork 中完成全部翻譯，最好是全部六本書，但至少完成一整本書
+3. 提交一個 issue，要求在我們的主儲存庫上建立一個以該[語言的 ISO 代碼](http://www.lingoes.net/en/translator/langcode.htm)命名的分支
+4. 分支建立後，你可以提交 PR 來合併你的翻譯作品
+5. 合併完成後，我會將你提升為儲存庫維護者，以便你能在此儲存庫的你自己的分支上自行管理後續的翻譯維護工作
 
-## Reading Experience (Chapter/Section links, etc)
+## 閱讀體驗（章節／段落連結等）
 
-I understand that reading one long .md file, with no relative cross links to other sections/etc, is not the preferred reading experience for most of you. As such, it's totally reasonable to want to file an issue/PR to add those kinds of features.
+我理解閱讀一個冗長的 .md 檔案，且沒有指向其他章節的相對交叉連結等功能，對大多數人來說並非理想的閱讀體驗。因此，想要提交 issue 或 PR 來新增這類功能是完全合理的。
 
-This topic has been brought up many times, and I've considered it. But we are not accepting such changes. 
+這個話題已經被提出過很多次，我也考慮過。但我們不接受此類更改。
 
-The main purpose of my book repos is to track and manage the content for the purposes of publication (paid-for ebooks and print books). I do this in the open because I also care about providing free and early access to the content, to make sure there is no paywall barrier to learning.
+我的書籍儲存庫的主要目的是追蹤和管理出版用途（付費電子書和紙本書）的內容。我之所以公開進行，是因為我也在意提供免費且早期的內容存取，以確保學習不會有付費牆的障礙。
 
-As such, this repo **is not optimized for your reading experience.**
+因此，此儲存庫**並非為了優化你的閱讀體驗而設計。**
 
-The intended **best reading experience** are the published books (either ebook or print), so I encourage you to purchase them for that purpose.
+預期的**最佳閱讀體驗**是已出版的書籍（電子書或紙本書），因此我鼓勵你為此目的購買它們。
 
-## Editions
+## 版本
 
-The current (and final) edition of the books is the 2nd edition.
+目前（也是最終）的書籍版本是第二版。
 
-We **are not accepting any contributions** for these books, no exceptions.
+我們**不接受任何**對這些書的貢獻，沒有例外。
 
-## Typos?
+## 錯字？
 
-We're not worried about typo fixes anymore. The books are done and published.
+我們不再擔心錯字修正了。書籍已經完成並出版。
 
-## Search First!
+## 先搜尋！
 
-Seriously, no more need for contributions.
+說真的，不再需要貢獻了。
 
-If you have a question, please search first before asking. It's probably already been asked and answered before, as these books have been around for 12 years now. 
+如果你有問題，請在提問之前先搜尋。這些問題可能已經被問過並回答過了，因為這些書已經存在了 12 年。

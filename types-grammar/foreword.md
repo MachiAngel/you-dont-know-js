@@ -1,6 +1,6 @@
-# You Don't Know JS Yet: Types & Grammar - 2nd Edition
-# Foreword
+# 你所不知道的 JS（進階篇）：型別與文法 - 第二版
+# 前言
 
-| NOTE: |
+| 注意： |
 | :--- |
-| Work in progress |
+| 撰寫中 |

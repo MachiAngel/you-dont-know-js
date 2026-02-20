@@ -1,7 +1,6 @@
-# You Don't Know JS Yet: Sync & Async - 2nd Edition
-# Chapter 1: TODO
+# 你所不知道的 JS（進階篇）：同步與非同步 - 第二版
+# 第一章：待定
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Work in progress |
-
+| 編寫中 |

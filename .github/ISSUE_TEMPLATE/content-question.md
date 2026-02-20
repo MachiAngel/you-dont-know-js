@@ -1,8 +1,8 @@
 ---
-name: Content Question
-about: Ask a question about something you read in the books?
+name: 內容問題
+about: 想針對書中閱讀到的內容提出問題嗎？
 labels:
 
 ---
 
-**We are not currently accepting any more corrections to the book content. The 2nd edition books have all been published and finalized. Thank you for your interest and support.**
+**我們目前不再接受任何書籍內容的修正。第二版的所有書籍已經出版並定稿。感謝您的關注與支持。**

@@ -1,8 +1,8 @@
 ---
-name: Textual/Grammar Typo
-about: Help us correct a spelling or grammar error in the text.
+name: 文字／文法錯誤
+about: 協助我們修正文本中的拼寫或文法錯誤。
 labels:
 
 ---
 
-**We are not currently accepting any more corrections to the book content. The 2nd edition books have all been published and finalized. Thank you for your interest and support.**
+**我們目前不再接受任何書籍內容的修正。第二版的所有書籍已經出版並定稿。感謝您的關注與支持。**

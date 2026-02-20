@@ -1,6 +1,6 @@
-# You Don't Know JS Yet: Async & Performance - 2nd Edition
-# Foreword
+# 你所不知道的 JS（進階篇）：同步與非同步 - 第二版
+# 前言
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Work in progress |
+| 編寫中 |

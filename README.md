@@ -1,65 +1,65 @@
-# You Don't Know JS Yet (book series) - 2nd Edition
+# 你所不知道的 JS（進階篇）（書系）- 第二版
 
-This is a series of books diving deep into the core mechanisms of the JavaScript language. This is the **second edition** of the book series:
+這是一系列深入探討 JavaScript 語言核心機制的書籍。這是本書系的**第二版**：
 
 <a href="https://leanpub.com/ydkjsy-get-started"><img src="get-started/images/cover.png" width="75"></a>&nbsp;&nbsp;
 <a href="https://leanpub.com/ydkjsy-scope-closures"><img src="scope-closures/images/cover.png" width="75"></a>&nbsp;&nbsp;
 <a href="https://leanpub.com/ydkjsy-unbooks"><img src="unbooks-cover.png" width="75"></a>
 
-**To read more about the motivations and perspective behind this book series, check out the [Preface](preface.md).**
+**若想進一步了解本書系背後的動機與觀點，請參閱[前言](preface.md)。**
 
-If you're looking for the previous **first edition** books, [they can be found here](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/README.md).
+如果你正在尋找先前的**第一版**書籍，[可以在這裡找到](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/README.md)。
 
-## Titles
+## 書目
 
-I recommend reading the **second edition** books in this order:
+我建議按照以下順序閱讀**第二版**書籍：
 
-* [Get Started](get-started/README.md) | [Buy on Leanpub](https://leanpub.com/ydkjsy-get-started) | [Buy on Amazon](https://www.amazon.com/dp/B084BNMN7T)
-* [Scope & Closures](scope-closures/README.md) | [Buy on Leanpub](https://leanpub.com/ydkjsy-scope-closures) | [Buy on Amazon](https://www.amazon.com/dp/B08634PZ3N)
-* "The Unbooks" (ebook) | [Buy on Leanpub](https://leanpub.com/ydkjsy-unbooks) | [Buy on Amazon](https://www.amazon.com/dp/B0F7H1DN5S)
-    - [Objects & Classes](objects-classes/README.md) (draft stable)
-    - [Types & Grammar](types-grammar/README.md) (rough draft)
-    - ~~Sync & Async (canceled)~~
-    - ~~ES.Next & Beyond (canceled)~~
+* [入門起步](get-started/README.md) | [在 Leanpub 購買](https://leanpub.com/ydkjsy-get-started) | [在 Amazon 購買](https://www.amazon.com/dp/B084BNMN7T)
+* [作用域與閉包](scope-closures/README.md) | [在 Leanpub 購買](https://leanpub.com/ydkjsy-scope-closures) | [在 Amazon 購買](https://www.amazon.com/dp/B08634PZ3N)
+* "番外篇"（電子書）| [在 Leanpub 購買](https://leanpub.com/ydkjsy-unbooks) | [在 Amazon 購買](https://www.amazon.com/dp/B0F7H1DN5S)
+    - [物件與類別](objects-classes/README.md)（草稿穩定版）
+    - [型別與語法](types-grammar/README.md)（初步草稿）
+    - ~~同步與非同步（已取消）~~
+    - ~~ES.Next 與未來展望（已取消）~~
 
-If you're looking for the previous **first edition** books, [they can be found here](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/README.md).
+如果你正在尋找先前的**第一版**書籍，[可以在這裡找到](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/README.md)。
 
-## Publishing
+## 出版
 
-As always, you'll be able to read these books online here entirely for free.
+一如既往，你可以在這裡完全免費地線上閱讀這些書籍。
 
-This edition of the books is being self-published through [GetiPub](https://geti.pub) publishing. The published books will be made available for sale through normal book retail sources.
+本版書籍透過 [GetiPub](https://geti.pub) 出版社自行出版。已出版的書籍將透過一般書籍零售通路販售。
 
-If you'd like to contribute financially towards the effort (or any of my other OSS efforts) aside from purchasing the published books, please consider these options:
+如果你想在購買已出版書籍之外，對這項工作（或我的其他開源專案）提供經濟上的支持，請考慮以下方式：
 
-* [Github Sponsorship](https://github.com/users/getify/sponsorship)
+* [GitHub 贊助](https://github.com/users/getify/sponsorship)
 * [Patreon](https://www.patreon.com/getify)
 * [Paypal](https://www.paypal.me/getify)
 
-## Contributions
+## 貢獻
 
-This book series is now complete, and is **not open to further contributions**.
+本書系現已完結，**不再接受進一步的貢獻**。
 
-Thank you to those who've been part of the 11 years journey of this book series.
+感謝所有曾參與本書系 11 年旅程的人。
 
-## Thank You To These Wonderful Sponsors
+## 感謝這些出色的贊助者
 
 [![Frontend Masters Logo (dark)](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/external-logos/fem_logo-light.svg)](https://frontendmasters.com#gh-light-mode-only)
 
 [![Frontend Masters Logo (light)](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/external-logos/fem_logo.svg)](https://frontendmasters.com#gh-dark-mode-only)
 
-**The first two books of the second edition** are exclusively sponsored by **[Frontend Masters](https://frontendmasters.com/?code=simpson)**.
+**第二版的前兩本書**由 **[Frontend Masters](https://frontendmasters.com/?code=simpson)** 獨家贊助。
 
-Frontend Masters is the gold standard for top-of-the-line expert training material in frontend-oriented software development. With over 150 courses on all things frontend, this should be your first and only stop for quality video training on HTML, CSS, JS, and related technologies.
+Frontend Masters 是前端導向軟體開發領域中頂尖專家培訓教材的黃金標準。提供超過 150 門涵蓋所有前端技術的課程，這裡應該是你學習 HTML、CSS、JS 及相關技術優質影片教學的首選與唯一選擇。
 
-**Note:** I teach [all my workshops](https://frontendmasters.com/teachers/kyle-simpson?code=simpson) exclusively through Frontend Masters. If you like this book content, please check out my video training courses.
+**注意：** 我的[所有工作坊](https://frontendmasters.com/teachers/kyle-simpson?code=simpson)都是透過 Frontend Masters 獨家授課。如果你喜歡本書的內容，歡迎參考我的影片培訓課程。
 
-I want to extend a warm and deep thanks to Marc Grabanski and the entire Frontend Masters team, not only for their excellent work with the video training platform, but for their unwavering support of me and of the "You Don't Know JS" books!
+我要向 Marc Grabanski 及整個 Frontend Masters 團隊致以溫暖而深摯的感謝，不僅因為他們在影片培訓平台上的出色工作，更因為他們對我以及「你所不知道的 JS（進階篇）」書系始終如一的支持！
 
 ----
 
-## License & Copyright
+## 授權與版權
 
-The materials herein are all &copy; 2019-2025 Kyle Simpson.
+本書所有內容 &copy; 2019-2025 Kyle Simpson。
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivs 4.0 Unported License</a>.
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />本作品採用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">創用 CC 姓名標示-非商業性-禁止改作 4.0 國際授權條款</a>授權。

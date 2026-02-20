@@ -1,43 +1,43 @@
-# You Don't Know JS Yet: Types & Grammar - 2nd Edition
+# 你所不知道的 JS（進階篇）：型別與文法 - 第二版
 
-| NOTE: |
+| 注意： |
 | :--- |
-| Work in progress |
+| 撰寫中 |
 
-## Table of Contents
+## 目錄
 
-* Foreword
-* Preface
-* Chapter 1: Primitive Values
-	* Value Types
-    * Empty Values
-    * Boolean Values
-    * String Values
-    * Number Values
-    * BigInteger Values
-    * Symbol Values
-    * Primitives Are Built-In Types
-* Chapter 2: Primitive Behaviors
-    * Primitive Immutability
-    * Primitive Assignments
-    * String Behaviors
-    * Number Behaviors
-    * Primitives Are Foundational
-* Chapter 3: Object Values
-    * Types of Objects
-    * Plain Objects
-    * Fundamental Objects
-    * Other Built-in Objects
-    * Arrays
-    * Regular Expressions
-    * Functions
-    * Proposed: Records/Tuples
-    * TODO
-* Chapter 4: Coercing Values
-    * Coercion: Explicit vs Implicit
-    * Abstracts
-    * Concrete Coercions
-    * Coercion Corner Cases
-    * Type Awareness
-    * What's Left?
-* Thank You!
+* 前言
+* 序
+* 第一章：原始值
+	* 值的型別
+    * 空值
+    * 布林值
+    * 字串值
+    * 數字值
+    * BigInteger 值
+    * Symbol 值
+    * 原始值是內建型別
+* 第二章：原始值行為
+    * 原始值的不可變性
+    * 原始值的賦值
+    * 字串行為
+    * 數字行為
+    * 原始值是基礎
+* 第三章：物件值
+    * 物件的型別
+    * 一般物件
+    * 基本物件
+    * 其他內建物件
+    * 陣列
+    * 正規表達式
+    * 函式
+    * 提案中：Records/Tuples
+    * 待完成
+* 第四章：值的強制轉型
+    * 強制轉型：顯式 vs 隱式
+    * 抽象運算
+    * 具體的強制轉型
+    * 強制轉型的邊界案例
+    * 型別意識
+    * 還有什麼？
+* 致謝！

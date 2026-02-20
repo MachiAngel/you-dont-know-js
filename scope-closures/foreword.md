@@ -1,17 +1,17 @@
-# You Don't Know JS Yet: Scope & Closures - 2nd Edition
-# Foreword
+# 你所不知道的 JS（進階篇）：作用域與閉包 - 第二版
+# 前言
 
-If I look over the books on my bookshelf, I can clearly see which of these titles are well loved. Well loved in this sense meaning they are a little worn. Their binding is broken, their pages are tattered, there might even be a spilled drink smear or two. What’s ironic to me is that the most loved of my books often _**look**_ the least cared for, though honestly the opposite is true.
+如果我看看書架上的書，可以清楚地看出哪些是我最愛的。在這裡「最愛」的意思是它們有些磨損了。書脊裂開了，書頁破舊了，上面甚至可能有一兩處灑到飲料的痕跡。對我來說有些諷刺的是，我最愛的書往往*看起來*最不被愛惜，但事實恰恰相反。
 
-*Scope and Closures* (1st ed.) is one of my most loved books. It’s small, but the binding is coming undone. The pages are worn and dog-eared. It’s a bit rumpled. It’s not a book I’ve read once. I’ve picked it up again and again in the many years since it was originally published.
+*Scope and Closures*（第一版）是我最愛的書之一。它很薄，但書脊已經散開了。書頁磨損且折了角。有點皺巴巴的。這不是一本我只讀過一次的書。自從它最初出版以來，多年來我反覆拿起它閱讀。
 
-For me, it’s also been a benchmark for my own personal progression through JavaScript. When I first read it in 2014, I was familiar with the concepts but the depth of my understanding was admittedly not as deep as the thin volume.
+對我來說，它也是衡量我個人 JavaScript 學習進程的一個基準。當我在 2014 年第一次閱讀它時，我對這些概念已有所了解，但我的理解深度坦白說還不及這本薄薄的書。
 
-Over the years, even though I wasn’t necessarily feeling my own improvement on a day-to-day basis, each one of the concepts became more approachable. I’d smile to myself, realizing how far I’d come with the help of these guides. It became apparent there was an inverse correlation between how well I treated the book and how much I loved it.
+多年來，即使我並沒有每天都感覺到自己的進步，但每一個概念都變得更加平易近人。我會對自己微笑，意識到在這些指南的幫助下我已經走了多遠。很明顯，我對待這本書的方式與我對它的喜愛程度之間存在一種反比關係。
 
-When Kyle asked me to write the Foreword for the 2nd edition, I was floored. It’s not often you’re asked to write about a book that’s been so formative for your own understanding and career, *Scope and Closures* in particular. I remember the day I first understood closures, the first time I used one well. The satisfaction was great, in part because the symmetry of the idea was compelling to me. Before I even picked this book up, I was already enamoured with closures. And yet, there’s a difference between being able to execute code successfully and fully explore the concepts with any depth. This book took my base understanding and drew it out, helped me master it.
+當 Kyle 邀請我為第二版撰寫前言時，我受寵若驚。被邀請撰寫一本對你自己的理解和職業生涯如此重要的書的文章，這並不常見，尤其是 *Scope and Closures*。我記得第一次理解閉包的那天，第一次正確使用它的那一刻。那份滿足感很大，部分原因是這個概念的對稱性對我來說很有吸引力。甚至在我拿起這本書之前，我就已經對閉包著迷了。然而，能夠成功執行程式碼和能夠深入探索概念之間是有區別的。這本書將我的基礎理解抽絲剝繭般展開，幫助我真正掌握了它。
 
-This book is deceptively short. It’s helpful that it’s small because it’s dense with useful knowledge. Since it is compact, I’d suggest you give yourself time to absorb each page. Take your time with it. Treat the book with care, and by that I mean, wear it down.
+這本書看起來很薄，但不要被它騙了。它之所以能夠這麼精簡，是因為裡面充滿了有用的知識。由於它很精練，我建議你給自己時間去消化每一頁。慢慢來。好好對待這本書，我的意思是，把它翻到磨損。
 
 Sarah Drasner<br>
 Head of Developer Experience<br>

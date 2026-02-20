@@ -1,57 +1,57 @@
-# You Don't Know JS Yet: Objects & Classes - 2nd Edition
+# 你所不知道的 JS（進階篇）：物件與類別 - 第二版
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Work in progress |
+| 編寫中 |
 
-## Table of Contents
+## 目錄
 
-* Foreword
-* Preface
-* Chapter 1: Object Foundations
-    * About This Book
-    * Objects As Containers
-    * Defining Properties
-    * Accessing Properties
-    * Assigning Properties
-    * Deleting Properties
-    * Determining Container Contents
-    * Temporary Containers
-    * Containers Are Collections Of Properties
-* Chapter 2: How Objects Work
-    * Property Descriptors
-    * Object Sub-Types
-    * Object Characteristics
-    * Extending the MOP
-    * `[[Prototype]]` Chain
-    * Objects Behavior
-* Chapter 3: Classy Objects
-    * When Should I Class-Orient My Code?
-    * Keep It `class`y
-    * Class Instance `this`
-    * Class Extension
-    * Static Class Behavior
-    * Private Class Behavior
-    * Class Example
-* Chapter 4: This Works
-    * This Aware
-    * This Is It!
-    * An Arrow Points Somewhere
-    * Variations
-    * Stay Aware
-* Chapter 5: Delegation
-    * Preamble
-    * What's A Constructor, Anyway?
-    * Ditching Class Thinking
-    * Delegation Illustrated
-    * Composing Peer Objects
-    * Why *This*?
-* Thank You!
-* TODO:
-    * object wrappers (String, Boolean, etc)
-    * object coercions (valueof, tostring, boxing)
-    * well-known symbols extension points on objects
-    * proxies
-    * old "prototypal class" style
-    * "inheritance" objections
-    * protected visibility
+* 前言
+* 序
+* 第一章：物件基礎
+    * 關於本書
+    * 物件作為容器
+    * 定義屬性
+    * 存取屬性
+    * 賦值屬性
+    * 刪除屬性
+    * 判斷容器內容
+    * 暫時性容器
+    * 容器是屬性的集合
+* 第二章：物件的運作方式
+    * 屬性描述器
+    * 物件子型別
+    * 物件特性
+    * 擴展 MOP
+    * `[[Prototype]]` 鏈
+    * 物件行為
+* 第三章：優雅的物件
+    * 何時應該使用類別導向的程式碼？
+    * 保持 `class` 風格
+    * 類別實例的 `this`
+    * 類別擴展
+    * 靜態類別行為
+    * 私有類別行為
+    * 類別範例
+* 第四章：This 的運作
+    * 認識 This
+    * 就是 This！
+    * 箭頭指向某處
+    * 變體
+    * 保持警覺
+* 第五章：委託
+    * 前言
+    * 建構子究竟是什麼？
+    * 拋開類別思維
+    * 委託圖解
+    * 組合對等物件
+    * 為何是 *This*？
+* 感謝！
+* 待辦：
+    * 物件包裝器（String、Boolean 等）
+    * 物件強制轉型（valueOf、toString、boxing）
+    * 物件上的知名符號擴展點
+    * 代理（Proxies）
+    * 舊式「原型類別」風格
+    * 「繼承」的反對意見
+    * 受保護的可見性

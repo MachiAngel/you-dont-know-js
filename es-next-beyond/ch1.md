@@ -1,7 +1,6 @@
-# You Don't Know JS Yet: ES.Next & Beyond - 2nd Edition
-# Chapter 1: TODO
+# 你所不知道的 JS（進階篇）：ES.Next 與未來展望 - 第二版
+# 第一章：待定
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Work in progress |
-
+| 編寫中 |

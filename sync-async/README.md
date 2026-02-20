@@ -1,11 +1,11 @@
-# You Don't Know JS Yet: Async & Performance - 2nd Edition
+# 你所不知道的 JS（進階篇）：同步與非同步 - 第二版
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Work in progress |
+| 編寫中 |
 
-[Table of Contents](toc.md)
+[目錄](toc.md)
 
-* [Foreword](foreword.md) (by TBA)
-* [Preface](../preface.md)
-* [Chapter 1: TODO](ch1.md)
+* [前言](foreword.md)（由待定撰寫）
+* [序言](../preface.md)
+* [第一章：待定](ch1.md)

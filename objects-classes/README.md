@@ -1,16 +1,16 @@
-# You Don't Know JS Yet: Objects & Classes - 2nd Edition
+# 你所不知道的 JS（進階篇）：物件與類別 - 第二版
 
-| NOTE: |
+| 備註： |
 | :--- |
-| Work in progress |
+| 編寫中 |
 
-[Table of Contents](toc.md)
+[目錄](toc.md)
 
-* [Foreword](foreword.md) (by [Rick Waldron](https://twitter.com/rwaldron))
-* [Preface](../preface.md)
-* [Chapter 1: Object Foundations](ch1.md)
-* [Chapter 2: How Objects Work](ch2.md)
-* [Chapter 3: Classy Objects](ch3.md)
-* [Chapter 4: This Works](ch4.md)
-* [Chapter 5: Delegation](ch5.md)
-* [Thank You!](thanks.md)
+* [前言](foreword.md)（由 [Rick Waldron](https://twitter.com/rwaldron) 撰寫）
+* [序](../preface.md)
+* [第一章：物件基礎](ch1.md)
+* [第二章：物件的運作方式](ch2.md)
+* [第三章：優雅的物件](ch3.md)
+* [第四章：This 的運作](ch4.md)
+* [第五章：委託](ch5.md)
+* [感謝！](thanks.md)

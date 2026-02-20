@@ -1,84 +1,84 @@
-# You Don't Know JS Yet - 2nd Edition
-# Preface
+# 你所不知道的 JS（進階篇）- 第二版
+# 前言
 
-Welcome to the 2nd edition of the widely acclaimed *You Don't Know JS* (**YDKJS**) book series: *You Don't Know JS **Yet*** (**YDKJSY**).
+歡迎來到廣受好評的《你所不知道的 JS》（**YDKJS**）書系第二版：《你所不知道的 JS（**進階篇**）》（**YDKJSY**）。
 
-If you've read any of the 1st edition books, you can expect a refreshed approach in these new ones, with plenty of updated coverage of what's changed in JS over the last five years. But what I hope and believe you'll still *get* is the same commitment to respecting JS and digging into what really makes it tick.
+如果你讀過第一版的任何一本書，你會在這些新書中看到煥然一新的方法，並大量更新了過去五年間 JavaScript 變化的內容。但我希望且相信你仍然能*感受到*的是——同樣對 JavaScript 的尊重，以及對深入挖掘其運作機制的承諾。
 
-If this is your first time reading these books, I'm glad you're here. Prepare for a deep and extensive journey into all the corners of JavaScript.
+如果這是你第一次閱讀這些書，我很高興你在這裡。準備好踏上一段深入且廣泛的旅程，探索 JavaScript 的每一個角落。
 
-If you are new to programming or JS, be aware that these books are not intended as a gentle "intro to JavaScript." This material is, at times, complex and challenging, and goes much deeper than is typical for a first-time learner. You're welcome here no matter what your background is, but these books are written assuming you're already comfortable with JS and have at least 6–9 months experience with it.
+如果你是程式設計或 JavaScript 的新手，請注意這些書並非溫和的「JavaScript 入門」。這些內容有時複雜且具有挑戰性，比初學者通常接觸的內容要深入得多。無論你的背景如何，都歡迎你來到這裡，但這些書的撰寫前提是假設你已經熟悉 JavaScript，並且至少有 6 到 9 個月的使用經驗。
 
-## The Parts
+## 各個部分
 
-These books approach JavaScript intentionally opposite of how *The Good Parts* treats the language. No, that doesn't mean we're looking at *the bad parts*, but rather, exploring **all the parts**.
+這些書刻意以與《JavaScript 精粹》（*The Good Parts*）相反的方式來對待這門語言。不，這並不意味著我們要看的是*糟糕的部分*，而是要探索**所有的部分**。
 
-You may have been told, or felt yourself, that JS is a deeply flawed language that was poorly designed and inconsistently implemented. Many have asserted that it's the worst most popular language in the world; that nobody writes JS because they want to, only because they have to given its place at the center of the web. That's a ridiculous, unhealthy, and wholly condescending claim.
+你可能被告知過，或自己也曾感覺到，JavaScript 是一門有著深層缺陷的語言，設計不良且實作不一致。許多人斷言它是世界上最糟糕的流行語言；沒有人寫 JavaScript 是因為想寫，而只是因為它處於網路的中心位置而不得不寫。這是一個荒謬、不健康且完全居高臨下的說法。
 
-Millions of developers write JavaScript every day, and many of them appreciate and respect the language.
+每天有數百萬開發者在編寫 JavaScript，其中許多人欣賞且尊重這門語言。
 
-Like any great language, it has its brilliant parts as well as its scars. Even the creator of JavaScript himself, Brendan Eich, laments some of those parts as mistakes. But he's wrong: they weren't mistakes at all. JS is what it is today—the world's most ubiquitous and thus most influential programming language—precisely because of *all those parts*.
+就像任何偉大的語言一樣，它有其精彩的部分，也有其傷疤。就連 JavaScript 的創造者 Brendan Eich 本人也曾為其中某些部分感到遺憾，認為是錯誤。但他是錯的：那些根本不是錯誤。JavaScript 之所以成為今天的樣子——世界上最普及、因此也最具影響力的程式語言——正是因為*所有這些部分*。
 
-Don't buy the lie that you should only learn and use a small collection of *good parts* while avoiding all the bad stuff. Don't buy the "X is the new Y" snake oil, that some new feature of the language instantly relegates all usage of a previous feature as obsolete and ignorant. Don't listen when someone says your code isn't "modern" because it isn't yet using a stage-0 feature that was only proposed a few weeks ago!
+不要相信那些告訴你只應該學習和使用一小部分*好的部分*而避開所有糟糕東西的謊言。不要相信那些「X 是新的 Y」的江湖術士說法，說某個新的語言特性能立即讓先前特性的所有用法變得過時和無知。不要聽信有人說你的程式碼不夠「現代」，只因為它還沒使用幾週前才剛提出的 stage-0 特性！
 
-Every part of JS is useful. Some parts are more useful than others. Some parts require you to be more careful and intentional.
+JavaScript 的每個部分都是有用的。有些部分比其他部分更有用。有些部分需要你更加謹慎和有意識地使用。
 
-I find it absurd to try to be a truly effective JavaScript developer while only using a small sliver of what the language has to offer. Can you imagine a construction worker with a toolbox full of tools, who only uses their hammer and scoffs at the screwdriver or tape measure as inferior? That's just silly.
+我覺得，如果只使用這門語言所提供的一小部分，就試圖成為一個真正高效的 JavaScript 開發者，這是荒謬的。你能想像一個建築工人，工具箱裡裝滿了工具，卻只用他的錘子，還嘲笑螺絲起子或捲尺是劣等工具嗎？那太可笑了。
 
-My unreserved claim is that you should go about learning all parts of JavaScript, and where appropriate, use them! And if I may be so bold as to suggest: it's time to discard any JS books that tell you otherwise.
+我毫無保留地主張：你應該去學習 JavaScript 的所有部分，並在適當的時候使用它們！如果我可以斗膽建議的話：是時候丟掉那些告訴你相反建議的 JavaScript 書籍了。
 
-## The Title?
+## 這個書名？
 
-So what's the title of the series all about?
+那麼，這個書系的書名到底是什麼意思？
 
-I'm not trying to insult you with criticism about your current lack of knowledge or understanding of JavaScript. I'm not suggesting you can't or won't be able to learn JavaScript. I'm not boasting about secret advanced insider wisdom that I and only a select few possess.
+我並非要用對你當前 JavaScript 知識或理解不足的批評來侮辱你。我並非暗示你無法或不能學會 JavaScript。我也不是在吹噓只有我和少數人才擁有的秘密進階內幕知識。
 
-Seriously, all those were real reactions to the original series title before folks even read the books. And they're baseless.
+說真的，這些都是人們在還沒讀過這些書之前，對原始書系書名的真實反應。而且它們毫無根據。
 
-The primary point of the title "You Don't Know JS Yet" is to point out that most JS developers don't take the time to really understand how the code that they write works. They know *that* it works—that it produces a desired outcome. But they either don't understand exactly *how*, or worse, they have an inaccurate mental model for the *how* that falters on closer scrutiny.
+「你所不知道的 JS（進階篇）」這個書名的主要用意是指出，大多數 JavaScript 開發者不會花時間真正去理解他們所寫的程式碼是如何運作的。他們知道它能運作——它會產生期望的結果。但他們要麼不確切理解*如何*運作，要麼更糟糕的是，他們對*如何*運作有一個不準確的心智模型，在仔細審視下就會站不住腳。
 
-I'm presenting a gentle but earnest challenge to you the reader, to set aside the assumptions you have about JS, and approach it with fresh eyes and an invigorated curiosity that leads you to ask *why* for every line of code you write. Why does it do what it does? Why is one way better or more appropriate than the other half-dozen ways you could have accomplished it? Why do all the "popular kids" say to do X with your code, but it turns out that Y might be a better choice?
+我向你——讀者——提出一個溫和但認真的挑戰：放下你對 JavaScript 的先入為主的假設，以全新的眼光和重新點燃的好奇心來看待它，對你寫的每一行程式碼都問*為什麼*。它為什麼做了它所做的事？為什麼某一種方式比你本可以使用的其他六種方式更好或更合適？為什麼所有「主流人士」都說要用 X 的方式寫程式碼，但實際上 Y 可能是更好的選擇？
 
-I added "Yet" to the title, not only because it's the second edition, but because ultimately I want these books to challenge you in a hopeful rather than discouraging way.
+我在書名中加上了「進階篇」，不僅因為這是第二版，更因為我最終希望這些書以一種充滿希望而非令人沮喪的方式來挑戰你。
 
-But let me be clear: I don't think it's possible to ever fully *know* JS. That's not an achievement to be obtained, but a goal to strive after. You don't finish knowing everything about JS, you just keep learning more and more as you spend more time with the language. And the deeper you go, the more you revisit what you *knew* before, and you re-learn it from that more experienced perspective.
+但讓我說清楚：我不認為任何人有可能完全*了解* JavaScript。這不是一個可以達成的成就，而是一個要持續追求的目標。你永遠不會學完 JavaScript 的所有知識，你只會隨著與這門語言相處的時間越長，學到越來越多。你鑽研得越深，就越會重新審視你之前*所知道的*，並從更有經驗的角度重新學習它。
 
-I encourage you to adopt a mindset around JavaScript, and indeed all of software development, that you will never fully have mastered it, but that you can and should keep working to get closer to that end, a journey that will stretch for the entirety of your software development career, and beyond.
+我鼓勵你對 JavaScript，乃至整個軟體開發，採取這樣的心態：你永遠不會完全精通它，但你可以而且應該持續努力更接近那個目標——這段旅程將貫穿你整個軟體開發職涯，甚至更遠。
 
-You can always know JS better than you currently do. That's what I hope these YDKJSY books represent.
+你總是可以比現在更了解 JavaScript。這就是我希望這些 YDKJSY 書籍所代表的。
 
-## The Mission
+## 使命
 
-The case doesn't really need to be made for why developers should take JS seriously—I think it's already more than proven worthy of first-class status among the world's programming languages.
+其實不太需要再為開發者應該認真對待 JavaScript 這件事做出論證——我認為它早已證明了自己在世界程式語言中的一流地位。
 
-But a different, more important case still needs to be made, and these books rise to that challenge.
+但還有一個不同的、更重要的論點需要提出，而這些書正是為了回應這個挑戰而寫的。
 
-I've taught more than 5,000 developers from teams and companies all over the world, in more than 25 countries on six continents. And what I've seen is that far too often, what *counts* is generally just the result of the program, not how the program is written or how/why it works.
+我已經在全球超過 25 個國家、六大洲的團隊和公司中教授了超過 5,000 名開發者。我所觀察到的是，太常見的情況是，人們*在意*的通常只是程式的結果，而非程式是如何編寫的，或者它是如何以及為何這樣運作的。
 
-My experience not only as a developer but in teaching many other developers tells me: you will always be more effective in your development work if you more completely understand how your code works than you are solely *just* getting it to produce a desired outcome.
+我作為開發者以及教導許多其他開發者的經驗告訴我：如果你能更全面地理解你的程式碼如何運作，你的開發工作將永遠比你*僅僅*只是讓它產生期望的結果更有成效。
 
-In other words, *good enough to work* is not, and should not be, *good enough*.
+換句話說，*能用就好*不是、也不應該是*夠好*。
 
-All developers regularly struggle with some piece of code not working correctly, and they can't figure out why. But far too often, JS developers will blame this on the language rather than admitting it's their own understanding that is falling short. These books serve as both the question and answer: why did it do *this*, and here's how to get it to do *that* instead.
+所有開發者都會定期遇到某段程式碼無法正確運作的問題，而他們找不出原因。但太多時候，JavaScript 開發者會把這歸咎於語言本身，而不是承認是自己的理解力不夠。這些書既是問題也是答案：它為什麼這樣做？以及，要怎麼讓它改成那樣做？
 
-My mission with YDKJSY is to empower every single JS developer to fully own the code they write, to understand it and to write with intention and clarity.
+我撰寫 YDKJSY 的使命是，讓每一位 JavaScript 開發者都能完全掌握自己所寫的程式碼，理解它，並且有意識且清晰地編寫程式碼。
 
-## The Path
+## 學習路徑
 
-Some of you have started reading this book with the goal of completing all six books, back to back.
+你們中的一些人開始閱讀這本書時，目標是一本接一本地讀完所有六本書。
 
-I would like to caution you to consider changing that plan.
+我想提醒你考慮改變這個計劃。
 
-It is not my intention that YDKJSY be read straight through. The material in these books is dense, because JavaScript is powerful, sophisticated, and in parts rather complex. Nobody can really hope to *download* all this information to their brains in a single pass and retain any significant amount of it. That's unreasonable, and it's foolish to try.
+YDKJSY 並非打算一口氣從頭讀到尾。這些書的內容是密集的，因為 JavaScript 是強大的、精密的，某些部分相當複雜。沒有人能指望在一次閱讀中就把所有這些資訊都*下載*到腦中，並記住其中大量的內容。那是不合理的，嘗試這樣做也是愚蠢的。
 
-My suggestion is you take your time going through YDKJSY. Take one chapter, read it completely through start to finish, and then go back and re-read it section by section. Stop in between each section, and practice the code or ideas from that section. For larger concepts, it probably is a good idea to expect to spend several days digesting, re-reading, practicing, then digesting some more.
+我的建議是，花時間慢慢閱讀 YDKJSY。拿起一個章節，從頭到尾完整讀一遍，然後回頭逐節重讀。在每一節之間停下來，練習該節的程式碼或概念。對於較大的概念，最好預期花幾天時間來消化、重讀、練習，然後再消化更多。
 
-You could spend a week or two on each chapter, and a month or two on each book, and a year or more on the whole series, and you would still not be squeezing every ounce of YDKJSY out.
+你可能會在每個章節上花一到兩週，每本書花一到兩個月，整套書系花一年或更長時間，而你仍然不會把 YDKJSY 的每一滴精華都榨取出來。
 
-Don't binge these books; be patient and spread out your reading. Interleave reading with lots of practice on real code in your job or on projects you participate in. Wrestle with the opinions I've presented along the way, debate with others, and most of all, disagree with me! Run a study group or book club. Teach mini-workshops at your office. Write blog posts on what you've learned. Speak about these topics at local JS meetups.
+不要狂讀這些書；要有耐心，分散你的閱讀時間。在閱讀之間穿插大量在你工作中或參與的專案中的實際程式碼練習。對我在書中提出的觀點進行思辨，與他人辯論，最重要的是，不同意我的觀點也沒關係！組織一個讀書會或書友社團。在你的辦公室舉辦迷你工作坊。寫關於你所學到的東西的部落格文章。在當地的 JavaScript 聚會上就這些主題發表演講。
 
-It's never my goal to convince you to agree with my opinion, but to encourage you to own and be able to defend your opinions. You can't get *there* with an expedient read-through of these books. That's something that takes a long while to emerge, little by little, as you study and ponder and re-visit.
+我的目標從來不是說服你同意我的觀點，而是鼓勵你擁有並能夠捍衛你自己的觀點。你不可能透過快速瀏覽這些書就達到那個境界。那是需要很長時間才能慢慢形成的，一點一滴地，在你學習、思考和重新審視的過程中。
 
-These books are meant to be a field-guide on your wanderings through JavaScript, from wherever you currently are with the language, to a place of deeper understanding. And the deeper you understand JS, the more questions you will ask and the more you will have to explore! That's what I find so exciting!
+這些書旨在成為你在 JavaScript 旅途中的實地指南，從你目前對這門語言的理解程度出發，走向更深入的理解。你對 JavaScript 理解得越深，你會提出越多的問題，也會有越多的東西要探索！這正是我覺得如此令人興奮的地方！
 
-I'm so glad you're embarking on this journey, and I am so honored you would consider and consult these books along the way. It's time to start *getting to know JS*.
+我非常高興你踏上了這段旅程，也非常榮幸你會在途中考慮和參考這些書。是時候開始*認識 JavaScript* 了。

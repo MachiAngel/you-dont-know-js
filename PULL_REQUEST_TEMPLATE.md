@@ -1,23 +1,23 @@
-**Yes, I promise I've read the [Contributions Guidelines](https://github.com/getify/You-Dont-Know-JS/blob/master/CONTRIBUTING.md)** (please feel free to remove this line).
+**是的，我保證我已經閱讀了[貢獻指南](https://github.com/getify/You-Dont-Know-JS/blob/master/CONTRIBUTING.md)**（請隨意移除這一行）。
 
-Specifically quoting these guidelines regarding typos:
+特別引用這些關於錯字的指南：
 
-> Typos?
+> 錯字？
 >
-> Please don't worry about minor text typos. These will almost certainly be caught during the editing process.
+> 請不要擔心小的文字錯字。這些幾乎肯定會在編輯過程中被發現。
 >
-> If you're going to submit a PR for typo fixes, please be measured in doing so by collecting several small changes into a single PR (in separate commits). Or, **just don't even worry about them for now,** because we'll get to them later. I promise.
+> 如果你要提交修正錯字的 PR，請適度地將多個小修改集中在一個 PR 中（以不同的 commit）。或者，**現在就先不用擔心這些，**因為我們之後會處理。我保證。
 
 ----
 
-**Please type "I already searched for this issue":**
+**請輸入「我已經搜尋過這個問題了」：**
 
-**Edition:** (pull requests not accepted for previous editions)
+**版本：**（不接受先前版本的 pull request）
 
-**Book Title:**
+**書名：**
 
-**Chapter:**
+**章節：**
 
-**Section Title:**
+**段落標題：**
 
-**Topic:**
+**主題：**

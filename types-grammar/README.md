@@ -1,16 +1,16 @@
-# You Don't Know JS Yet: Types & Grammar - 2nd Edition
+# 你所不知道的 JS（進階篇）：型別與文法 - 第二版
 
-| NOTE: |
+| 注意： |
 | :--- |
-| Work in progress |
+| 撰寫中 |
 
-[Table of Contents](toc.md)
+[目錄](toc.md)
 
-* [Foreword](foreword.md) (by TBA)
-* [Preface](../preface.md)
-* [Chapter 1: Primitive Values](ch1.md)
-* [Chapter 2: Primitive Behaviors](ch2.md)
-* [Chapter 3: Object Values](ch3.md)
-* [Chapter 4: Coercing Values](ch4.md)
-* Chapter 5: TODO
-* [Thank You!](thanks.md)
+* [前言](foreword.md)（作者待定）
+* [序](../preface.md)
+* [第一章：原始值](ch1.md)
+* [第二章：原始值行為](ch2.md)
+* [第三章：物件值](ch3.md)
+* [第四章：值的強制轉型](ch4.md)
+* 第五章：待完成
+* [致謝！](thanks.md)
